@@ -135,9 +135,11 @@ MUTATIONS = [
      '    if rules["inspection_report_required"] and counts["INSPECTION_REPORT"] < 1:', "    if False:"),
     ("a work order's own evidence requirement is not enforced",
      '        if counts[req["type"]] < req["min_count"]:', "        if False:"),
-    ("the provider's own inspection report satisfies the rule",
-     '            if dt == "INSPECTION_REPORT" and it["role"] == "INSPECTOR":',
-     '            if dt == "INSPECTION_REPORT":'),
+    # ("the provider's own inspection report satisfies the rule") is left out:
+    # _item_meta refuses an INSPECTION_REPORT from anyone but the accepted
+    # inspector at filing, so no other role's report ever reaches
+    # _required_gap and the role check there is a second guard on a locked
+    # door. Its mutant would be equivalent.
     ("anyone files an inspection report",
      '            if doc_type == "INSPECTION_REPORT" and who != "INSPECTOR":', "            if False:"),
     ("a constitution with nothing to judge",

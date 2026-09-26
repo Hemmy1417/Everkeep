@@ -226,3 +226,18 @@ def test_paused_organisation_creates_no_orders_but_signing_continues(module, c):
     as_(module, PROVIDER)
     c.accept_work_order(wid, 1)
     assert order(c, wid)["state"] == "AWAITING_EVIDENCE"
+
+
+def test_a_version_is_not_signed_after_its_own_deadline(module, c):
+    oid = create_org(module, c)
+    aid = register(module, c, oid)
+    wid = create_order(module, c, aid, deadline="2026-09-20T09:30:00Z")
+    set_now("2026-09-20T09:30:01Z")
+    as_(module, PROVIDER)
+    with pytest.raises(err(module), match="deadline has passed; a steward proposes new terms"):
+        c.accept_work_order(wid, 1)
+    as_(module, FOUNDER)
+    c.propose_version(wid, terms(deadline="2026-09-20T10:00:00Z"))
+    as_(module, PROVIDER)
+    c.accept_work_order(wid, 2)
+    assert order(c, wid)["current_version"] == 2

@@ -55,9 +55,10 @@ def test_only_the_provider_requests_and_only_in_time(module, c):
 # ── the enforced half, before any panel ──────────────────────────────────────
 
 def test_min_images_is_enforced_in_code_before_any_prompt(module, c):
-    oid, aid, wid = active_order(module, c)
+    # the order itself requires nothing, so only the constitution's rule stands
+    oid, aid, wid = active_order(module, c, required_evidence=[])
     one = image(module, c, wid)
-    with pytest.raises(err(module), match="at least 2 image"):
+    with pytest.raises(err(module), match="the constitution requires at least 2 image"):
         assess(module, c, wid, [one])
     assert prompts() == []
 

@@ -1,0 +1,279 @@
+# proof run on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
+# attempt 1 (org-00001, a three-principle constitution) is in proof-run-attempt1.txt; it stopped when the panel rated a principle the photographs could not answer, which was the right answer to the wrong question
+# attempt 2 ran the enforced-half controls, the flagship, the appeal case, the paper floor and the mismatch, then stopped at an unfunded treasury
+# attempts 3 and 4 resumed the same record (every step is remembered by name and hash) through the principle case, the appeal and the settlement
+
+=== attempt 2 ===
+[17:27:35] proofs on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
+[17:27:39] org.create: FOUNDER create_organization 0xd42c4f35cda12ba09b5891c79fc0a9c1dc7937b91c4a14aa60631ef29e923b88
+[17:28:19] org.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[17:28:22] asset.register: FOUNDER register_asset 0x4e093470e9f70bfa602f7d2a80f95c1d497f74868f5d6249b3a96929ff8b54df
+[17:29:02] asset.register: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[17:29:04] enforced.unsupported_type: FOUNDER register_asset 0xc4bdb947d14d1cf20bf038cf4d97e843c1f15fa7aed28d5f191c9d8d1aeb4e0a
+[17:29:39] enforced.unsupported_type: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[17:29:41] enforced.unfunded_type: FOUNDER create_work_order 0xd1c7c8beb857746c4632f4ebfbc8b257d922414c0230cb6ac7f6a3ba5463e4e0
+[17:30:17] enforced.unfunded_type: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[17:30:19] enforced.payment_cap: FOUNDER create_work_order 0xffa2802e639d824c25edd09df769a8a2b4ee3c250aa40c5fd8bd77c26094ce31
+[17:30:53] enforced.payment_cap: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
+[17:30:55] enforced.stranger_commissions: STRANGER create_work_order 0xdc98debc4ee7e119697aa3f94394e01eea881ef901cd942dfcd8784602b73a8e
+[17:31:34] enforced.stranger_commissions: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[17:31:36] flagship.create: FOUNDER create_work_order 0x4df39c6619519da7848ba9010a895220ac38fb77082924ecc63f443ee52a9521
+[17:32:11] flagship.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+[17:32:13] flagship.sign: PROVIDER accept_work_order 0xc833e1051df9d87278fc6094cccfc0fca5bf590faf03e4b140a3f08c9161c4ee
+[17:32:51] flagship.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[17:32:56] flagship.inverter: PROVIDER submit_image 0x08adfd424bb374902aa78afe2e30179eb5af96a1cce135506a31dc3c502f9bb5
+[17:33:37] flagship.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[17:33:39] enforced.min_images: PROVIDER request_assessment 0xc8124497e032f0460e398522ffee92e6601fd96ade6e01804962f163224cd2d4
+[17:34:14] enforced.min_images: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[17:34:18] flagship.plate: PROVIDER submit_image 0x385d2447d14aaf15ac08dfafaaf44bcc40c5c69d8872c3c0f6bb297afeb7d9fe
+[17:34:59] flagship.plate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[17:35:02] flagship.assess: PROVIDER request_assessment 0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635
+  … flagship.assess ACCEPTED
+[17:36:22] flagship.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 80 s
+receipt 0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635 status=FINALIZED result=MAJORITY_AGREE rotations=1
+ rotation 1: Accepted
+  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ROUND] leader {"images_received": true, "principles": {"P1": "SATISFIED", "P2": "SATISFIED"}, "criteria": {"C1": "MET"}, "conflicts": false} why: The images show a Growatt inverter mounted indoors on a wall, with cabling/conduit connected at the underside of the unit rather than left loose. A separate image shows the unit's rating plate, and the model text 'MOD 4000TL3-X' is legible. This directly supports both the 
+  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-gpt-oss exec=SUCCESS
+     [DISAGREE] this validator did not receive the images
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISAGREE] the leader accepts; this node finds rejected; mine={"C1": "NOT_MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The evidence shows an inverter is mounted on a wall, satisfying P1. However, the rating plate identifies a SUN-5000 model, not the required Growatt MOD 4000TL3-X, so C1 is not met. P2 requires the inverter to be identifiable from its own rating plate, which it is, so P2 is satisf
+[17:36:23] flagship.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
+[17:36:26] walls.finalize_early: STRANGER finalize 0xaaa41cc47f7251b6831678269b74b34ee92626d6ac1cdc3707b281770ebe22aa
+[17:37:02] walls.finalize_early: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[17:37:04] walls.provider_appeals_own_acceptance: PROVIDER open_appeal 0x8bb8be3adbd66f30e99a6dbf9367dc1ae0a4d577bc4b0dae4437a18458d9d3f0
+[17:37:41] walls.provider_appeals_own_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 38 s
+[17:37:43] walls.files_against_acceptance: STEWARD submit_document 0xa0b80bc5050b2f453efe30803e4703b4d8e35dbc67f99c4d2c3d0a2a22da7b04
+[17:38:22] walls.files_against_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[17:38:24] appealcase.create: FOUNDER create_work_order 0xa6a157ee3c193a9ba7c95fcdaf5bf7b894ef33ed7d105f1a5858770efbece795
+[17:39:02] appealcase.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[17:39:04] appealcase.sign: PROVIDER accept_work_order 0xfa991adccf46ee7368df29e56573b243ab5e14f1f18b088c54323e352d0f0624
+[17:39:39] appealcase.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+[17:39:44] appealcase.inverter: PROVIDER submit_image 0x77f86c0bdbd85b62ecdf5578f37b40687471406a21111035319516486e6df7b5
+[17:40:22] appealcase.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[17:40:28] appealcase.plate: PROVIDER submit_image 0x362e029a68b3c042ea122f1bd18c219e5c333fc3ccad093657ddebcda00adf92
+[17:41:07] appealcase.plate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[17:41:10] appealcase.assess: PROVIDER request_assessment 0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812
+  … appealcase.assess PROPOSING
+  … appealcase.assess ACCEPTED
+[17:43:11] appealcase.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 121 s
+receipt 0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812 status=FINALIZED result=MAJORITY_AGREE rotations=2
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
+     [ROUND] leader {"images_received": true, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "NOT_MET"}, "conflicts": false} why: The evidence shows a solar panel label, not an inverter label, and no image shows an inverter mounted on a wall. The provider's claim that ev-000006 shows a replacement inverter is not supported by the visible content, which depicts a solar array, not a wall-mounted invert
+  leader/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
+     [DISAGREE] criterion C1: the leader rejects it, this node finds it met; mine={"C1": "MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The evidence provided consists of two photographs showing the installation and the specific model of the inverter. Image ev-000006 confirms the unit is wall-mounted with all cabling properly made off at the unit, satisfying the physical installation requirements. Image
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
+     [DISAGREE] criterion C1: the leader rejects it, this node finds it met; mine={"C1": "MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The evidence provided consists of two photographs documenting the installation of a new solar inverter. Image ev-000006 shows the unit is securely mounted to the wall with all cabling properly terminated at the base of the device. Image ev-000007 provides a clear view 
+  validator/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISAGREE] criterion C1: the leader rejects it, this node finds it met; mine={"C1": "MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The images show an inverter installed indoors on a wall with cabling connected at the unit, which supports compliance with the mounting and cabling rule. A separate image shows the unit’s rating plate, and the readable model name is Growatt MOD 4000TL3-X. Together, the
+ rotation 2: Accepted
+  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ROUND] leader {"images_received": true, "principles": {"P1": "SATISFIED", "P2": "SATISFIED"}, "criteria": {"C1": "MET"}, "conflicts": false} why: The images show a Growatt inverter mounted indoors on a wall, with cabling/conduits connected at the unit rather than left loose. A second image shows the unit's rating plate, and the visible text includes the model name MOD 4000TL3-X. This directly supports both the maint
+  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-gemini exec=ERROR
+  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+[17:43:13] appealcase.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
+[17:43:15] appeal.open: STEWARD open_appeal 0x469beb3265ab3e07a45e8f3dbf7a35bd58dfc4c1077701b97e42b8211f5b644b
+[17:43:55] appeal.open: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[17:43:57] paper.create: FOUNDER create_work_order 0x062dabea30eb4d628fdc0e2678e5b916a7b818b789ca9c91c978fc6a9e462730
+[17:44:38] paper.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[17:44:40] paper.sign: PROVIDER accept_work_order 0xed485a51edf7f2e300c325cbab71a937227ca8096140476b8da6cb9e6372b19b
+[17:45:20] paper.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[17:45:25] paper.inverter: PROVIDER submit_image 0x7866ef2e19eaa053d5543aff639f0c706d256312716c276e28eaf99971830fd5
+[17:46:08] paper.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
+[17:46:11] paper.datasheet: PROVIDER submit_document 0xadc1abd910738943f86256fa8f6ea319f7815f1e2e79a1ba7269803a6e249f73
+[17:46:47] paper.datasheet: FINALIZED MAJORITY_AGREE leader=SUCCESS in 36 s
+[17:46:49] paper.assess: PROVIDER request_assessment 0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e
+  … paper.assess COMMITTING
+[17:48:12] paper.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 83 s
+receipt 0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e status=FINALIZED result=MAJORITY_AGREE rotations=2
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-mistral exec=SUCCESS
+     [ROUND] leader {"images_received": false, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The work order requires replacement of a failed string inverter with a Growatt MOD 4000TL3-X, mounted on the plant room wall, and identifiable by its rating plate. No photographic evidence (e.g., ev-000008) shows the installed inverter or its mounting, leaving compliance 
+  leader/validator vote=idle model=policy:dev-mistral exec=ERROR
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISAGREE] the leader did not receive the images
+  validator/validator vote=disagree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+     [DISAGREE] the leader did not receive the images
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISAGREE] the leader did not receive the images
+ rotation 2: Accepted
+  leader/leader vote=? model=openai/gpt-5.4 exec=SUCCESS
+     [ROUND] leader {"images_received": true, "principles": {"P1": "SATISFIED", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The site photo ev-000008 shows an inverter mounted on an indoor wall with cabling/conduits connected at the underside, which supports compliance with the mounting and cabling rule. However, the rating plate itself is not visible or readable in the provided image, so the 
+  leader/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-sonnet exec=ERROR
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+  validator/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+[17:48:14] paper.assess: UNDETERMINED  principles {"P1":"SATISFIED","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
+[17:48:17] mismatch.create: FOUNDER create_work_order 0x47b07533cd2e22316f1fd142dba2f320733a0498ed0796eb6f2c2a53b7725a4b
+[17:48:51] mismatch.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+[17:48:53] mismatch.sign: PROVIDER accept_work_order 0xb3d5a362835cbc22b9de987c08f622e5473220be8e375e6eb3b82b6ffd683aa1
+[17:49:30] mismatch.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
+[17:49:36] mismatch.inverter: PROVIDER submit_image 0x2aa1e3e9ac118db42bca4c9fc9384ab7176f5c62ffae6ec6593f6870a7c4257a
+[17:50:13] mismatch.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
+[17:50:19] mismatch.plate: PROVIDER submit_image 0xd896023478a2ebe9f7f803095625831eb9a5f2bb0186dd2f896251818624615c
+[17:51:02] mismatch.plate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
+[17:51:04] mismatch.assess: PROVIDER request_assessment 0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4
+  … mismatch.assess COMMITTING
+  … mismatch.assess COMMITTING
+[17:53:33] mismatch.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 149 s
+receipt 0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4 status=FINALIZED result=MAJORITY_AGREE rotations=1
+ rotation 1: Accepted
+  leader/leader vote=? model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+     [ROUND] leader {"images_received": true, "principles": {"P1": "UNCLEAR", "P2": "SATISFIED"}, "criteria": {"C1": "NOT_MET"}, "conflicts": false} why: P1 requires wall or rack mounting with cabling made off at the unit, not left loose. ev-000010 shows the inverter mounted on a white interior wall with DC cables routed on a cable tray below the unit; there is a concern about a short exposed section of the red DC cable n
+  leader/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISAGREE] this validator did not receive the images
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISAGREE] this validator did not receive the images
+  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+[17:53:35] mismatch.assess: REJECTED  principles {"P1":"UNCLEAR","P2":"SATISFIED"}  criteria {"C1":"NOT_MET"}  quality INSUFFICIENT  read 2 of 2 images
+[17:53:37] principle.create: FOUNDER create_work_order 0xafe191215ed7b6a4c026fe67c36d2405bc08ca913dd1edf82e04c8456eece71c
+[17:54:12] principle.create: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[17:54:12] ASSERTION FAILED: principle.create failed: [EXPECTED] the treasury has less uncommitted than this work order would pay
+
+=== attempt 3 (resume) ===
+[17:56:11] proofs on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
+[17:56:13] org.create: done earlier (0xd42c4f35cda12ba09b5891c79fc0a9c1dc7937b91c4a14aa60631ef29e923b88)
+[17:56:14] asset.register: done earlier (0x4e093470e9f70bfa602f7d2a80f95c1d497f74868f5d6249b3a96929ff8b54df)
+[17:56:14] enforced.unsupported_type: done earlier (0xc4bdb947d14d1cf20bf038cf4d97e843c1f15fa7aed28d5f191c9d8d1aeb4e0a)
+[17:56:14] enforced.unfunded_type: done earlier (0xd1c7c8beb857746c4632f4ebfbc8b257d922414c0230cb6ac7f6a3ba5463e4e0)
+[17:56:14] enforced.payment_cap: done earlier (0xffa2802e639d824c25edd09df769a8a2b4ee3c250aa40c5fd8bd77c26094ce31)
+[17:56:14] enforced.stranger_commissions: done earlier (0xdc98debc4ee7e119697aa3f94394e01eea881ef901cd942dfcd8784602b73a8e)
+[17:56:14] flagship.create: done earlier (0x4df39c6619519da7848ba9010a895220ac38fb77082924ecc63f443ee52a9521)
+[17:56:14] flagship.sign: done earlier (0xc833e1051df9d87278fc6094cccfc0fca5bf590faf03e4b140a3f08c9161c4ee)
+[17:56:14] flagship.inverter: done earlier (0x08adfd424bb374902aa78afe2e30179eb5af96a1cce135506a31dc3c502f9bb5)
+[17:56:14] enforced.min_images: done earlier (0xc8124497e032f0460e398522ffee92e6601fd96ade6e01804962f163224cd2d4)
+[17:56:14] flagship.plate: done earlier (0x385d2447d14aaf15ac08dfafaaf44bcc40c5c69d8872c3c0f6bb297afeb7d9fe)
+[17:56:14] flagship.assess: done earlier (0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635)
+[17:56:15] flagship.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
+[17:56:15] walls.finalize_early: done earlier (0xaaa41cc47f7251b6831678269b74b34ee92626d6ac1cdc3707b281770ebe22aa)
+[17:56:15] walls.provider_appeals_own_acceptance: done earlier (0x8bb8be3adbd66f30e99a6dbf9367dc1ae0a4d577bc4b0dae4437a18458d9d3f0)
+[17:56:15] walls.files_against_acceptance: done earlier (0xa0b80bc5050b2f453efe30803e4703b4d8e35dbc67f99c4d2c3d0a2a22da7b04)
+[17:56:15] appealcase.create: done earlier (0xa6a157ee3c193a9ba7c95fcdaf5bf7b894ef33ed7d105f1a5858770efbece795)
+[17:56:15] appealcase.sign: done earlier (0xfa991adccf46ee7368df29e56573b243ab5e14f1f18b088c54323e352d0f0624)
+[17:56:15] appealcase.inverter: done earlier (0x77f86c0bdbd85b62ecdf5578f37b40687471406a21111035319516486e6df7b5)
+[17:56:15] appealcase.plate: done earlier (0x362e029a68b3c042ea122f1bd18c219e5c333fc3ccad093657ddebcda00adf92)
+[17:56:15] appealcase.assess: done earlier (0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812)
+[17:56:17] appealcase.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
+[17:56:17] appeal.open: done earlier (0x469beb3265ab3e07a45e8f3dbf7a35bd58dfc4c1077701b97e42b8211f5b644b)
+[17:56:17] paper.create: done earlier (0x062dabea30eb4d628fdc0e2678e5b916a7b818b789ca9c91c978fc6a9e462730)
+[17:56:17] paper.sign: done earlier (0xed485a51edf7f2e300c325cbab71a937227ca8096140476b8da6cb9e6372b19b)
+[17:56:17] paper.inverter: done earlier (0x7866ef2e19eaa053d5543aff639f0c706d256312716c276e28eaf99971830fd5)
+[17:56:17] paper.datasheet: done earlier (0xadc1abd910738943f86256fa8f6ea319f7815f1e2e79a1ba7269803a6e249f73)
+[17:56:17] paper.assess: done earlier (0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e)
+[17:56:18] paper.assess: UNDETERMINED  principles {"P1":"SATISFIED","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
+[17:56:18] mismatch.create: done earlier (0x47b07533cd2e22316f1fd142dba2f320733a0498ed0796eb6f2c2a53b7725a4b)
+[17:56:18] mismatch.sign: done earlier (0xb3d5a362835cbc22b9de987c08f622e5473220be8e375e6eb3b82b6ffd683aa1)
+[17:56:18] mismatch.inverter: done earlier (0x2aa1e3e9ac118db42bca4c9fc9384ab7176f5c62ffae6ec6593f6870a7c4257a)
+[17:56:18] mismatch.plate: done earlier (0xd896023478a2ebe9f7f803095625831eb9a5f2bb0186dd2f896251818624615c)
+[17:56:18] mismatch.assess: done earlier (0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4)
+[17:56:19] mismatch.assess: REJECTED  principles {"P1":"UNCLEAR","P2":"SATISFIED"}  criteria {"C1":"NOT_MET"}  quality INSUFFICIENT  read 2 of 2 images
+[17:56:23] fund.stranger: STRANGER fund_treasury 0xbd1c6af94e903ab873d38363f4671d58bd6e13fbce4d50ae265e7e2061897946
+[17:57:00] fund.stranger: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
+[17:57:02] principle.create: waiting again on 0xafe191215ed7b6a4c026fe67c36d2405bc08ca913dd1edf82e04c8456eece71c, sent earlier
+[17:57:07] principle.create: FINALIZED MAJORITY_AGREE leader=ERROR in 5 s
+[17:57:07] ASSERTION FAILED: principle.create failed: [EXPECTED] the treasury has less uncommitted than this work order would pay
+
+=== attempt 4 (resume) ===
+[18:00:29] proofs on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
+[18:00:32] org.create: done earlier (0xd42c4f35cda12ba09b5891c79fc0a9c1dc7937b91c4a14aa60631ef29e923b88)
+[18:00:33] asset.register: done earlier (0x4e093470e9f70bfa602f7d2a80f95c1d497f74868f5d6249b3a96929ff8b54df)
+[18:00:33] enforced.unsupported_type: done earlier (0xc4bdb947d14d1cf20bf038cf4d97e843c1f15fa7aed28d5f191c9d8d1aeb4e0a)
+[18:00:33] enforced.unfunded_type: done earlier (0xd1c7c8beb857746c4632f4ebfbc8b257d922414c0230cb6ac7f6a3ba5463e4e0)
+[18:00:33] enforced.payment_cap: done earlier (0xffa2802e639d824c25edd09df769a8a2b4ee3c250aa40c5fd8bd77c26094ce31)
+[18:00:33] enforced.stranger_commissions: done earlier (0xdc98debc4ee7e119697aa3f94394e01eea881ef901cd942dfcd8784602b73a8e)
+[18:00:33] flagship.create: done earlier (0x4df39c6619519da7848ba9010a895220ac38fb77082924ecc63f443ee52a9521)
+[18:00:33] flagship.sign: done earlier (0xc833e1051df9d87278fc6094cccfc0fca5bf590faf03e4b140a3f08c9161c4ee)
+[18:00:33] flagship.inverter: done earlier (0x08adfd424bb374902aa78afe2e30179eb5af96a1cce135506a31dc3c502f9bb5)
+[18:00:33] enforced.min_images: done earlier (0xc8124497e032f0460e398522ffee92e6601fd96ade6e01804962f163224cd2d4)
+[18:00:33] flagship.plate: done earlier (0x385d2447d14aaf15ac08dfafaaf44bcc40c5c69d8872c3c0f6bb297afeb7d9fe)
+[18:00:33] flagship.assess: done earlier (0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635)
+[18:00:34] flagship.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
+[18:00:34] walls.finalize_early: done earlier (0xaaa41cc47f7251b6831678269b74b34ee92626d6ac1cdc3707b281770ebe22aa)
+[18:00:34] walls.provider_appeals_own_acceptance: done earlier (0x8bb8be3adbd66f30e99a6dbf9367dc1ae0a4d577bc4b0dae4437a18458d9d3f0)
+[18:00:34] walls.files_against_acceptance: done earlier (0xa0b80bc5050b2f453efe30803e4703b4d8e35dbc67f99c4d2c3d0a2a22da7b04)
+[18:00:34] appealcase.create: done earlier (0xa6a157ee3c193a9ba7c95fcdaf5bf7b894ef33ed7d105f1a5858770efbece795)
+[18:00:34] appealcase.sign: done earlier (0xfa991adccf46ee7368df29e56573b243ab5e14f1f18b088c54323e352d0f0624)
+[18:00:34] appealcase.inverter: done earlier (0x77f86c0bdbd85b62ecdf5578f37b40687471406a21111035319516486e6df7b5)
+[18:00:34] appealcase.plate: done earlier (0x362e029a68b3c042ea122f1bd18c219e5c333fc3ccad093657ddebcda00adf92)
+[18:00:34] appealcase.assess: done earlier (0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812)
+[18:00:35] appealcase.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
+[18:00:35] appeal.open: done earlier (0x469beb3265ab3e07a45e8f3dbf7a35bd58dfc4c1077701b97e42b8211f5b644b)
+[18:00:35] paper.create: done earlier (0x062dabea30eb4d628fdc0e2678e5b916a7b818b789ca9c91c978fc6a9e462730)
+[18:00:35] paper.sign: done earlier (0xed485a51edf7f2e300c325cbab71a937227ca8096140476b8da6cb9e6372b19b)
+[18:00:35] paper.inverter: done earlier (0x7866ef2e19eaa053d5543aff639f0c706d256312716c276e28eaf99971830fd5)
+[18:00:35] paper.datasheet: done earlier (0xadc1abd910738943f86256fa8f6ea319f7815f1e2e79a1ba7269803a6e249f73)
+[18:00:35] paper.assess: done earlier (0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e)
+[18:00:36] paper.assess: UNDETERMINED  principles {"P1":"SATISFIED","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
+[18:00:36] mismatch.create: done earlier (0x47b07533cd2e22316f1fd142dba2f320733a0498ed0796eb6f2c2a53b7725a4b)
+[18:00:36] mismatch.sign: done earlier (0xb3d5a362835cbc22b9de987c08f622e5473220be8e375e6eb3b82b6ffd683aa1)
+[18:00:36] mismatch.inverter: done earlier (0x2aa1e3e9ac118db42bca4c9fc9384ab7176f5c62ffae6ec6593f6870a7c4257a)
+[18:00:36] mismatch.plate: done earlier (0xd896023478a2ebe9f7f803095625831eb9a5f2bb0186dd2f896251818624615c)
+[18:00:36] mismatch.assess: done earlier (0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4)
+[18:00:37] mismatch.assess: REJECTED  principles {"P1":"UNCLEAR","P2":"SATISFIED"}  criteria {"C1":"NOT_MET"}  quality INSUFFICIENT  read 2 of 2 images
+[18:00:37] fund.stranger: done earlier (0xbd1c6af94e903ab873d38363f4671d58bd6e13fbce4d50ae265e7e2061897946)
+[18:00:40] principle.create: FOUNDER create_work_order 0xfd0e357f34e6e4b8cfc37caa82822fde311806a9cb7c35fbeca04396c35e5c23
+[18:01:22] principle.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 42 s
+[18:01:26] principle.sign: PROVIDER accept_work_order 0xc07a381944186e84cfeed00116f43f6fdcb532183400911677a583c5d1027ce9
+[18:02:06] principle.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[18:02:11] principle.inverter: PROVIDER submit_image 0x679c81f56da8542b9ff1b56a511ca66cd974a377f11b535f4866e2fed30fb356
+[18:02:54] principle.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 44 s
+[18:02:57] principle.assess: PROVIDER request_assessment 0x69213b12f98fedc0c1d6daaba4d9fb60a7737f0e187311f6571870019be91712
+  … principle.assess PROPOSING
+  … principle.assess REVEALING
+[18:04:43] principle.assess: no majority, so nothing was recorded; asking again (2 of 3)
+[18:05:02] principle.assess: PROVIDER request_assessment 0x47f6cf4a16f08118821a804e1ac9de45d7471a52931c980eac5be50122ba0fb5
+  … principle.assess ACCEPTED
+[18:06:21] principle.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 79 s
+receipt 0x47f6cf4a16f08118821a804e1ac9de45d7471a52931c980eac5be50122ba0fb5 status=FINALIZED result=MAJORITY_AGREE rotations=2
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
+     [ROUND] leader {"images_received": false, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The evidence presented is insufficient to assess compliance with the principles and criteria. Image ev-000012 could not be processed and shows nothing, so there is no visual evidence of the work performed. Without any images or an inspector's report, it is impossible to v
+  leader/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISAGREE] the leader did not receive the images
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISAGREE] the leader did not receive the images
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISAGREE] the leader did not receive the images
+  validator/validator vote=idle model=policy:dev-grok exec=ERROR
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+ rotation 2: Accepted
+  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ROUND] leader {"images_received": true, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The only site evidence is a single image showing the inside of an open electronic enclosure with components exposed. It does not clearly show a complete replacement inverter mounted on a wall, nor does it clearly show cabling made off at the unit in an installed state. The
+  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-grok exec=ERROR
+  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-sonnet exec=ERROR
+[18:06:22] principle.assess: UNDETERMINED  principles {"P1":"UNCLEAR","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
+[18:06:25] walls.stranger_files: STRANGER submit_document 0x5434f0cc63e2828e6560a8c51d883c8791c3431fb4c871363d7755dd5a70a72b
+[18:07:01] walls.stranger_files: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[18:07:03] walls.stranger_assessment: STRANGER request_assessment 0x09c690faa489be1e1bc14af32cf28e4a6a91d49753ce003b3cfc6213403a9db0
+[18:07:38] walls.stranger_assessment: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[18:07:41] walls.provider_inspection_report: PROVIDER submit_document 0xd358b1618532d8008312990e0f0b6f2985f663c25d36ec42143f2706ff83ebf5
+[18:08:22] walls.provider_inspection_report: FINALIZED MAJORITY_AGREE leader=ERROR in 41 s
+[18:08:25] appeal.decide: STRANGER decide_appeal 0x033c9674ac2afaecf1ff4df245882034ea835083da4236fc4b745fb811072eb0
+  … appeal.decide ACCEPTED
+[18:09:35] appeal.decide: FINALIZED MAJORITY_AGREE leader=SUCCESS in 70 s
+[18:09:37] appeal: reviewed round 1, decided ACCEPTED, principles {"P1":"SATISFIED","P2":"SATISFIED"} criteria {"C1":"MET"}
+[18:09:41] flagship.finalize: STRANGER finalize 0x77706a7043cf8f9284247bd9e6215a405f80d1bda52531393b7ef3c38132db30
+[18:10:22] flagship.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[18:10:30] flagship.claim: PROVIDER claim 0xc45a22def3824a87cfe9d75ad5b9c18a830cc7a3720886e23c7dab3afe7b1ba1
+[18:11:11] flagship.claim: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[18:11:12] the provider's wallet received 1999000000000000000 wei
+[18:11:14] stats {"organizations":3,"assets":3,"work_orders":9,"items":12,"rounds":7,"finalized":1,"paid_wei":"2000000000000000000"}
+[18:11:14] 1 round(s) reached no majority and were asked again:
+[18:11:14]   principle.assess 0x69213b12f98fedc0c1d6daaba4d9fb60a7737f0e187311f6571870019be91712
+[18:11:14] every proof passed

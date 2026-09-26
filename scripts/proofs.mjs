@@ -172,12 +172,17 @@ const CONSTITUTION = JSON.stringify({
   supported_infrastructure_types: ["COMMUNITY_SOLAR", "MICROGRID"],
   approved_maintenance_types: ["INSPECTION", "CORRECTIVE_MAINTENANCE", "COMPONENT_REPLACEMENT",
                                "INVERTER_REPAIR"],
+  // Two principles, each answerable from a photograph of the unit. The first
+  // run of these proofs carried a third, "the site is left with enclosure
+  // covers fitted and no exposed conductors", and the panel rated it UNCLEAR
+  // from two photographs of an inverter, which was the right answer to a
+  // question the evidence could not settle. A constitution asks what its
+  // evidence can show.
   principles: [
     { text: "Equipment installed under a work order is mounted on a wall or a rack, with its "
             + "cabling made off at the unit, never left loose." },
     { text: "Every inverter installed or replaced under a work order is identifiable from its "
             + "own rating plate in the evidence." },
-    { text: "The site is left with enclosure covers fitted and no exposed conductors." },
   ],
   evidence_rules: { min_images: 1, inspection_report_required: false },
   funding_rules: { max_payment_wei: (3n * GEN).toString(), max_open_work_orders: 8 },
@@ -268,7 +273,8 @@ const created = await step("org.create", "FOUNDER", "create_organization", [CONS
 const OID = jsonFrom(created.text)?.organization_id;
 assert(OID, "no organisation id");
 const org0 = await readJson("get_organization", [OID]);
-assert(org0.constitution_version === 1 && org0.escrow_wei === (9n * GEN).toString(),
+// at least, not exactly: a resumed run reads a treasury later steps funded
+assert(org0.constitution_version === 1 && BigInt(org0.escrow_wei) >= 9n * GEN,
        `the organisation did not start as expected: ${JSON.stringify(org0)}`);
 
 const asset = JSON.stringify({
@@ -362,6 +368,11 @@ const wrongPlate = await image("mismatch.plate", "PROVIDER", wrongWid, "growatt-
                                "The rating plate on the same unit", { origin: "NAMEPLATE" });
 const wrongRound = await assessment("mismatch.assess", wrongWid, [wrongFront, wrongPlate], { sighted: true });
 assert(wrongRound.decision !== "ACCEPTED", `a plate reading another product paid: ${wrongRound.decision}`);
+
+// The treasury has committed four orders; anyone may add to it. A stranger does.
+await step("fund.stranger", "STRANGER", "fund_treasury", [OID], { value: 3n * GEN });
+const orgFunded = await readJson("get_organization", [OID]);
+assert(BigInt(orgFunded.funded_wei) >= 12n * GEN, "the stranger's funding did not reach the treasury");
 
 // 5. The principle: the order's own criterion is met by a wall-mounted unit,
 //    but the constitution says every inverter must be identifiable from its

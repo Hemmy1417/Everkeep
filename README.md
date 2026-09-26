@@ -143,12 +143,45 @@ Deployment of record on GenLayer Studio Next (chain 61997):
 | Explorer | https://explorer-studio-dev.genlayer.com/address/0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c |
 | Source | `contracts/everkeep.py`, byte-for-byte identical to the deployed code (`node scripts/deploy.mjs verify`) |
 | Direct tests | 147, including a randomized walk asserting conservation and immutability after every action |
-| Mutation sweep | see `docs/proofs/sweep.txt`: every mutant killed, control passes |
+| Mutation sweep | 78 mutants, 78 killed, control passes (`docs/proofs/sweep.txt`) |
 
 The live runs are in `docs/proofs/`. Every claim below is an assertion in the script that
 produced the log; a run that failed one would have stopped there.
 
-VERIFIED_BLOCK
+**The adjudication** (`docs/proofs/proof-run.txt`, every transaction hash in `docs/proofs/proofs.json`),
+one organisation with a two-principle constitution, run on 26 September 2026:
+
+| Case | What was filed | Panel | Contract |
+|---|---|---|---|
+| Enforced half | an unsupported asset type, an unfunded maintenance type, a payment over the cap, a stranger commissioning work, an assessment short of the image minimum | never asked | five refusals in words, no prompt sent |
+| Flagship | the inverter on the wall and its rating plate, against a criterion naming the model | P1 satisfied, P2 satisfied, C1 met | `ACCEPTED`, citing constitution v1; finalize refused inside the window; the provider refused an appeal of their own acceptance; a steward refused to file against it |
+| Paper floor | the same wall, the model named only in a datasheet | C1 unclear, P2 unclear | `UNDETERMINED`; the document established nothing |
+| Mismatch | the same plate against a criterion naming a different product | C1 not met | `REJECTED` |
+| Principle | a different inverter with no plate in frame; the order's own criterion is met | P2 unclear | `UNDETERMINED`; the constitution withheld what the order alone would have paid |
+| Walls | a stranger filing, a stranger asking for assessment, the provider filing an inspection report | never asked | three refusals in words |
+| Appeal | a steward contested the second acceptance; a fresh panel re-read the record after the evidence period | P1 satisfied, P2 satisfied, C1 met | upheld as `ACCEPTED`, round 2 citing round 1 and constitution v1 |
+| Settlement | anyone finalized the flagship after its window; the provider claimed | | treasury down by exactly the committed 2 GEN, ledger zero after the claim, the wallet credited |
+
+One round reached no majority and was asked again; both attempts are in the log. A first
+attempt on a separate organisation, kept as `docs/proofs/proof-run-attempt1.txt`, carried a
+third principle about enclosure covers and exposed conductors that two photographs of an
+inverter could not answer. The panel rated it unclear and the order did not pay, which was
+the contract doing its job and the demonstration asking the wrong question.
+
+**Governance and money** (`docs/proofs/paths-run.txt`, `docs/proofs/paths.json`), a second
+organisation, every step asserted:
+
+- a stranger funded the treasury; a stranger's amendment, objection and early ratification were
+  refused in words;
+- a steward's v2 was withdrawn by another steward's objection inside the window, and the
+  steward v2 would have named never governed; v3 was ratified by a stranger once the window
+  passed;
+- an order created under v1 kept v1 after v3 took effect, its revision was validated under v1,
+  and a new order that v3 does not fund was refused;
+- a revision moved the commitment only when the provider signed it; a pause refused new orders
+  and new terms while the provider kept filing; an unsigned order was cancelled and its
+  commitment released; an unaccepted order closed after its deadline and the treasury returned
+  to exactly what it held before, less nothing.
 
 ## Tech stack
 

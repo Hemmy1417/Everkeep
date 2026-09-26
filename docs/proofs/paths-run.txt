@@ -1,0 +1,79 @@
+[17:17:10] paths on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
+[17:17:13] org.create: FOUNDER create_organization 0xa5e434d1e3bc8dc22d4375cc803cbd8370f2d409ecacb813cacbe67e20ff470a
+[17:17:50] org.create: FINALIZED leader=SUCCESS in 38 s
+[17:17:53] fund.stranger: STRANGER fund_treasury 0x3e656a7333151ea5e7479dd4f9e611ae28b3dbae1f35115ca42987678cebafb8
+[17:18:31] fund.stranger: FINALIZED leader=SUCCESS in 38 s
+[17:18:34] amend.stranger_proposes: STRANGER propose_amendment 0xd97d35c88b154cbdcd0c7a0fa20af5427ad4df5d6603604ff893cc6b5636b4c2
+[17:19:13] amend.stranger_proposes: FINALIZED leader=ERROR in 39 s
+[17:19:15] amend.propose_v2: FOUNDER propose_amendment 0x28c2fbe695ccf8375201165bd951ac4a6fe087cba9beffcd8fc14f829a5e24f6
+[17:19:49] amend.propose_v2: FINALIZED leader=SUCCESS in 34 s
+[17:19:51] amend.stranger_objects: STRANGER object_amendment 0xe00067db7069ce267869a2201e4cb446e3b52a04c6d608e0760bd6a3734e127c
+[17:20:30] amend.stranger_objects: FINALIZED leader=ERROR in 39 s
+[17:20:32] amend.ratify_early: STRANGER ratify_amendment 0xa8b196e8d669318d8864c595b1033443e3dc0187444928fa19eb9543718850c3
+[17:21:07] amend.ratify_early: FINALIZED leader=ERROR in 35 s
+[17:21:09] amend.object_v2: STEWARD object_amendment 0x981f76375cdaef0fab7bb8eac9efdb695c111a2706f4b68c0eae90cb92af2a8e
+[17:21:48] amend.object_v2: FINALIZED leader=SUCCESS in 39 s
+[17:21:51] amend.never_a_steward: STRANGER pause_organization 0xbdbfe5213a9b7f6c519be894b23236a989581eb01d53b8b10cea122c552b5f83
+[17:22:28] amend.never_a_steward: FINALIZED leader=ERROR in 37 s
+[17:22:30] amend.propose_v3: STEWARD propose_amendment 0xebe15d04785801bd68c06237f848c71b5681289401f4f6d059e32aa7e8f0a242
+[17:23:05] amend.propose_v3: FINALIZED leader=SUCCESS in 35 s
+[17:23:07] asset.register: STEWARD register_asset 0xadedb02c9c2fdbf9e120ee9c5f72c04fcda5201634f04a9cb42bdec815c94ad3
+[17:23:47] asset.register: FINALIZED leader=SUCCESS in 40 s
+[17:23:49] inspector.stranger_accepts: STRANGER accept_inspector_role 0x4b8f74699a4eaf233e49802ec826d45ed3c68097103ed1c320f5965ac3936653
+[17:24:24] inspector.stranger_accepts: FINALIZED leader=ERROR in 35 s
+[17:24:26] inspector.accept: INSPECTOR accept_inspector_role 0x2e773bb237952cadcf30a90bdec13c5baccd839f78e23f903519a3fc496075c2
+  … inspector.accept ACCEPTED
+[17:25:49] inspector.accept: FINALIZED leader=SUCCESS in 83 s
+[17:25:51] order.under_v1: FOUNDER create_work_order 0x14848c0df08653c0197f44b59b00b3b71063d534ae88a02f27d39345577ed179
+[17:26:30] order.under_v1: FINALIZED leader=SUCCESS in 39 s
+[17:26:34] order.sign_v1: PROVIDER accept_work_order 0xb0b940322d1ec2aaed1abf3e63b20138896d9bc0f71218bf3ecb381337ac122f
+[17:27:10] order.sign_v1: FINALIZED leader=SUCCESS in 36 s
+[17:27:13] version.propose: FOUNDER propose_version 0xf0658e24688992fd7a68a48e7b9a963ab255f931193eaba87fc4aa39a67b4434
+[17:27:49] version.propose: FINALIZED leader=SUCCESS in 36 s
+[17:27:51] version.sign: PROVIDER accept_work_order 0xf62bd5b1f4a5d7b5eb19d09b3a21ef8daabe71eae92ddad8af9a9bd0ea31bdcb
+[17:28:32] version.sign: FINALIZED leader=SUCCESS in 40 s
+[17:28:35] pause: STEWARD pause_organization 0xf60e7241e37edece807891b5fdee2816816b6d20c009c72e8bb55f9e0d49e311
+[17:29:12] pause: FINALIZED leader=SUCCESS in 36 s
+[17:29:14] pause.no_orders: FOUNDER create_work_order 0x01210659cd10725468132cb458ead179502f41f4c207a59e4385e2df98db420d
+[17:29:48] pause.no_orders: FINALIZED leader=ERROR in 34 s
+[17:29:49] pause.no_amendments: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[17:30:02] pause.no_amendments: FOUNDER propose_amendment 0x8786bd3718e936e0bac19b63a1d019224ff4a614d790ba525d8cfae8e8f0f2cf
+[17:30:36] pause.no_amendments: FINALIZED leader=ERROR in 35 s
+[17:30:38] pause.provider_still_files: PROVIDER submit_declaration 0xb7f10e5399d332acad38b448fb6094188c0bf4cbe33fd40bb2123d6309b2615c
+[17:31:17] pause.provider_still_files: FINALIZED leader=SUCCESS in 39 s
+[17:31:19] resume: FOUNDER resume_organization 0xc014ab67692835800e4360533521487339a6cfb31053658819bc2eb62d32e826
+[17:31:57] resume: FINALIZED leader=SUCCESS in 38 s
+[17:31:59] cancel.create: FOUNDER create_work_order 0x15cbd838555be0207add6cf2a0ba8963d9f7218c22eea22bcab97111c56ada68
+[17:32:38] cancel.create: FINALIZED leader=SUCCESS in 39 s
+[17:32:40] cancel.stranger: STRANGER cancel_work_order 0x4b3b9ebbab62920bffcacf392478d38a17af7cc0f80722c262f13964d6453a35
+[17:33:19] cancel.stranger: FINALIZED leader=ERROR in 40 s
+[17:33:21] cancel: STEWARD cancel_work_order 0xca9f660f11331d6a638aca00861226554737815f9da4ae35d46117be499681d1
+[17:33:56] cancel: FINALIZED leader=SUCCESS in 35 s
+[17:33:58] close.create: FOUNDER create_work_order 0xe71b868dcd102d239f527ce58526241862c201544a78ae232a80c05a0ce78506
+[17:34:37] close.create: FINALIZED leader=SUCCESS in 39 s
+[17:34:39] close.sign: PROVIDER accept_work_order 0x9dba45fd95dfa10f868612438f57aa1c57ba42f3a346c0a879fd189f34e259ec
+  … close.sign ACCEPTED
+[17:35:50] close.sign: FINALIZED leader=SUCCESS in 70 s
+[17:35:52] close.early: STRANGER close_work_order 0xc417dd34361b9cc7fb2e8f1cfe6ef80f809d10915f00d8edf968fc9935a2d8a1
+[17:36:34] close.early: FINALIZED leader=ERROR in 42 s
+[17:36:37] amend.ratify_v3: STRANGER ratify_amendment 0xd58c12e8cec632c39e91a127578f0e14402fa795761cf9fb67f552eeab31f985
+[17:37:16] amend.ratify_v3: FINALIZED leader=SUCCESS in 39 s
+[17:37:20] v3.corrective_refused: FOUNDER create_work_order 0x51a80a5071aecf2d5270d24e0ebf09d6aa329015daf8534b8e626e108df1978e
+[17:37:58] v3.corrective_refused: FINALIZED leader=ERROR in 38 s
+[17:38:00] v3.cap_refused: FOUNDER create_work_order 0x8ce67ceb94a3d8c9d9abed14c40a85249c191a3c5c3a7fad4d0eaaba0fbed416
+[17:38:35] v3.cap_refused: FINALIZED leader=ERROR in 34 s
+[17:38:36] v1.revision_still_v1: FOUNDER propose_version 0xbc2ab48fdfac0760199171012469e80fe1d337aa9d0515c81e32ae819a625089
+[17:39:14] v1.revision_still_v1: FINALIZED leader=SUCCESS in 38 s
+[17:39:15] waiting for the short-lived order's deadline (406 s)
+[17:40:15] waiting for the short-lived order's deadline (346 s)
+[17:41:15] waiting for the short-lived order's deadline (286 s)
+[17:42:15] waiting for the short-lived order's deadline (226 s)
+[17:43:15] waiting for the short-lived order's deadline (166 s)
+[17:44:16] waiting for the short-lived order's deadline (105 s)
+[17:45:16] waiting for the short-lived order's deadline (45 s)
+[17:46:03] close: STRANGER close_work_order 0xcb10efe66b6dd4a51e0c0627fe216f89c106778737ab2dfedcca1d6b9ff8a887
+[17:46:44] close: FINALIZED leader=SUCCESS in 41 s
+[17:46:45] every path passed
