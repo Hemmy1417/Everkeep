@@ -1,0 +1,61 @@
+# Two required jobs on every push and pull request.
+#
+#   contract  the GenVM linter and validator, then the direct-mode suite
+#   sweep     the mutation sweep, which is what proves the suite would notice
+#
+# The live runs are not here. They sign real transactions against Studio Next
+# and take about an hour of real windows, so they run by hand and their logs
+# are committed:
+#
+#   node scripts/proofs.mjs <address>     the adjudication and the enforced half
+#   node scripts/paths.mjs  <address>     governance, terms, treasury and the exits
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: contract - genvm-lint check + direct tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/genvm-linter
+            ~/.cache/gltest-direct
+          key: genvm-${{ hashFiles('requirements.txt', 'contracts/everkeep.py') }}
+          restore-keys: genvm-
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - run: genvm-lint check contracts/everkeep.py --json
+      - run: python -m pytest tests/direct -q
+
+  sweep:
+    name: contract - mutation sweep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/genvm-linter
+            ~/.cache/gltest-direct
+          key: genvm-${{ hashFiles('requirements.txt', 'contracts/everkeep.py') }}
+          restore-keys: genvm-
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      # Every mutant must make the suite fail, and the control must pass. A
+      # green suite proves the tests run; this proves they would notice.
+      - run: python tests/mutation/mutate.py
