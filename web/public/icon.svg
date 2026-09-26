@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="EVERKEEP">
+  <rect width="64" height="64" rx="16" fill="#222f30"/>
+  <!-- a keep: a closed ring of rules around one live signal -->
+  <circle cx="32" cy="32" r="17" fill="none" stroke="#cef79e" stroke-width="3"/>
+  <path d="M32 15v8M32 41v8M15 32h8M41 32h8" stroke="#cef79e" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="4.5" fill="#cef79e"/>
+</svg>

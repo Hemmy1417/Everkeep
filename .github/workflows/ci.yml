@@ -1,7 +1,8 @@
-# Two required jobs on every push and pull request.
+# Three required jobs on every push and pull request.
 #
 #   contract  the GenVM linter and validator, then the direct-mode suite
 #   sweep     the mutation sweep, which is what proves the suite would notice
+#   web       lint, types, unit tests, the web sweep, a build, one address
 #
 # The live runs are not here. They sign real transactions against Studio Next
 # and take about an hour of real windows, so they run by hand and their logs
@@ -59,3 +60,29 @@ jobs:
       # Every mutant must make the suite fail, and the control must pass. A
       # green suite proves the tests run; this proves they would notice.
       - run: python tests/mutation/mutate.py
+
+  web:
+    name: web - lint, types, tests, sweep, build, one address
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm mutate
+      - run: pnpm build
+      # A judge clones and runs: the app, both proof logs and the documents
+      # must name one deployment.
+      - run: node scripts/check-address.mjs

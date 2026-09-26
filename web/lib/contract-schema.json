@@ -1,0 +1,569 @@
+{
+  "ctor": {
+    "params": [],
+    "kwparams": {}
+  },
+  "methods": {
+    "accept_inspector_role": {
+      "params": [
+        [
+          "aid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "accept_work_order": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "version",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "cancel_work_order": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "reason",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "claim": {
+      "params": [],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "close_work_order": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "create_organization": {
+      "params": [
+        [
+          "constitution_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": true
+    },
+    "create_work_order": {
+      "params": [
+        [
+          "aid",
+          "string"
+        ],
+        [
+          "provider",
+          "string"
+        ],
+        [
+          "terms_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "decide_appeal": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "finalize": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "fund_treasury": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": true
+    },
+    "get_asset": {
+      "params": [
+        [
+          "aid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_balance": {
+      "params": [
+        [
+          "addr",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_config": {
+      "params": [],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_constitution": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "version",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_events": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "skip",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_image": {
+      "params": [
+        [
+          "eid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "bytes"
+    },
+    "get_item": {
+      "params": [
+        [
+          "eid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_item_text": {
+      "params": [
+        [
+          "eid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_organization": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_round": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "n",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_stats": {
+      "params": [],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_work_order": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "lapse_appeal": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "list_assets": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "skip",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "list_organizations": {
+      "params": [
+        [
+          "skip",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "list_work_orders": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "skip",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "object_amendment": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "reason",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "open_appeal": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "reason",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "pause_organization": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "reason",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "propose_amendment": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "constitution_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "propose_version": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "terms_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "ratify_amendment": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "register_asset": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "asset_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "request_assessment": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "named_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "resume_organization": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "submit_declaration": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "text",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "submit_document": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "meta_json",
+          "string"
+        ],
+        [
+          "text",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "submit_image": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "meta_json",
+          "string"
+        ],
+        [
+          "data",
+          "bytes"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "submit_reference": {
+      "params": [
+        [
+          "wid",
+          "string"
+        ],
+        [
+          "meta_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "work_orders_of": {
+      "params": [
+        [
+          "addr",
+          "string"
+        ],
+        [
+          "skip",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    }
+  }
+}

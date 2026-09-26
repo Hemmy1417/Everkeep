@@ -1,3 +1,5 @@
+<p align="center"><img src="https://raw.githubusercontent.com/Hemmy1417/Everkeep/main/web/public/icon.svg" width="112" alt="EVERKEEP"/></p>
+
 # EVERKEEP - Constitutional stewardship of community infrastructure
 
 **An organisation is a rulebook and a treasury. Maintenance work is paid when the evidence
@@ -144,6 +146,9 @@ Deployment of record on GenLayer Studio Next (chain 61997):
 | Source | `contracts/everkeep.py`, byte-for-byte identical to the deployed code (`node scripts/deploy.mjs verify`) |
 | Direct tests | 147, including a randomized walk asserting conservation and immutability after every action |
 | Mutation sweep | 78 mutants, 78 killed, control passes (`docs/proofs/sweep.txt`) |
+| Web tests | 21, including every write in the deployed schema reachable from a page, and the action rules on shapes the contract writes |
+| Web sweep | 33 mutants of the action rules and the vocabulary, 33 killed |
+| In the browser | a stranger settled an acceptance upheld on appeal and the provider claimed it, both through the app's own wallet picker (`docs/ui-bench.md`) |
 
 The live runs are in `docs/proofs/`. Every claim below is an assertion in the script that
 produced the log; a run that failed one would have stopped there.
@@ -183,15 +188,40 @@ organisation, every step asserted:
   commitment released; an unaccepted order closed after its deadline and the treasury returned
   to exactly what it held before, less nothing.
 
+## The app
+
+`web/` is one Next.js app. Reads go straight from the browser to Studio Next under a
+budget; every write is signed in the visitor's own wallet through the GenLayer Transaction
+Kit, priced from the live fee policy, with the one payout (claim) priced by simulation.
+
+- **Organisations**: the constitution in force, its enforced half beside its principles, the
+  treasury, a pending amendment with its window, and a steward's form to propose the next one.
+- **Work orders**: what was agreed and the constitution it answers to, evidence filed as
+  photographs held on chain, documents, declarations or links, each labelled with what it
+  can and cannot do, and exactly the acts the connected wallet may take now.
+- **Rounds**: the decision, every principle and criterion with the panel's note, where code
+  overruled a rating that rested on paperwork, what the panel saw before it knew the rules,
+  and the digest of every item read.
+
+What each person may do is derived from the states the contract writes, in `web/lib/acts.ts`,
+rule for rule with the contract's guards. The design follows a dark-laboratory reference:
+one weight of one sans, a mono for every label, hairlines instead of shadows, and a single
+lime signal rationed to arrows, dots and progress.
+
+```bash
+cd web && pnpm install && pnpm dev          # http://localhost:3155
+```
+
 ## Tech stack
 
 | Layer | Choice |
 |---|---|
 | Contract | GenLayer intelligent contract, Python, runner `py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng` |
 | Network | GenLayer Studio Next, chain 61997 |
+| App | Next.js 16, React 19, Tailwind 4, `@genlayer/transaction-kit` 0.1.0-rc.2, `genlayer-js` 2.0.0-rc.1, EIP-6963 wallets |
 | Scripts | Node 22, `genlayer-js` 2.0.0-rc.1 |
 | Tests | pytest direct mode against a strict stub of the runtime; a mutation sweep over the contract |
-| CI | GitHub Actions: lint and validate, direct suite, mutation sweep |
+| CI | GitHub Actions: lint and validate, direct suite, mutation sweep, and the web job (lint, types, tests, sweep, build, one address) |
 
 ## Repository
 
@@ -199,6 +229,7 @@ organisation, every step asserted:
 contracts/everkeep.py        the contract
 tests/direct/                the direct suite and its harness (conftest.py, _fixtures.py)
 tests/mutation/mutate.py     the sweep
+web/                         the app, its tests and its sweep
 scripts/                     keys, deploy and verify, proofs, paths
 docs/                        blueprint, state machine, consensus, evidence model, security, proofs
 fixtures/images/             the demonstration photographs, attributed in fixtures/ATTRIBUTION.md

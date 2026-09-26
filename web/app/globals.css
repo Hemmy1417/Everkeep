@@ -1,0 +1,89 @@
+@import "tailwindcss";
+@source "../app";
+@source "../components";
+@source "../lib";
+
+/*
+ * EVERKEEP, after the reference "bioluminescent laboratory at midnight".
+ * One weight of one sans for everything a person reads; a mono for every
+ * label, counter, tag and button; hairlines for every edge; no shadows.
+ * Lime is a signal lamp, rationed to 40px arrows, 6px dots, the active pill
+ * and progress marks. It never fills a surface and never sits behind text.
+ */
+@theme {
+  --color-lime: #cef79e;
+  --color-ink: #222f30;
+  --color-bone: #f7f7f5;
+  --color-paper: #ffffff;
+  --color-graphite: #4d5757;
+  --color-lichen: #c9cbbe;
+  --color-tissue: #e7e8e1;
+  --color-frost: #eeeeee;
+  --color-void: #000000;
+  /* graphite reads too dark on ink for body text; this is the dark-mode secondary */
+  --color-haze: #9aa3a0;
+
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-roboto-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-button: 8px;
+  --radius-nav: 12px;
+  --radius-card: 20px;
+  --radius-large: 40px;
+}
+
+html { background: var(--color-void); }
+body {
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.001em;
+  -webkit-font-smoothing: antialiased;
+}
+strong, b, h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+
+/* ── the type scale: hierarchy by size and tracking, never weight ── */
+.t-hero { font-size: clamp(56px, 11vw, 158px); line-height: 1; letter-spacing: -0.03em; }
+.t-display { font-size: clamp(44px, 7.5vw, 111px); line-height: 1; letter-spacing: -0.02em; }
+.t-heading-lg { font-size: clamp(36px, 5vw, 58px); line-height: 1.1; letter-spacing: -0.012em; }
+.t-heading { font-size: clamp(28px, 3.4vw, 42px); line-height: 1.2; letter-spacing: -0.006em; }
+.t-sub { font-size: 24px; line-height: 1.2; letter-spacing: -0.006em; }
+.t-body-lg { font-size: 22px; line-height: 1.3; letter-spacing: -0.006em; }
+.t-body { font-size: 18px; line-height: 1.3; }
+.t-small { font-size: 16px; line-height: 1.35; }
+.t-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.23;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.t-mono { font-family: var(--font-mono); font-size: 14px; letter-spacing: -0.008em; }
+
+/* ── surfaces ── */
+.band-dark { background: var(--color-ink); color: var(--color-paper); }
+.band-light { background: var(--color-bone); color: var(--color-ink); }
+.page { max-width: 1200px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+@media (min-width: 768px) { .page { padding-left: 40px; padding-right: 40px; } }
+
+/* focus is always visible, and it is the one other place lime may appear */
+:focus-visible { outline: 2px solid var(--color-lime); outline-offset: 2px; border-radius: 4px; }
+
+input, textarea, select {
+  font: inherit;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 1px solid var(--color-lichen);
+  border-radius: var(--radius-button);
+  padding: 10px 12px;
+  width: 100%;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--color-ink); }
+textarea { min-height: 96px; resize: vertical; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
