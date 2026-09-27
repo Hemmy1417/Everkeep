@@ -30,7 +30,7 @@ function Body({ c }: { c: Constitution }) {
           <Fact label="Governance">{c.governance.stewards.length} steward{c.governance.stewards.length === 1 ? "" : "s"}; motions wait {duration(c.governance.motion_window_seconds)}</Fact>
         </dl>
         <div className="mt-8 border-t border-lichen pt-5">
-          <p className="t-label text-graphite">Evidence required before any panel</p>
+          <p className="t-label text-graphite">Evidence required before any assessment</p>
           <ul className="mt-3 flex flex-col gap-1">
             {c.evidence_requirements.map((r, i) => (
               <li key={i} className="t-small">{r.min_count} {requirementType(r.type, r.min_count)} for {r.maintenance_type === "ALL" ? "every kind of work" : maintenanceType(r.maintenance_type).toLowerCase()}</li>

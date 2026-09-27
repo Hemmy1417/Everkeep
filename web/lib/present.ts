@@ -130,7 +130,7 @@ export const ruleName = (id: string) =>
   id.startsWith("P") ? `Principle ${id.slice(1)}` : id.startsWith("C") ? `Criterion ${id.slice(1)}`
     : id.startsWith("S") ? `Consistency check ${id.slice(1)}` : id;
 
-/** A panel cites items and rules by id; a page writes them out. The panel's words are kept. */
+/** Validators cite items and rules by id; a page writes them out. Their words are kept. */
 export function writeOut(text: string | null | undefined): string {
   const written = prose(text)
     .replace(/ev-0*(\d+)/gi, (_m, d: string) => `evidence ${parseInt(d, 10)}`)
@@ -153,15 +153,15 @@ export function prose(text: string | null | undefined): string {
 }
 
 /**
- * The contract caps a per-line note at 200 characters, so a panel's sentence
+ * The contract caps a per-line note at 200 characters, so a validator's sentence
  * can arrive cut off mid-word. A page that printed the fragment as though it
  * were the whole note would be misreporting the record, so a note at the cap
  * is marked as cut rather than tidied up or silently completed.
  */
 export const LINE_NOTE_MAX = 200;
 
-/** A panel's note as recorded, marked when the contract's cap cut it off. */
-export function panelNote(text: string | null | undefined): string {
+/** A validator note as recorded, marked when the contract's cap cut it off. */
+export function validatorNote(text: string | null | undefined): string {
   const body = writeOut(text);
   return wasCut(text) ? `${body}… (the record keeps the first 200 characters)` : body;
 }

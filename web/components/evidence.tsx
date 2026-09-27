@@ -108,7 +108,7 @@ function Body({ e }: { e: Evidence }) {
   );
 }
 
-function standing(e: Evidence): string {
+function evidenceStatus(e: Evidence): string {
   if (e.kind === "IMAGE") return "Examined by validators; can establish a finding";
   if (e.kind === "DOCUMENT" && e.role === "INSPECTOR" && (e.doc_type === "INSPECTION_REPORT" || e.doc_type === "INSPECTION_CHECKLIST")) {
     return "The independent inspector's observation; can establish a finding";
@@ -138,7 +138,7 @@ export function EvidenceFile({ items }: { items: Evidence[] }) {
           ) : null}
           {e.kind === "DOCUMENT" || e.kind === "TEXT_DECLARATION" ? <Body e={e} /> : null}
           <dl className="t-small mt-auto flex flex-col gap-1 border-t border-lichen pt-3 text-graphite">
-            <div>{standing(e)}</div>
+            <div>{evidenceStatus(e)}</div>
             <div>Filed {moment(e.submitted_at)} against terms version {e.work_order_version}</div>
             {e.capture_timestamp || e.location_reference ? (
               <div>Claimed: {[e.capture_timestamp, e.location_reference].filter(Boolean).join(", ")}</div>

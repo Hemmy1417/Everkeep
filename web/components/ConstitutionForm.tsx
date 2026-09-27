@@ -171,7 +171,7 @@ export function ConstitutionForm({ config, draft, onChange }: { config: Config; 
         ) : null}
       </Section>
 
-      <Section title="Evidence before any panel" note="Checked in code before an assessment is allowed.">
+      <Section title="Evidence before any assessment" note="Checked in code before an assessment is allowed.">
         {draft.evidence.map((r, i) => (
           <div key={i} className="grid gap-3 md:grid-cols-[1fr_1fr_120px_auto] md:items-end">
             <Field label="For">

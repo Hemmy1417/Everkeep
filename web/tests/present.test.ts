@@ -12,7 +12,7 @@ describe("no machine vocabulary reaches a page", () => {
     for (const s of ["ACCEPTED", "REJECTED", "UNDETERMINED"]) expect(p.outcome(s)).not.toMatch(/_/);
   });
 
-  it("writes out a panel's references and keeps its words", () => {
+  it("writes out the validators' references and keeps their words", () => {
     expect(p.writeOut("ev-000007 shows P2 kept and C1 met.")).toBe("Evidence 7 shows principle 2 kept and criterion 1 met.");
     expect(p.writeOut("MOD 4000TL3-X on the plate")).toBe("MOD 4000TL3-X on the plate");
   });
@@ -27,8 +27,8 @@ describe("no machine vocabulary reaches a page", () => {
   });
 
   it("marks a note the contract's cap cut off, and leaves a whole one alone", () => {
-    expect(p.panelNote("x".repeat(200))).toMatch(/first 200 characters/);
-    expect(p.panelNote("A whole note.")).toBe("A whole note.");
+    expect(p.validatorNote("x".repeat(200))).toMatch(/first 200 characters/);
+    expect(p.validatorNote("A whole note.")).toBe("A whole note.");
   });
 
   it("keeps the contract's own refusal wording", () => {

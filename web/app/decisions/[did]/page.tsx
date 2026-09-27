@@ -7,7 +7,7 @@ import { Band, Card, Empty, Fact, Loading, Status, Tag } from "@/components/bits
 import { addressUrl, txUrl } from "@/lib/chain";
 import { CONTRACT_ADDRESS } from "@/lib/config";
 import {
-  decisionName, evidenceName, gen, imageView, lifecycle, maintenanceType, moment, outcomeHeadline, panelNote,
+  decisionName, evidenceName, gen, imageView, lifecycle, maintenanceType, moment, outcomeHeadline, validatorNote,
   requirementStatus, role, ruleName, shortAddress, shortDigest, snapshotName, source, writeOut,
 } from "@/lib/present";
 import { getAsset, getDecision, getOrganization, getSnapshot, getWorkOrder, listProviders } from "@/lib/read";
@@ -87,9 +87,9 @@ export default function DecisionReceipt() {
                 <div>
                   <p className="t-label text-graphite">{ruleName(r.id)} · {source(r.source)}{decisive && x.outcome !== "ACCEPTED" ? " · decided this" : ""}</p>
                   <p className="t-body-lg mt-2">{r.text}</p>
-                  {x.notes.requirement_notes?.[r.id] ? <p className="t-small mt-3 text-graphite">The panel: {panelNote(x.notes.requirement_notes[r.id])}</p> : null}
+                  {x.notes.requirement_notes?.[r.id] ? <p className="t-small mt-3 text-graphite">What the validators noted: {validatorNote(x.notes.requirement_notes[r.id])}</p> : null}
                   {raw && raw !== r.status ? (
-                    <p className="t-small mt-2 text-graphite">The panel rated it {requirementStatus(raw).toLowerCase()} on evidence that cannot establish it, so code set it to {requirementStatus(r.status).toLowerCase()}.</p>
+                    <p className="t-small mt-2 text-graphite">The validators rated it {requirementStatus(raw).toLowerCase()} on evidence that cannot establish it, so code set it to {requirementStatus(r.status).toLowerCase()}.</p>
                   ) : null}
                 </div>
                 <div className="md:text-right"><Status>{requirementStatus(r.status)}</Status></div>

@@ -36,7 +36,7 @@ export default function How() {
       <Band>
         <Counter n={1} of={3} />
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          <Card><Tag>Decided in code, never put to a panel</Tag>
+          <Card><Tag>Decided in code, never put to validators</Tag>
             <ol className="mt-5">{DETERMINISTIC.map((q) => <li key={q} className="t-body border-t border-lichen py-3 first:border-t-0">{q}</li>)}</ol>
           </Card>
           <Card tone="tissue"><Tag>Put to GenLayer validators</Tag>
@@ -49,13 +49,13 @@ export default function How() {
         <h2 className="t-heading-lg mt-6">One decision, from evidence to treasury.</h2>
         <ol className="mt-10">
           {[
-            ["Preflight", "Every condition above is checked. If one fails the request is refused in words, and no panel is asked."],
+            ["Preflight", "Every condition above is checked. If one fails the request is refused in words, and no validator is asked."],
             ["Examination", "Each validator examines the photographs, two at a time, before and after together: what is visible, legible text, readings, and anything suggesting another site."],
             ["Judgment", "Each validator rates every requirement: satisfied, not satisfied, not established, or (for a principle) not applicable, citing the evidence it relied on."],
             ["Grounding", "Code accepts a satisfied or not-satisfied rating only if it rests on a photograph or the independent inspector's observation. A datasheet, a declaration or a party's own report cannot prove or disprove the work."],
             ["Consensus", "A validator agrees with the leader only if it reached the same outcome on the same grounds from its own examination. Prose is free; the outcome is not."],
             ["Decision", "Code derives the outcome and records it with an evidence snapshot, citing the exact constitution and work-order versions."],
-            ["Appeal", "The party it went against may appeal inside the window. After an evidence period, a fresh panel decides again. The new decision is linked to the old one, and neither is erased."],
+            ["Appeal", "The party it went against may appeal inside the window. After an evidence period, the validators decide again. The new decision is linked to the old one, and neither is erased."],
             ["Finality and settlement", "Once no appeal is possible, anyone finalizes. An acceptance makes the payment releasable and anyone settles it to the provider. Anything else closes unpaid and the commitment returns to the treasury."],
           ].map(([t, b], i) => (
             <li key={t} className="grid gap-3 border-t border-lichen py-6 md:grid-cols-[80px_240px_1fr]">

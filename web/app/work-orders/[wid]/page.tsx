@@ -117,7 +117,7 @@ export default function WorkOrderPage() {
             <Tag>Required before any assessment</Tag>
             <div className="mt-4">{bound.data ? <RequiredEvidence c={bound.data} t={t} items={items} /> : null}</div>
             <p className="t-small mt-5 text-graphite">
-              Checked in code before a panel is asked. Declarations and links are kept but never adjudicated, and
+              Checked in code before validators are asked. Declarations and links are kept but never adjudicated, and
               metadata such as a capture time or place is the submitter&apos;s claim, never proof on its own.
             </p>
           </div>
@@ -184,7 +184,7 @@ function Actions({ o, t, acts, seat, now, views, docs, decisionOutcome, windowEn
           <Card className={card}>
             <p className="t-sub">Appeal the {(decisionOutcome ? outcome(decisionOutcome) : "").toLowerCase()} decision.</p>
             <p className="t-small text-graphite">
-              Before {moment(windowEnds)}. An appeal opens an evidence period; then a fresh panel decides again, and the new
+              Before {moment(windowEnds)}. An appeal opens an evidence period; then the validators decide again, and the new
               decision is linked to this one, which is kept.
             </p>
             <Act label="Open the appeal" method="open_appeal" prepare={() => (reason.trim() ? [o.work_order_id, reason.trim()] : "State the grounds.")} onAnswer={onChange}>
@@ -195,8 +195,8 @@ function Actions({ o, t, acts, seat, now, views, docs, decisionOutcome, windowEn
         {acts.readjudicate ? (
           <Card className={card}>
             <p className="t-sub">Ask for the readjudication.</p>
-            <p className="t-small text-graphite">A fresh panel judges the whole file, including what was filed during the appeal.</p>
-            <Act label="Readjudicate" method="readjudicate" args={[o.work_order_id]} working="A fresh panel is examining the evidence." onAnswer={onChange} />
+            <p className="t-small text-graphite">The validators judge the whole file, including what was filed during the appeal.</p>
+            <Act label="Readjudicate" method="readjudicate" args={[o.work_order_id]} working="The validators are examining the evidence." onAnswer={onChange} />
           </Card>
         ) : null}
         {acts.finalize ? (
@@ -217,7 +217,7 @@ function Actions({ o, t, acts, seat, now, views, docs, decisionOutcome, windowEn
           <Card tone="tissue" className={card}>
             <p className="t-sub">Close it.</p>
             <p className="t-small text-graphite">
-              {o.state === "UNDER_APPEAL" ? "No panel decided the appeal in time. The appealed decision stands and becomes final."
+              {o.state === "UNDER_APPEAL" ? "The validators did not decide the appeal in time. The appealed decision stands and becomes final."
                 : "The deadline passed without a decision. Closing returns the commitment to the treasury."}
             </p>
             <Act label="Close" variant="secondary" method="close_work_order" args={[o.work_order_id]} onAnswer={onChange} />

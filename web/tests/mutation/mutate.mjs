@@ -57,7 +57,7 @@ const M = [
   ["acts", "a busy asset retires", "    retire: isSteward(o.stewards, addr) && !a.retired_at && a.open_work_orders === 0,",
    "    retire: isSteward(o.stewards, addr) && !a.retired_at,"],
   ["acts", "an upheld decision reads as still open", '      return `${word}${how}. The decision can be finalized now.`;', '      return `${word}${how}. It may still be appealed.`;'],
-  ["present", "a panel's evidence ids reach the page", String.raw`    .replace(/ev-0*(\d+)/gi, (_m, d: string) => ` + "`evidence ${parseInt(d, 10)}`)", ""],
+  ["present", "validators' evidence ids reach the page", String.raw`    .replace(/ev-0*(\d+)/gi, (_m, d: string) => ` + "`evidence ${parseInt(d, 10)}`)", ""],
   ["present", "raw principle ids reach the page", String.raw`    .replace(/\bP(\d{1,2})\b/g, (_m, d: string) => ` + "`principle ${d}`)", ""],
   ["present", "fractions of GEN vanish", '  if (frac > 0n) text += `.${frac.toString().padStart(4, "0").replace(/0+$/, "")}`;', ""],
   ["present", "a cut note looks whole", "  return wasCut(text) ? `${body}… (the record keeps the first 200 characters)` : body;", "  return body;"],

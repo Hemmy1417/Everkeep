@@ -155,7 +155,7 @@ export function situation(w: WorkOrder, d: Decision | null, now: number): string
     }
     case "UNDER_APPEAL": return w.appeal && now <= t(w.appeal.evidence_ends)
       ? "Under appeal. Additional evidence may be filed until the period ends."
-      : "Under appeal. A fresh panel can be asked to decide it.";
+      : "Under appeal. The validators can be asked to decide it again.";
     case "PAYMENT_RELEASABLE": return "Finalized as accepted. The payment is releasable and anyone can settle it.";
     case "SETTLED": return "Settled. The provider was paid, and the asset is back to monitoring.";
     case "CLOSED_UNPAID": return "Closed without payment. The commitment went back to the treasury.";
