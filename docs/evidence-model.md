@@ -1,73 +1,71 @@
 # The evidence model
 
-Four kinds of item, one rule about what can establish a fact, and one rule
-about who may file.
-
 ## Kinds
 
-| Kind | Held on chain | Read by a round | Can ground a finding |
-|---|---|---|---|
-| `IMAGE` | the bytes, PNG or JFIF JPEG, at most 400,000 | yes, two per prompt | yes |
-| `DOCUMENT` | the text, at most 6,000 characters, with a type | yes, inside fences | only the accepted inspector's `INSPECTION_REPORT` |
-| `DECLARATION` | the text | never | no |
-| `REFERENCE` | a URL and the digest the filer claims for it | never, and never fetched | no |
+| Kind | Types | Held | Adjudicated | Can establish a finding |
+|---|---|---|---|---|
+| `IMAGE` | before, after, nameplate, meter display, site, document scan | bytes on chain, at most 400,000, PNG or JFIF JPEG | examined by every node | yes |
+| `DOCUMENT` | technician report, inspection report, inspection checklist, meter reading, maintenance log, work order document, equipment document, invoice | text on chain, at most 6,000 characters | read by every node | only the independent inspector's report or checklist |
+| `TEXT_DECLARATION` | | text on chain | never | no |
+| `REFERENCE` | video reference, external source | link and the hash the submitter claims | never, and never fetched | no |
 
-Every item records its filer, its role at the time, the version of terms it
-was filed against, and a SHA-256 the contract computed over the bytes it
-holds. A round's record snapshots every item it read with that digest, so a
-later reader can fetch the bytes back and prove what was judged.
+Every item records its submitter and role, the work order version it was
+filed against, the submission time, a SHA-256 the contract computed over the
+bytes it holds, and provenance the submitter claims (description, capture
+time, location, source). **Metadata is evidence validators may consider, and
+never proof by itself**: a GPS position does not prove work happened there,
+and a timestamp does not prove when a repair happened.
 
-Document types: `TECHNICAL_REPORT`, `INSPECTION_REPORT`, `METER_READING`,
-`MAINTENANCE_LOG`, `WORK_ORDER_DOCUMENT`, `INVOICE`, `OTHER`. Only the asset's
-accepted inspector may file an `INSPECTION_REPORT`; a provider who tries is
-told to file a technical report instead. Image origins: `PHOTO`, `NAMEPLATE`,
-`METER_DISPLAY`, `VIDEO_FRAME`, `SCAN`. An image filed as a meter display
-counts toward a `METER_READING` evidence requirement.
+## Why photographs are stored on chain
 
-## The grounding rule
+The brief prefers off-chain storage with an on-chain hash. EVERKEEP stores
+the photographs themselves, deliberately:
 
-A finding is an assertion about the site. A photograph witnesses the site.
-The independent inspector's report witnesses the site. Everything else a
-party files is that party's account: a datasheet says what was ordered, a
-log says what the provider says they did, a steward's note says what the
-steward believes. So:
+- every validator must examine identical bytes, and the runtime passes
+  images to the model directly, so the contract needs the bytes anyway;
+- an off-chain store would be a service someone must keep running, which is
+  the dependency an autonomous organisation is meant not to have;
+- a reader can fetch a photograph from the contract and recompute its hash,
+  which the app does for every photograph it shows.
 
-- a criterion is `MET` or `NOT_MET`, and a principle `SATISFIED` or
-  `VIOLATED`, only when the panel's cited basis holds an image or the
-  inspector's report;
-- the floor and its mirror fall the same way, so neither the provider's
-  paperwork nor a steward's can move the outcome by itself;
-- an ungrounded rating becomes `UNCLEAR`, and the round's record keeps the
-  raw rating beside the grounded one so the difference is visible;
-- `NOT_APPLICABLE` needs no observation, because it claims nothing about the
-  site, and the derivation ignores it.
+The cost is a size cap (400,000 bytes, enforced) and the runtime's formats.
 
-The rule is code (`_observed`, `_ground`). The prompt states it as well, but
-nothing depends on the model remembering.
+## Who files
 
-## Who files, and how much
+| Role | When | Allowance |
+|---|---|---|
+| The assigned provider | while the work is active, before the deadline; and during an appeal | 6 photographs, 6 texts; 2 and 2 more on appeal |
+| The asset's inspector, once they accept and while not a steward | the same | 3 and 3; 2 and 2 more on appeal |
+| A steward | only during the appeal they opened | 2 and 2 |
 
-| Role | Images per version | Texts per version | Named in an assessment |
-|---|---|---|---|
-| Provider | 12 | 8 | up to 4 images and 4 documents of their own |
-| Steward | 3 | 3 | never named; always read |
-| Inspector (accepted) | 4 | 3 | never named; always read |
+Only the inspector files an inspection report or checklist. Nothing is filed
+after a decision except during an appeal, so evidence cannot change after it
+has been assessed.
 
-The provider chooses what to present, never what the panel is allowed to
-see: every image and document a steward or the inspector filed against the
-version is read in every round. Declarations and references are shown to
-every party and read by nobody.
+## Required evidence, checked in code
 
-Once a decision stands on a version, each party may add at most 2 new
-images and 2 new documents before the next round, whether that round is a
-re-assessment or an appeal, so the fullest round still fits one panel. A
-re-assessment needs something new on the record; the same evidence is not
-put to a second panel. Nobody files against a standing acceptance without
-opening an appeal, so no answer can sit unread while money is free to move.
+Before an assessment is allowed, the contract checks the constitution's
+evidence rules for this kind of work, the work order's own requirements, the
+inspector's report where the constitution requires one, and that at least one
+photograph is on file. The counts:
 
-## What the enforced half checks before any panel
+| Requirement | Met by |
+|---|---|
+| Before, after, nameplate photograph | an image with that view |
+| Operational reading | a meter display photograph, or a meter reading document |
+| Technician report, equipment document | that document type |
+| Inspection report, inspection checklist | that document, filed by the inspector |
 
-`_required_gap` runs before a round: the constitution's minimum image count,
-its inspection-report requirement, and the work order's own
-`required_evidence` counts. A shortfall is a refusal in words, and no prompt
-is sent.
+## Snapshots
+
+Every decision records an evidence snapshot: the organisation, the
+constitution and work order versions, the asset, the time, and every item it
+read with its kind, type, role, hash and whether it was filed during the
+appeal. A decision is therefore never an unexplained boolean.
+
+## Limits
+
+Video is never interpreted; the runtime does not support it, so it is kept as
+a reference. External links are never fetched, so a submitter can never
+choose a source a panel reads. Two images per model prompt is the runtime's
+limit, which is why photographs are examined in pairs.

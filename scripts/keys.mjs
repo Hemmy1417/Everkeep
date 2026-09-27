@@ -12,7 +12,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { GEN, KEYS_PATH, rpc, sleep } from "./lib.mjs";
 
-const ROLES = ["OPERATOR", "FOUNDER", "STEWARD", "PROVIDER", "INSPECTOR", "STRANGER"];
+const ROLES = ["OPERATOR", "FOUNDER", "STEWARD", "PROVIDER", "INSPECTOR", "STRANGER", "BENEFICIARY"];
 const TARGET = 20n * GEN;
 
 const keys = existsSync(KEYS_PATH) ? JSON.parse(readFileSync(KEYS_PATH, "utf-8")) : {};

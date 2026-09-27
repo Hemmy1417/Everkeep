@@ -27,7 +27,7 @@ import { useWallet } from "./wallet";
  * defaults and submits without allocations, so these methods are priced
  * by simulation instead.
  */
-export const TRANSFER_METHODS: ReadonlySet<string> = new Set(["claim"]);
+export const TRANSFER_METHODS: ReadonlySet<string> = new Set(["settle", "claim_refund"]);
 
 type Allocations = unknown[];
 type SimulatedFees = {

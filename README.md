@@ -1,244 +1,160 @@
 <p align="center"><img src="https://raw.githubusercontent.com/Hemmy1417/Everkeep/main/web/public/icon.svg" width="112" alt="EVERKEEP"/></p>
 
-# EVERKEEP - Constitutional stewardship of community infrastructure
+# EVERKEEP - Autonomous Infrastructure Stewardship Fund
 
-**An organisation is a rulebook and a treasury. Maintenance work is paid when the evidence
-shows it kept the rules the organisation ratified. A document saying so is not that evidence,
-and no person holds a key that can pay.**
+**Infrastructure that can keep itself funded, verified and maintained.**
 
-An EVERKEEP organisation ratifies a constitution. Half of it is enforced by contract code at the
-write it governs: which infrastructure it supports, which maintenance it funds, how much one work
-order may pay, how many may be open, what evidence must be on file before a panel is asked, how
-long an appeal window lasts, and who the stewards are. The other half is judged: numbered
-maintenance principles that a panel of GenLayer validators applies to photographs and reports
-filed against a work order. Contract code grounds every finding, derives the decision, and moves
-the money. Amendments take effect through a window and never change a past decision.
+EVERKEEP is an autonomous organisation that keeps community infrastructure maintained. It has a mission,
+a versioned constitution, a treasury, a registry of the infrastructure it maintains and a registry of the
+service providers it may pay. When a provider claims a repair is done, the organisation asks one question:
 
-## What it is
+> Given this constitution, this asset, this exact version of the work order and the evidence filed against
+> it, does the evidence establish that the maintenance was done as required?
 
-- **Two halves, two enforcers.** Rules a constitution can state as facts are checked in code and
-  refused in words, with no panel asked. Rules it can only state as principles are put to a
-  panel, one principle at a time, and rated against what the evidence shows.
-- **A decision that cites its law.** Every round records the constitution version and the terms
-  version it applied, and a snapshot of every item it read with the digest the contract computed
-  over the bytes it holds.
-- **Looking separated from judging.** A node first describes the images and transcribes any
-  legible text without being told what the evidence must prove. Only then is it given the
-  principles and the criteria.
-- **Findings grounded in code.** A criterion is met or unmet, and a principle satisfied or
-  violated, only on an image or the independent inspector's report. A party's own paperwork can
-  neither establish a finding nor refute one, whichever party wrote it. Doubt never pays.
-- **Governance without an owner.** The founder is the first steward and nothing more. Stewards
-  act under the constitution in force; the stewards list changes only by amendment; any steward's
-  objection withdraws an amendment inside its window; anyone ratifies one after it.
-- **Every hold has an exit.** An acceptance pays after its window or an upheld appeal. An order
-  nobody accepted closes after its deadline and its commitment returns. An appeal nobody decided
-  lapses. All three are permissionless.
-- **Pull payments.** A finalized acceptance credits the provider's balance; they draw it. Nothing
-  is pushed, so a payee that cannot receive can never block a decision.
+A normal smart contract can enforce deterministic organisational rules and payment conditions, but it cannot
+natively adjudicate whether multimodal real-world evidence demonstrates that physical infrastructure
+maintenance satisfies a contractual and constitutional requirement. EVERKEEP uses GenLayer as the
+decentralized judgment layer between that evidence and autonomous organisational action. GenLayer does not
+guarantee physical truth. It decides whether the evidence filed establishes the work, and fails closed when
+it does not.
 
-## The decision, in code
+## The problem
 
-```text
-conflicting observations                          -> UNDETERMINED
-any criterion NOT_MET or any principle VIOLATED   -> REJECTED
-any criterion or principle left UNCLEAR           -> UNDETERMINED
-otherwise                                         -> ACCEPTED
-```
+Community infrastructure needs maintenance for decades: a solar array's controller fails, a battery bank's
+connections corrode, an inverter trips. Someone must decide, job by job, whether the repair was actually done
+before paying for it. That someone leaves, and the infrastructure stops being maintained.
 
-| Principle rating | Meaning |
-|---|---|
-| `SATISFIED` | an image or the inspector's report shows the work kept it |
-| `VIOLATED` | an image or the inspector's report shows the work broke it |
-| `NOT_APPLICABLE` | the work did not touch what it governs; ignored by the derivation |
-| `UNCLEAR` | nothing observed settles it, or the panel's basis was paperwork |
+- **Ordinary smart contracts are not enough.** They can hold the money and enforce the rules, but "the
+  photographs, the meter reading, the technician's report and the inspector's checklist together show the
+  controller was replaced and the bank is charging" is not a fact any chain holds.
+- **A centralized oracle is not the answer.** Whoever makes that judgment becomes the operator the
+  organisation was meant not to need, and a single point that can pay for work nobody did.
 
-Criteria are rated `MET`, `NOT_MET` or `UNCLEAR` on the same rule.
+## Why GenLayer
 
-## The floors the code enforces
+The judgment is made by GenLayer validators under consensus:
+1. Each validator examines the photographs itself, before and after together, and reads the documents.
+2. It rates every requirement in scope.
+3. Contract code grounds each rating: only a photograph or the independent inspector's observation can
+   establish or refute a finding.
+4. Code derives the outcome.
+5. A validator agrees only if it reached the same outcome on the same grounds.
 
-| Floor | Mirror |
-|---|---|
-| a criterion is `MET`, or a principle `SATISFIED`, only on an image or the inspector's report | `NOT_MET` and `VIOLATED` need the same |
-| a party's own document cannot establish a fact | nor refute one, whichever party wrote it |
-| a node counts as a reader only when it says it saw the image | a blind node votes against every outcome |
-| a panel is not asked the same question twice | a decided or lapsed appeal is final for those terms |
+Everything ordinary code can decide stays deterministic: who may act, whether the asset and the provider are
+enrolled for this work, whether the payment fits the budget, the constitution's limits and the treasury's
+reserve, whether the required evidence is on file, and whether a window is open.
 
-## Lifecycle
+## The autonomous organisation
 
 ```text
-  create_organization ─► ACTIVE ◄──► PAUSED            (a steward pauses new commitments)
-        │
-        ├─ propose_amendment ─► vN PROPOSED ─► EFFECTIVE (anyone, after the window)
-        │                                   └► WITHDRAWN (any steward, inside it)
-        │
-        └─ register_asset ─► create_work_order (payment committed; constitution version bound)
-                                   │
-                                PROPOSED ─► cancel_work_order ─► CANCELLED
-                                   │ accept_work_order (the provider signs)
-                                   ▼
-                            AWAITING_EVIDENCE ─► request_assessment ─► ACCEPTED │ REJECTED │ UNDETERMINED
-                                                                              │
-                                              open_appeal (one; steward v acceptance, provider v rejection)
-                                                                              ▼
-                                                                          APPEALED ─► decide_appeal ─► final
-                                                                              └─► lapse_appeal ─► UNDETERMINED
-                            ACCEPTED ─► finalize ─► FINALIZED ─► claim
-                            anything unaccepted, past its deadline ─► close_work_order ─► CLOSED
+MISSION → CONSTITUTION → TREASURY → MAINTENANCE RULES → REAL-WORLD WORK → EVIDENCE
+   → DETERMINISTIC PREFLIGHT → GENLAYER ADJUDICATION → DECISION → APPEAL / READJUDICATION
+   → FINALITY → TREASURY ACTION → ASSET BACK TO MONITORING → NEXT MAINTENANCE CYCLE
 ```
 
-The full machine, with every guard, is in [docs/state-machine.md](docs/state-machine.md).
+| Part | What it is |
+|---|---|
+| **Constitution** | Versioned and immutable once in force. The enforced half covers scope, funded work, the inspector requirement, evidence rules, payment limits, reserve, emergency rules, appeal rules and stewards; code checks all of it. The judged half is the maintenance principles, each scoped to the kinds of work it governs; GenLayer rates those. Every work order and every decision cites its version. It changes only by a motion that waits out a window any one steward can withdraw it in. See [docs/constitution.md](docs/constitution.md). |
+| **Treasury** | Funded by anyone. A payment is committed when work is commissioned, becomes releasable only on a finalized acceptance, and leaves only by settlement to the provider. There is no withdrawal and no owner. See [docs/treasury.md](docs/treasury.md). |
+| **Infrastructure registry** | Assets with a type the constitution supports, a technical profile, a service interval, an optional independent inspector who must accept, and a service log. Status is derived: monitoring, service due, under maintenance, retired. |
+| **Service providers** | Authorised by stewards for named kinds of work. Revocation stops new assignments and never strands work already done. |
+| **Work orders** | Versioned terms with acceptance criteria, required evidence, budget, payment and deadline, bound to the constitution version in force at creation. |
+| **Multimodal evidence** | Photographs held and hashed on chain, examined by every validator. Documents are read. Declarations and video or external links are kept and never adjudicated. See [docs/evidence-model.md](docs/evidence-model.md). |
+| **Appeal and readjudication** | The party a decision went against appeals inside the window. Every party may add bounded evidence. A fresh panel records a new decision linked to the original, which is never overwritten. |
+| **Finality and settlement** | When no appeal is possible, anyone finalizes. An acceptance makes the payment releasable and anyone settles it. Anything else closes unpaid and returns the commitment. The asset returns to monitoring and the next work order can follow. |
+| **Dissolution** | By motion. No new commitments. Once open work ends, the treasury is refunded in full to the beneficiary the constitution names. |
 
-## Contract
+## Architecture
 
-`contracts/everkeep.py`, one file, no owner and no administrator method.
+```text
+ wallet (EIP-1193, Transaction Kit)              web/ (Next.js): an interface, never the source of truth
+            │ signed writes                                    ▲ budgeted unsigned reads
+            ▼                                                  │
+ contracts/everkeep.py ── organisation, constitution versions, treasury, providers, assets, work orders,
+                          evidence, decisions, snapshots, refunds, events
+            │
+            ├─ deterministic preflight  (refuses in words; no panel)
+            ├─ gl.vm.run_nondet(leader_fn, validator_fn)
+            │     examine photographs → rate requirements → ground in code → derive outcome
+            │     validators repeat independently; outcome and grounds must match
+            └─ deterministic record: decision + evidence snapshot, lifecycle, treasury
+```
 
-### Write methods
+There is no backend, database or server signer. See [docs/architecture.md](docs/architecture.md),
+[docs/consensus.md](docs/consensus.md), [docs/state-machine.md](docs/state-machine.md) and
+[docs/security.md](docs/security.md).
 
-| Method | Who | What |
-|---|---|---|
-| `create_organization(constitution_json)` | anyone, payable | ratify v1 and fund; the founder must be among its stewards |
-| `fund_treasury(oid)` | anyone, payable | add to the treasury |
-| `propose_amendment(oid, constitution_json)` | a steward | a whole new constitution, pending through the current window |
-| `object_amendment(oid, reason)` | a steward | withdraw the pending amendment inside its window |
-| `ratify_amendment(oid)` | anyone | make it effective once the window has passed |
-| `pause_organization(oid, reason)`, `resume_organization(oid)` | a steward | stop and restart new commitments |
-| `register_asset(oid, asset_json)` | a steward | infrastructure of a supported type, with an optional inspector |
-| `accept_inspector_role(aid)` | the named inspector | take the appointment |
-| `create_work_order(aid, provider, terms_json)` | a steward | commit the payment, bind the constitution version |
-| `accept_work_order(wid, version)` | the provider | sign the pending terms |
-| `propose_version(wid, terms_json)` | a steward | revise terms nothing stands on |
-| `cancel_work_order(wid, reason)` | a steward | withdraw an unsigned order |
-| `submit_image(wid, meta_json, bytes)` | a party | a PNG or JFIF JPEG, held and hashed on chain |
-| `submit_document(wid, meta_json, text)` | a party | typed text; only the inspector files an inspection report |
-| `submit_declaration(wid, text)` | a party | for the record; never read by a round |
-| `submit_reference(wid, meta_json)` | a party | a URL and a claimed digest; shown as a claim, never fetched |
-| `request_assessment(wid, named_json)` | the provider | enforced half checked in code, then one consensus round |
-| `open_appeal(wid, reason)` | the party the decision went against | once, inside the window |
-| `decide_appeal(wid)` | anyone | after the evidence period; a fresh panel re-reads the record |
-| `lapse_appeal(wid)` | anyone | three days after that; the appealed decision is never confirmed |
-| `finalize(wid)` | anyone | pay an acceptance nobody can still contest |
-| `close_work_order(wid)` | anyone | release an unaccepted order past its deadline |
-| `claim()` | the payee | draw your own balance |
+## Decision states
 
-### Read methods
+| Outcome | When |
+|---|---|
+| `ACCEPTED` | every requirement in scope satisfied on photographs or the inspector's observation, the evidence sufficient, no contradiction |
+| `REJECTED` | at least one requirement shown not satisfied |
+| `UNDETERMINED` | anything not established, the evidence insufficient, or a material contradiction. Never pays. |
 
-`get_config`, `get_stats`, `list_organizations`, `get_organization`, `get_constitution`,
-`list_assets`, `get_asset`, `list_work_orders`, `work_orders_of`, `get_work_order`, `get_round`,
-`get_item`, `get_item_text`, `get_image`, `get_events`, `get_balance`. Every limit the contract
-enforces is in `get_config`, so a client never guesses one.
-
-### Consensus guarantees
-
-A validator agrees with the leader only when both received the images, the leader rated every
-principle and criterion, and the validator reproduces the decision and its grounds: the same
-acceptance, or every finding a rejection rests on, and the same view of conflicts. Prose is
-free. The detail is in [docs/consensus.md](docs/consensus.md).
+A decision's lifecycle runs appealable, then appealed or finalized; an appealed decision is superseded by
+its readjudication and kept exactly as recorded. A work order runs:
+- proposed, active, decided;
+- optionally under appeal;
+- then payment releasable and settled, or closed unpaid, or cancelled.
 
 ## Verified end to end
 
-Deployment of record on GenLayer Studio Next (chain 61997):
+| | |
+|---|---|
+| Deployment of record | `0x4418253D7332661BfdF917DfE6B554cD0399F97c` on GenLayer Studio Next |
+| Explorer | https://explorer-studio-dev.genlayer.com/address/0x4418253D7332661BfdF917DfE6B554cD0399F97c |
+| Source | byte-for-byte identical to `contracts/everkeep.py` (`node scripts/deploy.mjs verify`) |
+| Contract tests | 94 direct tests, including a randomized walk that asserts the brief's invariants after every action and reaches every work order state |
+| Contract sweep | 84 mutants, 84 killed, control passes ([docs/proofs/sweep.txt](docs/proofs/sweep.txt)) |
+| App tests | 19, including every contract write reachable from a page and the action rules on shapes the contract writes |
+| App sweep | 31 mutants, 31 killed |
+| Adversarial review | eight defects found before deployment, all fixed and pinned ([docs/security.md](docs/security.md)) |
+
+**The flagship story, live** ([docs/proofs/proof-run.txt](docs/proofs/proof-run.txt), every hash in
+[proofs.json](docs/proofs/proofs.json)), with every round reaching a majority on its first asking:
+
+| Case | Evidence | Outcome on chain |
+|---|---|---|
+| Enforced half | an unsupported asset type, unfunded work, a payment over the cap, an unauthorised provider, a stranger commissioning, an assessment with nothing on file, a provider's "inspection report" | seven refusals in words; no panel asked |
+| Charge controller replacement | after photograph, controller display, technician report, the inspector's checklist | **Accepted**: both principles in scope, both criteria and the documentation consistency check satisfied. Finalized after its window, then **settled**: the provider was paid exactly 2 GEN and the asset's service recorded, with the next service scheduled |
+| Battery connections service | a photograph showing temporary clip leads on the terminals | **Rejected** on the battery principle, the mounting principle and the criterion. Finalized: closed unpaid, commitment returned |
+| Return to charging | the overview photograph and a reading on paper | **Undetermined**: the reading could not be seen. The provider **appealed** with the display close-up. The **readjudication** established the reading and the criterion but not the mounting principle from photographs alone, so it stayed undetermined, was finalized and closed unpaid. The original decision is kept unchanged and linked |
+| The next cycle | | a new work order commissioned on the same asset |
+
+**The organisation, live** ([docs/proofs/paths-run.txt](docs/proofs/paths-run.txt)):
+- **Motions.** A steward's amendment was withdrawn by another steward's objection. A second amendment was
+  enacted by a stranger after its window. A work order created under v1 kept v1.
+- **Providers.** A revoked provider could not be assigned new work.
+- **Pause.** Pausing refused new work, while work in flight continued.
+- **Revisions.** A revision moved the commitment only when the provider accepted it.
+- **Endings.** Cancellation and closing each returned their commitment.
+- **Dissolution.** It was proposed and enacted, refused while work was open, then completed, and the
+  beneficiary claimed the full treasury.
+
+**The app, in a browser** ([docs/proofs/ui-bench.md](docs/proofs/ui-bench.md)): a stranger finalized the
+restoration, and the provider accepted the next cycle's terms and filed a declaration. All three were composed
+by the pages, signed through the app's own wallet picker, and confirmed from the chain.
+
+## Deployment, environment and testing
 
 | | |
 |---|---|
-| Contract | `0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c` |
-| Explorer | https://explorer-studio-dev.genlayer.com/address/0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c |
-| Source | `contracts/everkeep.py`, byte-for-byte identical to the deployed code (`node scripts/deploy.mjs verify`) |
-| Direct tests | 147, including a randomized walk asserting conservation and immutability after every action |
-| Mutation sweep | 78 mutants, 78 killed, control passes (`docs/proofs/sweep.txt`) |
-| Web tests | 21, including every write in the deployed schema reachable from a page, and the action rules on shapes the contract writes |
-| Web sweep | 33 mutants of the action rules and the vocabulary, 33 killed |
-| In the browser | a stranger settled an acceptance upheld on appeal and the provider claimed it, both through the app's own wallet picker (`docs/ui-bench.md`) |
+| Network | GenLayer Studio Next, chain 61997, `https://studio-next.genlayer.com/api` |
+| Contract | `contracts/everkeep.py`, runner `py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng` |
+| App | `web/`: Next.js 16, React 19, TypeScript strict, Tailwind 4, `@genlayer/transaction-kit` 0.1.0-rc.2, `genlayer-js` 2.0.0-rc.1 |
+| Scripts | `scripts/`: keys, deploy and verify, fixtures, proofs, paths |
 
-The live runs are in `docs/proofs/`. Every claim below is an assertion in the script that
-produced the log; a run that failed one would have stopped there.
-
-**The adjudication** (`docs/proofs/proof-run.txt`, every transaction hash in `docs/proofs/proofs.json`),
-one organisation with a two-principle constitution, run on 26 September 2026:
-
-| Case | What was filed | Panel | Contract |
-|---|---|---|---|
-| Enforced half | an unsupported asset type, an unfunded maintenance type, a payment over the cap, a stranger commissioning work, an assessment short of the image minimum | never asked | five refusals in words, no prompt sent |
-| Flagship | the inverter on the wall and its rating plate, against a criterion naming the model | P1 satisfied, P2 satisfied, C1 met | `ACCEPTED`, citing constitution v1; finalize refused inside the window; the provider refused an appeal of their own acceptance; a steward refused to file against it |
-| Paper floor | the same wall, the model named only in a datasheet | C1 unclear, P2 unclear | `UNDETERMINED`; the document established nothing |
-| Mismatch | the same plate against a criterion naming a different product | C1 not met | `REJECTED` |
-| Principle | a different inverter with no plate in frame; the order's own criterion is met | P2 unclear | `UNDETERMINED`; the constitution withheld what the order alone would have paid |
-| Walls | a stranger filing, a stranger asking for assessment, the provider filing an inspection report | never asked | three refusals in words |
-| Appeal | a steward contested the second acceptance; a fresh panel re-read the record after the evidence period | P1 satisfied, P2 satisfied, C1 met | upheld as `ACCEPTED`, round 2 citing round 1 and constitution v1 |
-| Settlement | anyone finalized the flagship after its window; the provider claimed | | treasury down by exactly the committed 2 GEN, ledger zero after the claim, the wallet credited |
-
-One round reached no majority and was asked again; both attempts are in the log. A first
-attempt on a separate organisation, kept as `docs/proofs/proof-run-attempt1.txt`, carried a
-third principle about enclosure covers and exposed conductors that two photographs of an
-inverter could not answer. The panel rated it unclear and the order did not pay, which was
-the contract doing its job and the demonstration asking the wrong question.
-
-**Governance and money** (`docs/proofs/paths-run.txt`, `docs/proofs/paths.json`), a second
-organisation, every step asserted:
-
-- a stranger funded the treasury; a stranger's amendment, objection and early ratification were
-  refused in words;
-- a steward's v2 was withdrawn by another steward's objection inside the window, and the
-  steward v2 would have named never governed; v3 was ratified by a stranger once the window
-  passed;
-- an order created under v1 kept v1 after v3 took effect, its revision was validated under v1,
-  and a new order that v3 does not fund was refused;
-- a revision moved the commitment only when the provider signed it; a pause refused new orders
-  and new terms while the provider kept filing; an unsigned order was cancelled and its
-  commitment released; an unaccepted order closed after its deadline and the treasury returned
-  to exactly what it held before, less nothing.
-
-## The app
-
-`web/` is one Next.js app. Reads go straight from the browser to Studio Next under a
-budget; every write is signed in the visitor's own wallet through the GenLayer Transaction
-Kit, priced from the live fee policy, with the one payout (claim) priced by simulation.
-
-- **Organisations**: the constitution in force, its enforced half beside its principles, the
-  treasury, a pending amendment with its window, and a steward's form to propose the next one.
-- **Work orders**: what was agreed and the constitution it answers to, evidence filed as
-  photographs held on chain, documents, declarations or links, each labelled with what it
-  can and cannot do, and exactly the acts the connected wallet may take now.
-- **Rounds**: the decision, every principle and criterion with the panel's note, where code
-  overruled a rating that rested on paperwork, what the panel saw before it knew the rules,
-  and the digest of every item read.
-
-What each person may do is derived from the states the contract writes, in `web/lib/acts.ts`,
-rule for rule with the contract's guards. The design follows a dark-laboratory reference:
-one weight of one sans, a mono for every label, hairlines instead of shadows, and a single
-lime signal rationed to arrows, dots and progress.
-
-```bash
-cd web && pnpm install && pnpm dev          # http://localhost:3155
-```
-
-## Tech stack
-
-| Layer | Choice |
-|---|---|
-| Contract | GenLayer intelligent contract, Python, runner `py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng` |
-| Network | GenLayer Studio Next, chain 61997 |
-| App | Next.js 16, React 19, Tailwind 4, `@genlayer/transaction-kit` 0.1.0-rc.2, `genlayer-js` 2.0.0-rc.1, EIP-6963 wallets |
-| Scripts | Node 22, `genlayer-js` 2.0.0-rc.1 |
-| Tests | pytest direct mode against a strict stub of the runtime; a mutation sweep over the contract |
-| CI | GitHub Actions: lint and validate, direct suite, mutation sweep, and the web job (lint, types, tests, sweep, build, one address) |
-
-## Repository
+Environment variables for the app (all optional; defaults point at the deployment of record):
 
 ```text
-contracts/everkeep.py        the contract
-tests/direct/                the direct suite and its harness (conftest.py, _fixtures.py)
-tests/mutation/mutate.py     the sweep
-web/                         the app, its tests and its sweep
-scripts/                     keys, deploy and verify, proofs, paths
-docs/                        blueprint, state machine, consensus, evidence model, security, proofs
-fixtures/images/             the demonstration photographs, attributed in fixtures/ATTRIBUTION.md
+NEXT_PUBLIC_EVERKEEP_CONTRACT     contract address
+NEXT_PUBLIC_EVERKEEP_ORG          the organisation the dashboard opens on (default org-00001)
+NEXT_PUBLIC_GENLAYER_RPC_URL      RPC endpoint
+NEXT_PUBLIC_GENLAYER_CHAIN_ID     chain id
 ```
 
-## Getting started
-
 ```bash
-python -m venv .venv && . .venv/Scripts/activate      # or .venv/bin/activate
 pip install -r requirements.txt
 genvm-lint check contracts/everkeep.py
 python -m pytest tests/direct -q
@@ -246,20 +162,37 @@ python tests/mutation/mutate.py
 ```
 
 ```bash
-cd scripts && pnpm install && cd ..
-node scripts/keys.mjs                    # creates and funds .data/keys.json (gitignored)
-node scripts/deploy.mjs v0.1.1           # deploys; then: node scripts/deploy.mjs verify 0x…
-node scripts/proofs.mjs 0x…              # the adjudication, about an hour of real windows
-node scripts/paths.mjs 0x…               # governance and money paths, about twenty minutes
+cd web && pnpm install && pnpm lint && pnpm typecheck && pnpm test && pnpm mutate && pnpm build && pnpm dev
 ```
 
-## Security
+```bash
+cd scripts && pnpm install && cd ..
+node scripts/keys.mjs                   # creates and funds .data/keys.json (gitignored)
+node scripts/fixtures.mjs               # fetches the demonstration photographs
+node scripts/deploy.mjs v2.0.0          # then: node scripts/deploy.mjs verify 0x…
+node scripts/proofs.mjs 0x…             # the flagship story, live
+node scripts/paths.mjs 0x…              # the organisational paths, live
+```
 
-No owner, no administrator, no withdrawal, pull payments, refusals in words, an adversarial
-audit before the deployment of record with its findings fixed and pinned. Known limits are
-stated in [docs/security.md](docs/security.md).
+CI runs three jobs on every push: the contract (lint, validation, direct suite), the contract mutation
+sweep, and the app (lint, types, tests, the web sweep, a build and a one-address check). Manual browser and
+wallet steps are in [docs/e2e-verification.md](docs/e2e-verification.md).
 
-## Disclaimer
+## Security assumptions and known limitations
 
-A demonstration built for the GenLayer hackathon. The organisation on the record is fictional,
-the photographs are freely licensed and attributed, and nothing here is anyone's contract.
+- **Access control.** Every permission is checked in the contract; none lives only in the app. The brief's
+  security matrix is mapped to its guards and tests in [docs/security.md](docs/security.md).
+- **Fail closed.** Uncertainty, blindness, malformed output and consensus failure give `UNDETERMINED` or a
+  failed transaction, never `ACCEPTED`.
+- **Physical truth.** GenLayer does not establish it. A convincing forgery can deceive validators as it would
+  a person; the independent inspector role exists for work that needs one.
+- **Evidence scope.** Video is kept as a reference and never interpreted, links are never fetched, and the
+  runtime reads two images per prompt.
+- **Storage.** Photographs are stored on chain, capped at 400,000 bytes, so every validator judges identical
+  bytes without an off-chain service to keep running.
+- **Money.** Amounts are GEN on a test network.
+- **Persistence.** The organisation persists only while its treasury, its rules and the network do. It does
+  not claim more.
+- **The demonstration.** The organisations on the record are fictional. The photographs are public-domain
+  images of a real small solar installation ([fixtures/ATTRIBUTION.md](fixtures/ATTRIBUTION.md)). Nothing
+  here is anyone's actual contract.

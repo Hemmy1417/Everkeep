@@ -1,279 +1,199 @@
-# proof run on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
-# attempt 1 (org-00001, a three-principle constitution) is in proof-run-attempt1.txt; it stopped when the panel rated a principle the photographs could not answer, which was the right answer to the wrong question
-# attempt 2 ran the enforced-half controls, the flagship, the appeal case, the paper floor and the mismatch, then stopped at an unfunded treasury
-# attempts 3 and 4 resumed the same record (every step is remembered by name and hash) through the principle case, the appeal and the settlement
+# proofs on 0x4418253D7332661BfdF917DfE6B554cD0399F97c
+[00:47:08] proofs on 0x4418253D7332661BfdF917DfE6B554cD0399F97c
+[00:47:11] org.found: send failed (An unknown RPC error occurred.
 
-=== attempt 2 ===
-[17:27:35] proofs on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
-[17:27:39] org.create: FOUNDER create_organization 0xd42c4f35cda12ba09b5891c79fc0a9c1dc7937b91c4a14aa60631ef29e923b88
-[17:28:19] org.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[17:28:22] asset.register: FOUNDER register_asset 0x4e093470e9f70bfa602f7d2a80f95c1d497f74868f5d6249b3a96929ff8b54df
-[17:29:02] asset.register: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[17:29:04] enforced.unsupported_type: FOUNDER register_asset 0xc4bdb947d14d1cf20bf038cf4d97e843c1f15fa7aed28d5f191c9d8d1aeb4e0a
-[17:29:39] enforced.unsupported_type: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
-[17:29:41] enforced.unfunded_type: FOUNDER create_work_order 0xd1c7c8beb857746c4632f4ebfbc8b257d922414c0230cb6ac7f6a3ba5463e4e0
-[17:30:17] enforced.unfunded_type: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
-[17:30:19] enforced.payment_cap: FOUNDER create_work_order 0xffa2802e639d824c25edd09df769a8a2b4ee3c250aa40c5fd8bd77c26094ce31
-[17:30:53] enforced.payment_cap: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
-[17:30:55] enforced.stranger_commissions: STRANGER create_work_order 0xdc98debc4ee7e119697aa3f94394e01eea881ef901cd942dfcd8784602b73a8e
-[17:31:34] enforced.stranger_commissions: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
-[17:31:36] flagship.create: FOUNDER create_work_order 0x4df39c6619519da7848ba9010a895220ac38fb77082924ecc63f443ee52a9521
-[17:32:11] flagship.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
-[17:32:13] flagship.sign: PROVIDER accept_work_order 0xc833e1051df9d87278fc6094cccfc0fca5bf590faf03e4b140a3f08c9161c4ee
-[17:32:51] flagship.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
-[17:32:56] flagship.inverter: PROVIDER submit_image 0x08adfd424bb374902aa78afe2e30179eb5af96a1cce135506a31dc3c502f9bb5
-[17:33:37] flagship.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[17:33:39] enforced.min_images: PROVIDER request_assessment 0xc8124497e032f0460e398522ffee92e6601fd96ade6e01804962f163224cd2d4
-[17:34:14] enforced.min_images: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
-[17:34:18] flagship.plate: PROVIDER submit_image 0x385d2447d14aaf15ac08dfafaaf44bcc40c5c69d8872c3c0f6bb297afeb7d9fe
-[17:34:59] flagship.plate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[17:35:02] flagship.assess: PROVIDER request_assessment 0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[00:47:20] org.found: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[00:47:39] org.found: FOUNDER create_organization 0xc7eb46dbe04e4ef5494831420f332ec8966417f46dba663d985ae29a79b7f8a3
+[00:48:21] org.found: FINALIZED MAJORITY_AGREE leader=SUCCESS in 42 s
+[00:48:23] provider.authorize: FOUNDER authorize_provider 0xa233df1a83bf63efa67bec10bd76c1ffdd7d108c1f076e9d6ba422331078e0d4
+[00:49:02] provider.authorize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[00:49:04] asset.enrol: FOUNDER register_asset 0x78c8a59b263887ccffb1e2944be91ba99cd5680852669154f05018b874c38bea
+[00:49:43] asset.enrol: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[00:49:44] inspector.accept: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[00:49:53] inspector.accept: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[00:50:11] inspector.accept: INSPECTOR accept_inspector_role 0xc22575a0cedb036fb23d6826d970e308bdf54eafb5fd0b986fad8ab3720f31ee
+[00:50:50] inspector.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[00:51:00] enforced.unsupported_asset: FOUNDER register_asset 0x513fff087d7a7c39632d54354f6c160666e5ed03e812501f89c1c0c8bd22a736
+[00:51:34] enforced.unsupported_asset: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
+[00:51:36] enforced.unfunded_work: FOUNDER create_work_order 0xd238ce7abc22d97d1219c46c79b1a704bcb86ad7939ef2c75c59fb639831db21
+[07:30:53] enforced.unfunded_work: FINALIZED MAJORITY_AGREE leader=ERROR in 23957 s
+[07:30:55] enforced.over_cap: FOUNDER create_work_order 0xdae3ba56352cee8dd81e834b9a2ba95bf19fdf2133a5bd99111157bd74bc857e
+[07:31:31] enforced.over_cap: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[07:31:33] enforced.unauthorised_provider: FOUNDER create_work_order 0x39f8272d3525e7f9183255645961e474cee58507d0e83d2d7c0742724c736ac6
+[07:32:12] enforced.unauthorised_provider: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[07:32:13] enforced.stranger_commissions: send failed (Invalid parameters were provided to the RPC method.
+Double check you have provid), retrying
+[07:32:24] enforced.stranger_commissions: STRANGER create_work_order 0x752dfb0a7135fb144c547fcd170cc1509c531b8839c456a45b4c4e8c2ace3bd1
+[07:32:58] enforced.stranger_commissions: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
+[07:33:00] flagship.create: FOUNDER create_work_order 0x9f0f57e8280e98eae23aa96438536cb59926c4100ae31a5e4e19aefadf9a45f3
+[07:33:38] flagship.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[07:33:41] flagship.accept: PROVIDER accept_work_order 0x63c46f849163dba7a65e074bb33ad9dc75255a87171ae5d04a4f15d6e8993892
+[07:34:20] flagship.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[07:34:22] flagship.preflight_refused: PROVIDER request_assessment 0xe909781806c895cad65510f43ed057c23edbb53c51b4c4405b4b521741323aa5
+[07:34:56] flagship.preflight_refused: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
+[07:35:03] flagship.after: PROVIDER submit_image 0x6fa6a26c905bfe20e498aa3066e64581be85c9de5b246ff3be3923cbdaf8253c
+[07:35:42] flagship.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[07:35:46] flagship.display: PROVIDER submit_image 0x711bcf63154f50a9506513d3a0fc82cdf526f0c6e0641dfdb876fbe5d215b43f
+[07:36:26] flagship.display: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[07:36:29] flagship.report: PROVIDER submit_document 0x374649da2009649646bb854dd9c61d8c9bcd887234d615caf7dcc44e8a3ab392
+[07:37:12] flagship.report: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
+[07:37:14] flagship.checklist: INSPECTOR submit_document 0x609387499f881205d2a9397a7f575661fbbb222434357570b0738b1c6748fa5f
+[07:37:53] flagship.checklist: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[07:37:55] walls.provider_inspection_report: PROVIDER submit_document 0xdb77d0a64d107cd762fa9ae9cd148c220db94dfbbbc77f91d37ae3884772690b
+[07:38:29] walls.provider_inspection_report: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
+[07:38:31] flagship.assess: PROVIDER request_assessment 0x9bc6528e22c0189eaeb5d431bac8489271749377639072524483cd082714bcf1
+  … flagship.assess PROPOSING
   … flagship.assess ACCEPTED
-[17:36:22] flagship.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 80 s
-receipt 0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635 status=FINALIZED result=MAJORITY_AGREE rotations=1
- rotation 1: Accepted
-  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
-     [ROUND] leader {"images_received": true, "principles": {"P1": "SATISFIED", "P2": "SATISFIED"}, "criteria": {"C1": "MET"}, "conflicts": false} why: The images show a Growatt inverter mounted indoors on a wall, with cabling/conduit connected at the underside of the unit rather than left loose. A separate image shows the unit's rating plate, and the model text 'MOD 4000TL3-X' is legible. This directly supports both the 
-  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
-  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
-  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
-  validator/validator vote=disagree model=policy:dev-gpt-oss exec=SUCCESS
-     [DISAGREE] this validator did not receive the images
-  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISAGREE] the leader accepts; this node finds rejected; mine={"C1": "NOT_MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The evidence shows an inverter is mounted on a wall, satisfying P1. However, the rating plate identifies a SUN-5000 model, not the required Growatt MOD 4000TL3-X, so C1 is not met. P2 requires the inverter to be identifiable from its own rating plate, which it is, so P2 is satisf
-[17:36:23] flagship.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
-[17:36:26] walls.finalize_early: STRANGER finalize 0xaaa41cc47f7251b6831678269b74b34ee92626d6ac1cdc3707b281770ebe22aa
-[17:37:02] walls.finalize_early: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
-[17:37:04] walls.provider_appeals_own_acceptance: PROVIDER open_appeal 0x8bb8be3adbd66f30e99a6dbf9367dc1ae0a4d577bc4b0dae4437a18458d9d3f0
-[17:37:41] walls.provider_appeals_own_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 38 s
-[17:37:43] walls.files_against_acceptance: STEWARD submit_document 0xa0b80bc5050b2f453efe30803e4703b4d8e35dbc67f99c4d2c3d0a2a22da7b04
-[17:38:22] walls.files_against_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
-[17:38:24] appealcase.create: FOUNDER create_work_order 0xa6a157ee3c193a9ba7c95fcdaf5bf7b894ef33ed7d105f1a5858770efbece795
-[17:39:02] appealcase.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
-[17:39:04] appealcase.sign: PROVIDER accept_work_order 0xfa991adccf46ee7368df29e56573b243ab5e14f1f18b088c54323e352d0f0624
-[17:39:39] appealcase.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
-[17:39:44] appealcase.inverter: PROVIDER submit_image 0x77f86c0bdbd85b62ecdf5578f37b40687471406a21111035319516486e6df7b5
-[17:40:22] appealcase.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
-[17:40:28] appealcase.plate: PROVIDER submit_image 0x362e029a68b3c042ea122f1bd18c219e5c333fc3ccad093657ddebcda00adf92
-[17:41:07] appealcase.plate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[17:41:10] appealcase.assess: PROVIDER request_assessment 0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812
-  … appealcase.assess PROPOSING
-  … appealcase.assess ACCEPTED
-[17:43:11] appealcase.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 121 s
-receipt 0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812 status=FINALIZED result=MAJORITY_AGREE rotations=2
+[07:40:38] flagship.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 127 s
+receipt 0x9bc6528e22c0189eaeb5d431bac8489271749377639072524483cd082714bcf1 status=FINALIZED result=MAJORITY_AGREE rotations=2
  rotation 1: Leader Rotation
-  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
-     [ROUND] leader {"images_received": true, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "NOT_MET"}, "conflicts": false} why: The evidence shows a solar panel label, not an inverter label, and no image shows an inverter mounted on a wall. The provider's claim that ev-000006 shows a replacement inverter is not supported by the visible content, which depicts a solar array, not a wall-mounted invert
-  leader/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
-  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
-     [DISAGREE] criterion C1: the leader rejects it, this node finds it met; mine={"C1": "MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The evidence provided consists of two photographs showing the installation and the specific model of the inverter. Image ev-000006 confirms the unit is wall-mounted with all cabling properly made off at the unit, satisfying the physical installation requirements. Image
-  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
-     [DISAGREE] criterion C1: the leader rejects it, this node finds it met; mine={"C1": "MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The evidence provided consists of two photographs documenting the installation of a new solar inverter. Image ev-000006 shows the unit is securely mounted to the wall with all cabling properly terminated at the base of the device. Image ev-000007 provides a clear view 
-  validator/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
-  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
-     [DISAGREE] criterion C1: the leader rejects it, this node finds it met; mine={"C1": "MET"} {"P1": "SATISFIED", "P2": "SATISFIED"} conflicts=False why: The images show an inverter installed indoors on a wall with cabling connected at the unit, which supports compliance with the mounting and cabling rule. A separate image shows the unit’s rating plate, and the readable model name is Growatt MOD 4000TL3-X. Together, the
- rotation 2: Accepted
   leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
-     [ROUND] leader {"images_received": true, "principles": {"P1": "SATISFIED", "P2": "SATISFIED"}, "criteria": {"C1": "MET"}, "conflicts": false} why: The images show a Growatt inverter mounted indoors on a wall, with cabling/conduits connected at the unit rather than left loose. A second image shows the unit's rating plate, and the visible text includes the model name MOD 4000TL3-X. This directly supports both the maint
-  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
   validator/validator vote=idle model=policy:dev-gemini exec=ERROR
-  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
-  validator/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
-  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
-[17:43:13] appealcase.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
-[17:43:15] appeal.open: STEWARD open_appeal 0x469beb3265ab3e07a45e8f3dbf7a35bd58dfc4c1077701b97e42b8211f5b644b
-[17:43:55] appeal.open: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[17:43:57] paper.create: FOUNDER create_work_order 0x062dabea30eb4d628fdc0e2678e5b916a7b818b789ca9c91c978fc6a9e462730
-[17:44:38] paper.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[17:44:40] paper.sign: PROVIDER accept_work_order 0xed485a51edf7f2e300c325cbab71a937227ca8096140476b8da6cb9e6372b19b
-[17:45:20] paper.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[17:45:25] paper.inverter: PROVIDER submit_image 0x7866ef2e19eaa053d5543aff639f0c706d256312716c276e28eaf99971830fd5
-[17:46:08] paper.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
-[17:46:11] paper.datasheet: PROVIDER submit_document 0xadc1abd910738943f86256fa8f6ea319f7815f1e2e79a1ba7269803a6e249f73
-[17:46:47] paper.datasheet: FINALIZED MAJORITY_AGREE leader=SUCCESS in 36 s
-[17:46:49] paper.assess: PROVIDER request_assessment 0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e
-  … paper.assess COMMITTING
-[17:48:12] paper.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 83 s
-receipt 0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e status=FINALIZED result=MAJORITY_AGREE rotations=2
- rotation 1: Leader Rotation
-  leader/leader vote=? model=policy:dev-mistral exec=SUCCESS
-     [ROUND] leader {"images_received": false, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The work order requires replacement of a failed string inverter with a Growatt MOD 4000TL3-X, mounted on the plant room wall, and identifiable by its rating plate. No photographic evidence (e.g., ev-000008) shows the installed inverter or its mounting, leaving compliance 
-  leader/validator vote=idle model=policy:dev-mistral exec=ERROR
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
   validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
-     [DISAGREE] the leader did not receive the images
-  validator/validator vote=disagree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
-     [DISAGREE] the leader did not receive the images
-  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
-  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISAGREE] the leader did not receive the images
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
  rotation 2: Accepted
-  leader/leader vote=? model=openai/gpt-5.4 exec=SUCCESS
-     [ROUND] leader {"images_received": true, "principles": {"P1": "SATISFIED", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The site photo ev-000008 shows an inverter mounted on an indoor wall with cabling/conduits connected at the underside, which supports compliance with the mounting and cabling rule. However, the rating plate itself is not visible or readable in the provided image, so the 
-  leader/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
-  validator/validator vote=idle model=policy:dev-sonnet exec=ERROR
+  leader/leader vote=? model=policy:dev-sonnet exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=agree model=policy:dev-sonnet exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] the leader accepts; this node finds it undetermined mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "NOT_ESTABLISHED"}
   validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
-  validator/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
-  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
-[17:48:14] paper.assess: UNDETERMINED  principles {"P1":"SATISFIED","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
-[17:48:17] mismatch.create: FOUNDER create_work_order 0x47b07533cd2e22316f1fd142dba2f320733a0498ed0796eb6f2c2a53b7725a4b
-[17:48:51] mismatch.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
-[17:48:53] mismatch.sign: PROVIDER accept_work_order 0xb3d5a362835cbc22b9de987c08f622e5473220be8e375e6eb3b82b6ffd683aa1
-[17:49:30] mismatch.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
-[17:49:36] mismatch.inverter: PROVIDER submit_image 0x2aa1e3e9ac118db42bca4c9fc9384ab7176f5c62ffae6ec6593f6870a7c4257a
-[17:50:13] mismatch.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
-[17:50:19] mismatch.plate: PROVIDER submit_image 0xd896023478a2ebe9f7f803095625831eb9a5f2bb0186dd2f896251818624615c
-[17:51:02] mismatch.plate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
-[17:51:04] mismatch.assess: PROVIDER request_assessment 0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4
-  … mismatch.assess COMMITTING
-  … mismatch.assess COMMITTING
-[17:53:33] mismatch.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 149 s
-receipt 0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4 status=FINALIZED result=MAJORITY_AGREE rotations=1
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+[07:40:39] flagship.assess: ACCEPTED {"P1":"SATISFIED","P3":"SATISFIED","C1":"SATISFIED","C2":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=true
+[07:40:42] walls.finalize_early: STRANGER finalize 0x2de64b6cedff335f37a5587721c7a5cfdd5615608ca6556888e88e538a0d2453
+[07:41:21] walls.finalize_early: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[07:41:23] walls.provider_appeals_acceptance: PROVIDER open_appeal 0xaecdda2453df72933f781c81e30ec9a0b0c3819b68b1a9885fc6f66663c18f48
+[07:41:59] walls.provider_appeals_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[07:42:00] walls.settle_early: STRANGER settle 0xb2284add4a7fd3b985528af3203cc2768e3c0ae02626629ff85e9616919bce11
+[07:42:39] walls.settle_early: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[07:42:41] clipleads.create: FOUNDER create_work_order 0x4c8872f8ea02b66a0a476276bf5a6fc6ab5c4f2df0e51cce8c1cacf5b49698fb
+[07:43:22] clipleads.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[07:43:24] clipleads.accept: PROVIDER accept_work_order 0xfb03f67404c6b4fd23054ff39ee277beeda3a0cf9b0dacf5e72d14d791104651
+[07:44:00] clipleads.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+[07:44:09] clipleads.after: PROVIDER submit_image 0x4a1b681eb1e9a7c3e1caad062379cd4a13e89f6a91ab9205f8964ef666ebf15d
+[07:44:49] clipleads.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[07:44:51] clipleads.assess: PROVIDER request_assessment 0xf1f20e7484843360be9ada7459f3f9b48397d64555532cb70e4a21c627bf5b1a
+  … clipleads.assess COMMITTING
+[07:46:14] clipleads.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 83 s
+receipt 0xf1f20e7484843360be9ada7459f3f9b48397d64555532cb70e4a21c627bf5b1a status=FINALIZED result=MAJORITY_AGREE rotations=1
  rotation 1: Accepted
   leader/leader vote=? model=anthropic/claude-sonnet-4.6 exec=SUCCESS
-     [ROUND] leader {"images_received": true, "principles": {"P1": "UNCLEAR", "P2": "SATISFIED"}, "criteria": {"C1": "NOT_MET"}, "conflicts": false} why: P1 requires wall or rack mounting with cabling made off at the unit, not left loose. ev-000010 shows the inverter mounted on a white interior wall with DC cables routed on a cable tray below the unit; there is a concern about a short exposed section of the red DC cable n
-  leader/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
-  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
-     [DISAGREE] this validator did not receive the images
-  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
-     [DISAGREE] this validator did not receive the images
+     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] P1: the leader finds it not satisfied, this node finds it not_established mine={"P1": "NOT_ESTABLISHED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
   validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
-  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
-[17:53:35] mismatch.assess: REJECTED  principles {"P1":"UNCLEAR","P2":"SATISFIED"}  criteria {"C1":"NOT_MET"}  quality INSUFFICIENT  read 2 of 2 images
-[17:53:37] principle.create: FOUNDER create_work_order 0xafe191215ed7b6a4c026fe67c36d2405bc08ca913dd1edf82e04c8456eece71c
-[17:54:12] principle.create: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
-[17:54:12] ASSERTION FAILED: principle.create failed: [EXPECTED] the treasury has less uncommitted than this work order would pay
-
-=== attempt 3 (resume) ===
-[17:56:11] proofs on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
-[17:56:13] org.create: done earlier (0xd42c4f35cda12ba09b5891c79fc0a9c1dc7937b91c4a14aa60631ef29e923b88)
-[17:56:14] asset.register: done earlier (0x4e093470e9f70bfa602f7d2a80f95c1d497f74868f5d6249b3a96929ff8b54df)
-[17:56:14] enforced.unsupported_type: done earlier (0xc4bdb947d14d1cf20bf038cf4d97e843c1f15fa7aed28d5f191c9d8d1aeb4e0a)
-[17:56:14] enforced.unfunded_type: done earlier (0xd1c7c8beb857746c4632f4ebfbc8b257d922414c0230cb6ac7f6a3ba5463e4e0)
-[17:56:14] enforced.payment_cap: done earlier (0xffa2802e639d824c25edd09df769a8a2b4ee3c250aa40c5fd8bd77c26094ce31)
-[17:56:14] enforced.stranger_commissions: done earlier (0xdc98debc4ee7e119697aa3f94394e01eea881ef901cd942dfcd8784602b73a8e)
-[17:56:14] flagship.create: done earlier (0x4df39c6619519da7848ba9010a895220ac38fb77082924ecc63f443ee52a9521)
-[17:56:14] flagship.sign: done earlier (0xc833e1051df9d87278fc6094cccfc0fca5bf590faf03e4b140a3f08c9161c4ee)
-[17:56:14] flagship.inverter: done earlier (0x08adfd424bb374902aa78afe2e30179eb5af96a1cce135506a31dc3c502f9bb5)
-[17:56:14] enforced.min_images: done earlier (0xc8124497e032f0460e398522ffee92e6601fd96ade6e01804962f163224cd2d4)
-[17:56:14] flagship.plate: done earlier (0x385d2447d14aaf15ac08dfafaaf44bcc40c5c69d8872c3c0f6bb297afeb7d9fe)
-[17:56:14] flagship.assess: done earlier (0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635)
-[17:56:15] flagship.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
-[17:56:15] walls.finalize_early: done earlier (0xaaa41cc47f7251b6831678269b74b34ee92626d6ac1cdc3707b281770ebe22aa)
-[17:56:15] walls.provider_appeals_own_acceptance: done earlier (0x8bb8be3adbd66f30e99a6dbf9367dc1ae0a4d577bc4b0dae4437a18458d9d3f0)
-[17:56:15] walls.files_against_acceptance: done earlier (0xa0b80bc5050b2f453efe30803e4703b4d8e35dbc67f99c4d2c3d0a2a22da7b04)
-[17:56:15] appealcase.create: done earlier (0xa6a157ee3c193a9ba7c95fcdaf5bf7b894ef33ed7d105f1a5858770efbece795)
-[17:56:15] appealcase.sign: done earlier (0xfa991adccf46ee7368df29e56573b243ab5e14f1f18b088c54323e352d0f0624)
-[17:56:15] appealcase.inverter: done earlier (0x77f86c0bdbd85b62ecdf5578f37b40687471406a21111035319516486e6df7b5)
-[17:56:15] appealcase.plate: done earlier (0x362e029a68b3c042ea122f1bd18c219e5c333fc3ccad093657ddebcda00adf92)
-[17:56:15] appealcase.assess: done earlier (0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812)
-[17:56:17] appealcase.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
-[17:56:17] appeal.open: done earlier (0x469beb3265ab3e07a45e8f3dbf7a35bd58dfc4c1077701b97e42b8211f5b644b)
-[17:56:17] paper.create: done earlier (0x062dabea30eb4d628fdc0e2678e5b916a7b818b789ca9c91c978fc6a9e462730)
-[17:56:17] paper.sign: done earlier (0xed485a51edf7f2e300c325cbab71a937227ca8096140476b8da6cb9e6372b19b)
-[17:56:17] paper.inverter: done earlier (0x7866ef2e19eaa053d5543aff639f0c706d256312716c276e28eaf99971830fd5)
-[17:56:17] paper.datasheet: done earlier (0xadc1abd910738943f86256fa8f6ea319f7815f1e2e79a1ba7269803a6e249f73)
-[17:56:17] paper.assess: done earlier (0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e)
-[17:56:18] paper.assess: UNDETERMINED  principles {"P1":"SATISFIED","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
-[17:56:18] mismatch.create: done earlier (0x47b07533cd2e22316f1fd142dba2f320733a0498ed0796eb6f2c2a53b7725a4b)
-[17:56:18] mismatch.sign: done earlier (0xb3d5a362835cbc22b9de987c08f622e5473220be8e375e6eb3b82b6ffd683aa1)
-[17:56:18] mismatch.inverter: done earlier (0x2aa1e3e9ac118db42bca4c9fc9384ab7176f5c62ffae6ec6593f6870a7c4257a)
-[17:56:18] mismatch.plate: done earlier (0xd896023478a2ebe9f7f803095625831eb9a5f2bb0186dd2f896251818624615c)
-[17:56:18] mismatch.assess: done earlier (0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4)
-[17:56:19] mismatch.assess: REJECTED  principles {"P1":"UNCLEAR","P2":"SATISFIED"}  criteria {"C1":"NOT_MET"}  quality INSUFFICIENT  read 2 of 2 images
-[17:56:23] fund.stranger: STRANGER fund_treasury 0xbd1c6af94e903ab873d38363f4671d58bd6e13fbce4d50ae265e7e2061897946
-[17:57:00] fund.stranger: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
-[17:57:02] principle.create: waiting again on 0xafe191215ed7b6a4c026fe67c36d2405bc08ca913dd1edf82e04c8456eece71c, sent earlier
-[17:57:07] principle.create: FINALIZED MAJORITY_AGREE leader=ERROR in 5 s
-[17:57:07] ASSERTION FAILED: principle.create failed: [EXPECTED] the treasury has less uncommitted than this work order would pay
-
-=== attempt 4 (resume) ===
-[18:00:29] proofs on 0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c
-[18:00:32] org.create: done earlier (0xd42c4f35cda12ba09b5891c79fc0a9c1dc7937b91c4a14aa60631ef29e923b88)
-[18:00:33] asset.register: done earlier (0x4e093470e9f70bfa602f7d2a80f95c1d497f74868f5d6249b3a96929ff8b54df)
-[18:00:33] enforced.unsupported_type: done earlier (0xc4bdb947d14d1cf20bf038cf4d97e843c1f15fa7aed28d5f191c9d8d1aeb4e0a)
-[18:00:33] enforced.unfunded_type: done earlier (0xd1c7c8beb857746c4632f4ebfbc8b257d922414c0230cb6ac7f6a3ba5463e4e0)
-[18:00:33] enforced.payment_cap: done earlier (0xffa2802e639d824c25edd09df769a8a2b4ee3c250aa40c5fd8bd77c26094ce31)
-[18:00:33] enforced.stranger_commissions: done earlier (0xdc98debc4ee7e119697aa3f94394e01eea881ef901cd942dfcd8784602b73a8e)
-[18:00:33] flagship.create: done earlier (0x4df39c6619519da7848ba9010a895220ac38fb77082924ecc63f443ee52a9521)
-[18:00:33] flagship.sign: done earlier (0xc833e1051df9d87278fc6094cccfc0fca5bf590faf03e4b140a3f08c9161c4ee)
-[18:00:33] flagship.inverter: done earlier (0x08adfd424bb374902aa78afe2e30179eb5af96a1cce135506a31dc3c502f9bb5)
-[18:00:33] enforced.min_images: done earlier (0xc8124497e032f0460e398522ffee92e6601fd96ade6e01804962f163224cd2d4)
-[18:00:33] flagship.plate: done earlier (0x385d2447d14aaf15ac08dfafaaf44bcc40c5c69d8872c3c0f6bb297afeb7d9fe)
-[18:00:33] flagship.assess: done earlier (0xc3ba8028958460e339eec0abc15e530bce0f3cfb402d61d87f13c213246b8635)
-[18:00:34] flagship.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
-[18:00:34] walls.finalize_early: done earlier (0xaaa41cc47f7251b6831678269b74b34ee92626d6ac1cdc3707b281770ebe22aa)
-[18:00:34] walls.provider_appeals_own_acceptance: done earlier (0x8bb8be3adbd66f30e99a6dbf9367dc1ae0a4d577bc4b0dae4437a18458d9d3f0)
-[18:00:34] walls.files_against_acceptance: done earlier (0xa0b80bc5050b2f453efe30803e4703b4d8e35dbc67f99c4d2c3d0a2a22da7b04)
-[18:00:34] appealcase.create: done earlier (0xa6a157ee3c193a9ba7c95fcdaf5bf7b894ef33ed7d105f1a5858770efbece795)
-[18:00:34] appealcase.sign: done earlier (0xfa991adccf46ee7368df29e56573b243ab5e14f1f18b088c54323e352d0f0624)
-[18:00:34] appealcase.inverter: done earlier (0x77f86c0bdbd85b62ecdf5578f37b40687471406a21111035319516486e6df7b5)
-[18:00:34] appealcase.plate: done earlier (0x362e029a68b3c042ea122f1bd18c219e5c333fc3ccad093657ddebcda00adf92)
-[18:00:34] appealcase.assess: done earlier (0x0d15394e4b2d4f5c6ac19e2c9910ab7009b97ca3c41af9b441c54a164a737812)
-[18:00:35] appealcase.assess: ACCEPTED  principles {"P1":"SATISFIED","P2":"SATISFIED"}  criteria {"C1":"MET"}  quality SUFFICIENT  read 2 of 2 images
-[18:00:35] appeal.open: done earlier (0x469beb3265ab3e07a45e8f3dbf7a35bd58dfc4c1077701b97e42b8211f5b644b)
-[18:00:35] paper.create: done earlier (0x062dabea30eb4d628fdc0e2678e5b916a7b818b789ca9c91c978fc6a9e462730)
-[18:00:35] paper.sign: done earlier (0xed485a51edf7f2e300c325cbab71a937227ca8096140476b8da6cb9e6372b19b)
-[18:00:35] paper.inverter: done earlier (0x7866ef2e19eaa053d5543aff639f0c706d256312716c276e28eaf99971830fd5)
-[18:00:35] paper.datasheet: done earlier (0xadc1abd910738943f86256fa8f6ea319f7815f1e2e79a1ba7269803a6e249f73)
-[18:00:35] paper.assess: done earlier (0x4061c49774062fbadb0714d79f373ccd78a0c6658b347437834ec9da91a3ae0e)
-[18:00:36] paper.assess: UNDETERMINED  principles {"P1":"SATISFIED","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
-[18:00:36] mismatch.create: done earlier (0x47b07533cd2e22316f1fd142dba2f320733a0498ed0796eb6f2c2a53b7725a4b)
-[18:00:36] mismatch.sign: done earlier (0xb3d5a362835cbc22b9de987c08f622e5473220be8e375e6eb3b82b6ffd683aa1)
-[18:00:36] mismatch.inverter: done earlier (0x2aa1e3e9ac118db42bca4c9fc9384ab7176f5c62ffae6ec6593f6870a7c4257a)
-[18:00:36] mismatch.plate: done earlier (0xd896023478a2ebe9f7f803095625831eb9a5f2bb0186dd2f896251818624615c)
-[18:00:36] mismatch.assess: done earlier (0xf4c5ade6b7d37728fdf1d3059f4b5368afe34872347779459c92baa112e3b1e4)
-[18:00:37] mismatch.assess: REJECTED  principles {"P1":"UNCLEAR","P2":"SATISFIED"}  criteria {"C1":"NOT_MET"}  quality INSUFFICIENT  read 2 of 2 images
-[18:00:37] fund.stranger: done earlier (0xbd1c6af94e903ab873d38363f4671d58bd6e13fbce4d50ae265e7e2061897946)
-[18:00:40] principle.create: FOUNDER create_work_order 0xfd0e357f34e6e4b8cfc37caa82822fde311806a9cb7c35fbeca04396c35e5c23
-[18:01:22] principle.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 42 s
-[18:01:26] principle.sign: PROVIDER accept_work_order 0xc07a381944186e84cfeed00116f43f6fdcb532183400911677a583c5d1027ce9
-[18:02:06] principle.sign: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[18:02:11] principle.inverter: PROVIDER submit_image 0x679c81f56da8542b9ff1b56a511ca66cd974a377f11b535f4866e2fed30fb356
-[18:02:54] principle.inverter: FINALIZED MAJORITY_AGREE leader=SUCCESS in 44 s
-[18:02:57] principle.assess: PROVIDER request_assessment 0x69213b12f98fedc0c1d6daaba4d9fb60a7737f0e187311f6571870019be91712
-  … principle.assess PROPOSING
-  … principle.assess REVEALING
-[18:04:43] principle.assess: no majority, so nothing was recorded; asking again (2 of 3)
-[18:05:02] principle.assess: PROVIDER request_assessment 0x47f6cf4a16f08118821a804e1ac9de45d7471a52931c980eac5be50122ba0fb5
-  … principle.assess ACCEPTED
-[18:06:21] principle.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 79 s
-receipt 0x47f6cf4a16f08118821a804e1ac9de45d7471a52931c980eac5be50122ba0fb5 status=FINALIZED result=MAJORITY_AGREE rotations=2
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+[07:46:16] clipleads.assess: REJECTED {"P1":"NOT_SATISFIED","P2":"NOT_SATISFIED","C1":"NOT_SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_APPLICABLE"} sufficient=false
+[07:46:16] clipleads: REJECTED, failed ["P1","P2","C1"]
+[07:46:18] restore.create: FOUNDER create_work_order 0x2fdb96b561185fa3774fe16f0adbc0dc20aa81ff01dc8a33c5449e7aa6e080c8
+[07:46:57] restore.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[07:46:59] restore.accept: PROVIDER accept_work_order 0x8d974007d26f2d73fa588fbfe0054267d98946cc32f78be3d936a853b770af77
+[07:47:33] restore.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 34 s
+[07:47:43] restore.after: PROVIDER submit_image 0x65a1a00b51934e3304cc9abea23c7e0591c928b6b0121362d120792dc88afe8d
+[07:48:24] restore.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[07:48:27] restore.reading: PROVIDER submit_document 0x88d10791ddb9cea8c1764109d997ed88494efbd4ca327011e44c14921f27d39d
+[07:49:07] restore.reading: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[07:49:09] restore.assess: PROVIDER request_assessment 0xd1f0c997ba87b97f4c4adec8bdacc83edf982b85aa328927e6a56f543d7d1377
+  … restore.assess COMMITTING
+[07:50:43] restore.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 94 s
+receipt 0xd1f0c997ba87b97f4c4adec8bdacc83edf982b85aa328927e6a56f543d7d1377 status=FINALIZED result=MAJORITY_AGREE rotations=2
  rotation 1: Leader Rotation
-  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
-     [ROUND] leader {"images_received": false, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The evidence presented is insufficient to assess compliance with the principles and criteria. Image ev-000012 could not be processed and shows nothing, so there is no visual evidence of the work performed. Without any images or an inspector's report, it is impossible to v
-  leader/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISAGREE] the leader did not receive the images
-  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISAGREE] the leader did not receive the images
-  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
-     [DISAGREE] the leader did not receive the images
-  validator/validator vote=idle model=policy:dev-grok exec=ERROR
-  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+  leader/leader vote=? model=policy:dev-sonnet exec=SUCCESS
+     [ASSESS] leader {"seen": false, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "NOT_ESTABLISHED"}}
+  leader/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
+  validator/validator vote=idle model=policy:dev-gemini exec=ERROR
+  validator/validator vote=disagree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
  rotation 2: Accepted
+  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+[07:50:48] restore.assess: UNDETERMINED {"P1":"NOT_ESTABLISHED","P3":"NOT_ESTABLISHED","C1":"NOT_ESTABLISHED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=false
+[07:50:48] restore.appeal: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[07:50:59] restore.appeal: PROVIDER open_appeal 0x31f5a9bde9f1f84441166c18f156d0a3ae75d0990df8ded42a9e122c5d932e74
+[07:51:38] restore.appeal: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[07:51:44] restore.display: PROVIDER submit_image 0xebb1e9cc6dbc4ad1f8a69cd5d0126d98a692f35cde21fd0e561290810b80cfdf
+[07:52:23] restore.display: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[07:52:25] restore.readjudicate: PROVIDER readjudicate 0x35d2b661a6363f5db61a92ff2f1c78134f38a3dcbc5c2861c9b9e574bcb1bfd0
+  … restore.readjudicate PROPOSING
+  … restore.readjudicate COMMITTING
+  … restore.readjudicate ACCEPTED
+[07:55:03] restore.readjudicate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 158 s
+receipt 0x35d2b661a6363f5db61a92ff2f1c78134f38a3dcbc5c2861c9b9e574bcb1bfd0 status=FINALIZED result=MAJORITY_AGREE rotations=3
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-gemini exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader accepts; this node finds it undetermined mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] the leader accepts; this node finds it rejected mine={"P1": "NOT_SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader accepts; this node finds it undetermined mine={"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+ rotation 2: Leader Rotation
+  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}}
+  leader/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_ESTABLISHED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_ESTABLISHED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+ rotation 3: Accepted
   leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
-     [ROUND] leader {"images_received": true, "principles": {"P1": "UNCLEAR", "P2": "UNCLEAR"}, "criteria": {"C1": "UNCLEAR"}, "conflicts": false} why: The only site evidence is a single image showing the inside of an open electronic enclosure with components exposed. It does not clearly show a complete replacement inverter mounted on a wall, nor does it clearly show cabling made off at the unit in an installed state. The
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
   leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
-  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
-  validator/validator vote=idle model=policy:dev-grok exec=ERROR
+  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
   validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
   validator/validator vote=idle model=policy:dev-sonnet exec=ERROR
-[18:06:22] principle.assess: UNDETERMINED  principles {"P1":"UNCLEAR","P2":"UNCLEAR"}  criteria {"C1":"UNCLEAR"}  quality INSUFFICIENT  read 1 of 1 images
-[18:06:25] walls.stranger_files: STRANGER submit_document 0x5434f0cc63e2828e6560a8c51d883c8791c3431fb4c871363d7755dd5a70a72b
-[18:07:01] walls.stranger_files: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
-[18:07:03] walls.stranger_assessment: STRANGER request_assessment 0x09c690faa489be1e1bc14af32cf28e4a6a91d49753ce003b3cfc6213403a9db0
-[18:07:38] walls.stranger_assessment: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
-[18:07:41] walls.provider_inspection_report: PROVIDER submit_document 0xd358b1618532d8008312990e0f0b6f2985f663c25d36ec42143f2706ff83ebf5
-[18:08:22] walls.provider_inspection_report: FINALIZED MAJORITY_AGREE leader=ERROR in 41 s
-[18:08:25] appeal.decide: STRANGER decide_appeal 0x033c9674ac2afaecf1ff4df245882034ea835083da4236fc4b745fb811072eb0
-  … appeal.decide ACCEPTED
-[18:09:35] appeal.decide: FINALIZED MAJORITY_AGREE leader=SUCCESS in 70 s
-[18:09:37] appeal: reviewed round 1, decided ACCEPTED, principles {"P1":"SATISFIED","P2":"SATISFIED"} criteria {"C1":"MET"}
-[18:09:41] flagship.finalize: STRANGER finalize 0x77706a7043cf8f9284247bd9e6215a405f80d1bda52531393b7ef3c38132db30
-[18:10:22] flagship.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[18:10:30] flagship.claim: PROVIDER claim 0xc45a22def3824a87cfe9d75ad5b9c18a830cc7a3720886e23c7dab3afe7b1ba1
-[18:11:11] flagship.claim: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[18:11:12] the provider's wallet received 1999000000000000000 wei
-[18:11:14] stats {"organizations":3,"assets":3,"work_orders":9,"items":12,"rounds":7,"finalized":1,"paid_wei":"2000000000000000000"}
-[18:11:14] 1 round(s) reached no majority and were asked again:
-[18:11:14]   principle.assess 0x69213b12f98fedc0c1d6daaba4d9fb60a7737f0e187311f6571870019be91712
-[18:11:14] every proof passed
+[07:55:05] restore.readjudicate: UNDETERMINED {"P1":"NOT_ESTABLISHED","P3":"SATISFIED","C1":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=true
+[07:55:06] restore: UNDETERMINED -> UNDETERMINED on appeal
+[07:55:08] flagship.finalize: STRANGER finalize 0x3224557ee4188f3b3eb40df74ccac85dbd3ad04b6d2d1748dd054a6892461e63
+[07:55:42] flagship.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+[07:55:49] flagship.settle: STRANGER settle 0x7969ab02ceb88723801a625ef4c86915bc229591f1c19a495478b1eb1a79fadb
+[07:56:26] flagship.settle: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
+[07:56:31] clipleads.finalize: STRANGER finalize 0xb466cfc4280f69a3e63948d232e5897da2912c7b14977cc6456caaad71ba8b68
+[07:57:08] clipleads.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
+[07:57:10] asset: UNDER_MAINTENANCE, last serviced 2026-09-27T07:55:08Z, next due 2027-03-26T07:55:08Z
+[07:57:13] cycle.next: FOUNDER create_work_order 0x80425e00e7763227a17c4e753fd9b7120d34580633ebe1df5786c61c083b87e7
+[07:57:54] cycle.next: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[07:57:55] stats {"organization":2,"asset":2,"work_order":7,"evidence":9,"decision":4,"settled":1,"settled_wei":"2000000000000000000"}
+[07:57:55] every round reached a majority first time
+[07:57:55] every proof passed

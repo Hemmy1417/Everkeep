@@ -26,7 +26,7 @@ for (const [file, value] of [
   if (!same(value ?? "")) problems.push(`${file} records ${value || "no address"}`);
 }
 
-for (const doc of ["../../README.md", "../../docs/ui-bench.md", "../../docs/proofs/proof-run.txt",
+for (const doc of ["../../README.md", "../../docs/proofs/ui-bench.md", "../../docs/proofs/proof-run.txt",
                    "../../docs/proofs/paths-run.txt"]) {
   const text = read(doc);
   const named = (text.match(ADDRESS) ?? []).filter((a) => /proofs? (run )?on|paths on|Contract|deployment of record/i

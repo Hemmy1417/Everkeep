@@ -1,293 +1,347 @@
 {
-  "address": "0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c",
+  "address": "0x4418253D7332661BfdF917DfE6B554cD0399F97c",
   "steps": {
-    "org.create": {
-      "name": "org.create",
+    "org.found": {
+      "name": "org.found",
       "role": "FOUNDER",
       "fn": "create_organization",
-      "hash": "0xa5e434d1e3bc8dc22d4375cc803cbd8370f2d409ecacb813cacbe67e20ff470a",
+      "hash": "0x6c151416b6a0c5867e08852f3804437ba00fba1bf51466ede2e7ad54b6893f9b",
       "ok": true,
-      "text": "{\"refused\": false, \"organization_id\": \"org-00001\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xa5e434d1e3bc8dc22d4375cc803cbd8370f2d409ecacb813cacbe67e20ff470a"
+      "text": "{\"refused\": false, \"organization_id\": \"org-00002\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x6c151416b6a0c5867e08852f3804437ba00fba1bf51466ede2e7ad54b6893f9b"
     },
     "fund.stranger": {
       "name": "fund.stranger",
       "role": "STRANGER",
       "fn": "fund_treasury",
-      "hash": "0x3e656a7333151ea5e7479dd4f9e611ae28b3dbae1f35115ca42987678cebafb8",
+      "hash": "0x2030392d2743d2a8e1cd25512d462d143341d55d26d6ed1c2ad2220f99e9d4ca",
       "ok": true,
-      "text": "{\"refused\": false, \"organization_id\": \"org-00001\", \"escrow_wei\": \"5000000000000000000\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x3e656a7333151ea5e7479dd4f9e611ae28b3dbae1f35115ca42987678cebafb8"
+      "text": "{\"refused\": false, \"escrow_wei\": \"6000000000000000000\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x2030392d2743d2a8e1cd25512d462d143341d55d26d6ed1c2ad2220f99e9d4ca"
     },
-    "amend.stranger_proposes": {
-      "name": "amend.stranger_proposes",
+    "motion.stranger": {
+      "name": "motion.stranger",
       "role": "STRANGER",
       "fn": "propose_amendment",
-      "hash": "0xd97d35c88b154cbdcd0c7a0fa20af5427ad4df5d6603604ff893cc6b5636b4c2",
+      "hash": "0xa2b0fb0c0be187b65d1fc0a7ec1d723c9d517bd9824a5dde6ee705ca119fe64e",
       "ok": false,
-      "text": "[EXPECTED] only a steward named in the constitution in force may do this",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xd97d35c88b154cbdcd0c7a0fa20af5427ad4df5d6603604ff893cc6b5636b4c2"
+      "text": "[EXPECTED] only a steward under the constitution in force may do this",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xa2b0fb0c0be187b65d1fc0a7ec1d723c9d517bd9824a5dde6ee705ca119fe64e"
     },
-    "amend.propose_v2": {
-      "name": "amend.propose_v2",
+    "motion.v2": {
+      "name": "motion.v2",
       "role": "FOUNDER",
       "fn": "propose_amendment",
-      "hash": "0x28c2fbe695ccf8375201165bd951ac4a6fe087cba9beffcd8fc14f829a5e24f6",
+      "hash": "0x86591373d88069c20e62dc46c2e433590a7c30c8b03d1bdc054f36394b00cbf0",
       "ok": true,
-      "text": "{\"organization_id\": \"org-00001\", \"version\": 2, \"window_ends\": \"2026-09-26T17:29:15Z\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x28c2fbe695ccf8375201165bd951ac4a6fe087cba9beffcd8fc14f829a5e24f6"
+      "text": "{\"version\": 2, \"window_ends\": \"2026-09-27T07:41:39Z\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x86591373d88069c20e62dc46c2e433590a7c30c8b03d1bdc054f36394b00cbf0"
     },
-    "amend.stranger_objects": {
-      "name": "amend.stranger_objects",
+    "motion.stranger_objects": {
+      "name": "motion.stranger_objects",
       "role": "STRANGER",
-      "fn": "object_amendment",
-      "hash": "0xe00067db7069ce267869a2201e4cb446e3b52a04c6d608e0760bd6a3734e127c",
+      "fn": "object_motion",
+      "hash": "0x4c3bb15c05cd1e588eb89f9579d4004cf7c66a8aae019c63f603cb2033a0939f",
       "ok": false,
-      "text": "[EXPECTED] only a steward named in the constitution in force may do this",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xe00067db7069ce267869a2201e4cb446e3b52a04c6d608e0760bd6a3734e127c"
+      "text": "[EXPECTED] only a steward under the constitution in force may do this",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x4c3bb15c05cd1e588eb89f9579d4004cf7c66a8aae019c63f603cb2033a0939f"
     },
-    "amend.ratify_early": {
-      "name": "amend.ratify_early",
+    "motion.enact_early": {
+      "name": "motion.enact_early",
       "role": "STRANGER",
-      "fn": "ratify_amendment",
-      "hash": "0xa8b196e8d669318d8864c595b1033443e3dc0187444928fa19eb9543718850c3",
+      "fn": "enact_motion",
+      "hash": "0x02c13434af7059f73b3fa1d0051949ab89a3632f0cbb660351bead17ae4b9589",
       "ok": false,
-      "text": "[EXPECTED] the amendment window is still open",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xa8b196e8d669318d8864c595b1033443e3dc0187444928fa19eb9543718850c3"
+      "text": "[EXPECTED] the motion's window is still open",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x02c13434af7059f73b3fa1d0051949ab89a3632f0cbb660351bead17ae4b9589"
     },
-    "amend.object_v2": {
-      "name": "amend.object_v2",
+    "motion.object_v2": {
+      "name": "motion.object_v2",
       "role": "STEWARD",
-      "fn": "object_amendment",
-      "hash": "0x981f76375cdaef0fab7bb8eac9efdb695c111a2706f4b68c0eae90cb92af2a8e",
+      "fn": "object_motion",
+      "hash": "0x5a814388ee45ebf0f8570400f5372fd447d89eb4d675072240c9d2dab8a9b5cb",
       "ok": true,
-      "text": "{\"organization_id\": \"org-00001\", \"version\": 2, \"state\": \"WITHDRAWN\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x981f76375cdaef0fab7bb8eac9efdb695c111a2706f4b68c0eae90cb92af2a8e"
+      "text": "{\"state\": \"WITHDRAWN\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x5a814388ee45ebf0f8570400f5372fd447d89eb4d675072240c9d2dab8a9b5cb"
     },
-    "amend.never_a_steward": {
-      "name": "amend.never_a_steward",
+    "motion.never_governed": {
+      "name": "motion.never_governed",
       "role": "STRANGER",
       "fn": "pause_organization",
-      "hash": "0xbdbfe5213a9b7f6c519be894b23236a989581eb01d53b8b10cea122c552b5f83",
+      "hash": "0x30773796e6d8f33366bb2b9696ab73f82ddbc8b2df5abb1dc85dea72b30be8e8",
       "ok": false,
-      "text": "[EXPECTED] only a steward named in the constitution in force may do this",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xbdbfe5213a9b7f6c519be894b23236a989581eb01d53b8b10cea122c552b5f83"
+      "text": "[EXPECTED] only a steward under the constitution in force may do this",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x30773796e6d8f33366bb2b9696ab73f82ddbc8b2df5abb1dc85dea72b30be8e8"
     },
-    "amend.propose_v3": {
-      "name": "amend.propose_v3",
-      "role": "STEWARD",
-      "fn": "propose_amendment",
-      "hash": "0xebe15d04785801bd68c06237f848c71b5681289401f4f6d059e32aa7e8f0a242",
+    "provider.a": {
+      "name": "provider.a",
+      "role": "FOUNDER",
+      "fn": "authorize_provider",
+      "hash": "0xa7e007dc115c1b06ca754399b62b4e4b46936fed793070fa18bddccfc1ca525f",
       "ok": true,
-      "text": "{\"organization_id\": \"org-00001\", \"version\": 3, \"window_ends\": \"2026-09-26T17:32:31Z\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xebe15d04785801bd68c06237f848c71b5681289401f4f6d059e32aa7e8f0a242"
+      "text": "{\"provider\": \"0xce087Dc3b484cC80b71634197491D6655D61246F\", \"maintenance_types\": [\"COMPONENT_REPLACEMENT\"]}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xa7e007dc115c1b06ca754399b62b4e4b46936fed793070fa18bddccfc1ca525f"
     },
-    "asset.register": {
-      "name": "asset.register",
+    "provider.b": {
+      "name": "provider.b",
+      "role": "FOUNDER",
+      "fn": "authorize_provider",
+      "hash": "0x4a1cbc75c5403d1fec353ffd1c71bdbfe5117b356c666c4b25d510bbb06f66c7",
+      "ok": true,
+      "text": "{\"provider\": \"0x52Df2f24290639EDf381Cf5F006189ed694276a7\", \"maintenance_types\": [\"INSPECTION\"]}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x4a1cbc75c5403d1fec353ffd1c71bdbfe5117b356c666c4b25d510bbb06f66c7"
+    },
+    "asset.enrol": {
+      "name": "asset.enrol",
       "role": "STEWARD",
       "fn": "register_asset",
-      "hash": "0xadedb02c9c2fdbf9e120ee9c5f72c04fcda5201634f04a9cb42bdec815c94ad3",
+      "hash": "0x01db1627f0c54262fcc525388de8bfcfc756615464d4219477a8f2d5d5947e4c",
       "ok": true,
       "text": "{\"asset_id\": \"as-00002\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xadedb02c9c2fdbf9e120ee9c5f72c04fcda5201634f04a9cb42bdec815c94ad3"
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x01db1627f0c54262fcc525388de8bfcfc756615464d4219477a8f2d5d5947e4c"
     },
-    "inspector.stranger_accepts": {
-      "name": "inspector.stranger_accepts",
-      "role": "STRANGER",
-      "fn": "accept_inspector_role",
-      "hash": "0x4b8f74699a4eaf233e49802ec826d45ed3c68097103ed1c320f5965ac3936653",
-      "ok": false,
-      "text": "[EXPECTED] only the inspector named on this asset accepts the role",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x4b8f74699a4eaf233e49802ec826d45ed3c68097103ed1c320f5965ac3936653"
-    },
-    "inspector.accept": {
-      "name": "inspector.accept",
-      "role": "INSPECTOR",
-      "fn": "accept_inspector_role",
-      "hash": "0x2e773bb237952cadcf30a90bdec13c5baccd839f78e23f903519a3fc496075c2",
-      "ok": true,
-      "text": "{\"asset_id\": \"as-00002\", \"inspector\": \"0x52Df2f24290639EDf381Cf5F006189ed694276a7\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x2e773bb237952cadcf30a90bdec13c5baccd839f78e23f903519a3fc496075c2"
-    },
-    "order.under_v1": {
-      "name": "order.under_v1",
+    "order.v1": {
+      "name": "order.v1",
       "role": "FOUNDER",
       "fn": "create_work_order",
-      "hash": "0x14848c0df08653c0197f44b59b00b3b71063d534ae88a02f27d39345577ed179",
+      "hash": "0x9a1d2b1a37834a17f31510e68ff972cb7b9b63f505f141e14794539c559f4b18",
       "ok": true,
       "text": "{\"work_order_id\": \"wo-00002\", \"version\": 1}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x14848c0df08653c0197f44b59b00b3b71063d534ae88a02f27d39345577ed179"
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x9a1d2b1a37834a17f31510e68ff972cb7b9b63f505f141e14794539c559f4b18"
     },
-    "order.sign_v1": {
-      "name": "order.sign_v1",
+    "order.v1.accept": {
+      "name": "order.v1.accept",
       "role": "PROVIDER",
       "fn": "accept_work_order",
-      "hash": "0xb0b940322d1ec2aaed1abf3e63b20138896d9bc0f71218bf3ecb381337ac122f",
+      "hash": "0xd4c23861c5aeed869ec3fa2e6e4534ed13d9e8b04b314ada491056e17f09b4e4",
       "ok": true,
-      "text": "{\"work_order_id\": \"wo-00002\", \"current_version\": 1, \"committed_wei\": \"3000000000000000000\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xb0b940322d1ec2aaed1abf3e63b20138896d9bc0f71218bf3ecb381337ac122f"
+      "text": "{\"work_order_id\": \"wo-00002\", \"current_version\": 1}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xd4c23861c5aeed869ec3fa2e6e4534ed13d9e8b04b314ada491056e17f09b4e4"
     },
-    "version.propose": {
-      "name": "version.propose",
+    "motion.v3": {
+      "name": "motion.v3",
+      "role": "STEWARD",
+      "fn": "propose_amendment",
+      "hash": "0x02f715715cf344ff728d6e230f5817ed8cab9230c9942280b899a180df5fea83",
+      "ok": true,
+      "text": "{\"version\": 3, \"window_ends\": \"2026-09-27T07:48:32Z\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x02f715715cf344ff728d6e230f5817ed8cab9230c9942280b899a180df5fea83"
+    },
+    "provider.revoke_b": {
+      "name": "provider.revoke_b",
+      "role": "FOUNDER",
+      "fn": "revoke_provider",
+      "hash": "0x4d5e36490be17b8c2a9a6325e6c79b3d319d14fc4d1c63792708298e537b479c",
+      "ok": true,
+      "text": "{\"provider\": \"0x52Df2f24290639EDf381Cf5F006189ed694276a7\", \"revoked_at\": \"2026-09-27T07:40:40Z\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x4d5e36490be17b8c2a9a6325e6c79b3d319d14fc4d1c63792708298e537b479c"
+    },
+    "provider.revoked_assign": {
+      "name": "provider.revoked_assign",
+      "role": "FOUNDER",
+      "fn": "create_work_order",
+      "hash": "0xa29519ceed122540c1dfb76590f1eeb0f7741fb553b9b7e04fde27d09fd8c7bb",
+      "ok": false,
+      "text": "[EXPECTED] the provider is not authorised by this organisation",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xa29519ceed122540c1dfb76590f1eeb0f7741fb553b9b7e04fde27d09fd8c7bb"
+    },
+    "order.v1.revise": {
+      "name": "order.v1.revise",
       "role": "FOUNDER",
       "fn": "propose_version",
-      "hash": "0xf0658e24688992fd7a68a48e7b9a963ab255f931193eaba87fc4aa39a67b4434",
+      "hash": "0x874f40522d3fb1fa695a5ed95d4f9b7ce152104e4a565c43a94e13c4ef6a3204",
       "ok": true,
-      "text": "{\"work_order_id\": \"wo-00002\", \"version\": 2, \"pending\": true}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xf0658e24688992fd7a68a48e7b9a963ab255f931193eaba87fc4aa39a67b4434"
+      "text": "t{\"version\": 2}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x874f40522d3fb1fa695a5ed95d4f9b7ce152104e4a565c43a94e13c4ef6a3204"
     },
-    "version.sign": {
-      "name": "version.sign",
+    "order.v1.accept_revision": {
+      "name": "order.v1.accept_revision",
       "role": "PROVIDER",
       "fn": "accept_work_order",
-      "hash": "0xf62bd5b1f4a5d7b5eb19d09b3a21ef8daabe71eae92ddad8af9a9bd0ea31bdcb",
+      "hash": "0x9c4e47e948eb5759ddc70c605f7ada0cbb600f943b8666ac068ced452ed3b511",
       "ok": true,
-      "text": "{\"work_order_id\": \"wo-00002\", \"current_version\": 2, \"committed_wei\": \"2000000000000000000\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xf62bd5b1f4a5d7b5eb19d09b3a21ef8daabe71eae92ddad8af9a9bd0ea31bdcb"
+      "text": "{\"work_order_id\": \"wo-00002\", \"current_version\": 2}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x9c4e47e948eb5759ddc70c605f7ada0cbb600f943b8666ac068ced452ed3b511"
     },
     "pause": {
       "name": "pause",
       "role": "STEWARD",
       "fn": "pause_organization",
-      "hash": "0xf60e7241e37edece807891b5fdee2816816b6d20c009c72e8bb55f9e0d49e311",
+      "hash": "0x40bb40e33159666be9bf89872508498bb6bf190378557304827b948633eaa31b",
       "ok": true,
-      "text": "{\"organization_id\": \"org-00001\", \"state\": \"PAUSED\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xf60e7241e37edece807891b5fdee2816816b6d20c009c72e8bb55f9e0d49e311"
+      "text": "{\"state\": \"PAUSED\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x40bb40e33159666be9bf89872508498bb6bf190378557304827b948633eaa31b"
     },
-    "pause.no_orders": {
-      "name": "pause.no_orders",
+    "pause.no_new_work": {
+      "name": "pause.no_new_work",
       "role": "FOUNDER",
       "fn": "create_work_order",
-      "hash": "0x01210659cd10725468132cb458ead179502f41f4c207a59e4385e2df98db420d",
+      "hash": "0xd77eb21ba0bf04a42fd950a2fc65e5a465b727933a532237486394ef5e47e758",
       "ok": false,
-      "text": "[EXPECTED] a paused organisation creates no work orders",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x01210659cd10725468132cb458ead179502f41f4c207a59e4385e2df98db420d"
+      "text": "[EXPECTED] a paused organisation cannot commission work",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xd77eb21ba0bf04a42fd950a2fc65e5a465b727933a532237486394ef5e47e758"
     },
-    "pause.no_amendments": {
-      "name": "pause.no_amendments",
-      "role": "FOUNDER",
-      "fn": "propose_amendment",
-      "hash": "0x8786bd3718e936e0bac19b63a1d019224ff4a614d790ba525d8cfae8e8f0f2cf",
-      "ok": false,
-      "text": "[EXPECTED] a paused organisation takes no amendments; resume it first",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x8786bd3718e936e0bac19b63a1d019224ff4a614d790ba525d8cfae8e8f0f2cf"
-    },
-    "pause.provider_still_files": {
-      "name": "pause.provider_still_files",
+    "pause.work_continues": {
+      "name": "pause.work_continues",
       "role": "PROVIDER",
       "fn": "submit_declaration",
-      "hash": "0xb7f10e5399d332acad38b448fb6094188c0bf4cbe33fd40bb2123d6309b2615c",
+      "hash": "0x720324d31af8613139a9f70ec851670dd9e064bdf3c3ada6cf714f1a9a1109fa",
       "ok": true,
-      "text": "{\"item_id\": \"ev-000003\", \"sha256\": \"3ba766168dc15747ac9585cf14eadf14ec1a4a251c046ec0beea6ac774e2806a\", \"read_by_rounds\": false}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xb7f10e5399d332acad38b448fb6094188c0bf4cbe33fd40bb2123d6309b2615c"
+      "text": "{\"evidence_id\": \"ev-000006\", \"adjudicated\": false}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x720324d31af8613139a9f70ec851670dd9e064bdf3c3ada6cf714f1a9a1109fa"
     },
     "resume": {
       "name": "resume",
       "role": "FOUNDER",
       "fn": "resume_organization",
-      "hash": "0xc014ab67692835800e4360533521487339a6cfb31053658819bc2eb62d32e826",
+      "hash": "0x76004966ab117cfdba2382aa446a0bd09808a7a1df120d2370c31ae2834150af",
       "ok": true,
-      "text": "{\"organization_id\": \"org-00001\", \"state\": \"ACTIVE\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xc014ab67692835800e4360533521487339a6cfb31053658819bc2eb62d32e826"
+      "text": "{\"state\": \"ACTIVE\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x76004966ab117cfdba2382aa446a0bd09808a7a1df120d2370c31ae2834150af"
     },
-    "cancel.create": {
-      "name": "cancel.create",
+    "order.cancel.create": {
+      "name": "order.cancel.create",
       "role": "FOUNDER",
       "fn": "create_work_order",
-      "hash": "0x15cbd838555be0207add6cf2a0ba8963d9f7218c22eea22bcab97111c56ada68",
-      "ok": true,
-      "text": "{\"work_order_id\": \"wo-00004\", \"version\": 1}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x15cbd838555be0207add6cf2a0ba8963d9f7218c22eea22bcab97111c56ada68"
-    },
-    "cancel.stranger": {
-      "name": "cancel.stranger",
-      "role": "STRANGER",
-      "fn": "cancel_work_order",
-      "hash": "0x4b3b9ebbab62920bffcacf392478d38a17af7cc0f80722c262f13964d6453a35",
-      "ok": false,
-      "text": "[EXPECTED] only a steward named in the constitution in force may do this",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x4b3b9ebbab62920bffcacf392478d38a17af7cc0f80722c262f13964d6453a35"
-    },
-    "cancel": {
-      "name": "cancel",
-      "role": "STEWARD",
-      "fn": "cancel_work_order",
-      "hash": "0xca9f660f11331d6a638aca00861226554737815f9da4ae35d46117be499681d1",
-      "ok": true,
-      "text": "{\"work_order_id\": \"wo-00004\", \"state\": \"CANCELLED\", \"released_wei\": \"1000000000000000000\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xca9f660f11331d6a638aca00861226554737815f9da4ae35d46117be499681d1"
-    },
-    "close.create": {
-      "name": "close.create",
-      "role": "FOUNDER",
-      "fn": "create_work_order",
-      "hash": "0xe71b868dcd102d239f527ce58526241862c201544a78ae232a80c05a0ce78506",
+      "hash": "0x31c1cae247559f1f4000f15c4073d2bb55d4eaff176c18eca11c3e43907fb6d5",
       "ok": true,
       "text": "{\"work_order_id\": \"wo-00005\", \"version\": 1}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xe71b868dcd102d239f527ce58526241862c201544a78ae232a80c05a0ce78506"
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x31c1cae247559f1f4000f15c4073d2bb55d4eaff176c18eca11c3e43907fb6d5"
     },
-    "close.sign": {
-      "name": "close.sign",
+    "order.cancel": {
+      "name": "order.cancel",
+      "role": "STEWARD",
+      "fn": "cancel_work_order",
+      "hash": "0x2062f493a863672536b4f4d2c8c9fd22041e131e6f2ab2a8ed01d07f9e7918ce",
+      "ok": true,
+      "text": "{\"state\": \"CANCELLED\", \"released_wei\": \"1000000000000000000\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x2062f493a863672536b4f4d2c8c9fd22041e131e6f2ab2a8ed01d07f9e7918ce"
+    },
+    "order.close.create": {
+      "name": "order.close.create",
+      "role": "FOUNDER",
+      "fn": "create_work_order",
+      "hash": "0x850604672612c456ff6d2e78d51ddcfa228a9aeb4edbec84fba9b262bc9b05f3",
+      "ok": true,
+      "text": "{\"work_order_id\": \"wo-00006\", \"version\": 1}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x850604672612c456ff6d2e78d51ddcfa228a9aeb4edbec84fba9b262bc9b05f3"
+    },
+    "order.close.accept": {
+      "name": "order.close.accept",
       "role": "PROVIDER",
       "fn": "accept_work_order",
-      "hash": "0x9dba45fd95dfa10f868612438f57aa1c57ba42f3a346c0a879fd189f34e259ec",
+      "hash": "0xf0f3dc94144e585b76fd46566833c30c263b3d89a976e1a13c2efd25d9b3c90c",
       "ok": true,
-      "text": "{\"work_order_id\": \"wo-00005\", \"current_version\": 1, \"committed_wei\": \"1000000000000000000\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x9dba45fd95dfa10f868612438f57aa1c57ba42f3a346c0a879fd189f34e259ec"
+      "text": "{\"work_order_id\": \"wo-00006\", \"current_version\": 1}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xf0f3dc94144e585b76fd46566833c30c263b3d89a976e1a13c2efd25d9b3c90c"
     },
-    "close.early": {
-      "name": "close.early",
+    "order.close.early": {
+      "name": "order.close.early",
       "role": "STRANGER",
       "fn": "close_work_order",
-      "hash": "0xc417dd34361b9cc7fb2e8f1cfe6ef80f809d10915f00d8edf968fc9935a2d8a1",
+      "hash": "0xa77c0927e35d3f7a332dadf614fe32605d5db5bb66e2a8880635e41aee589c4a",
       "ok": false,
       "text": "[EXPECTED] the deadline has not passed",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xc417dd34361b9cc7fb2e8f1cfe6ef80f809d10915f00d8edf968fc9935a2d8a1"
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xa77c0927e35d3f7a332dadf614fe32605d5db5bb66e2a8880635e41aee589c4a"
     },
-    "amend.ratify_v3": {
-      "name": "amend.ratify_v3",
+    "motion.enact_v3": {
+      "name": "motion.enact_v3",
       "role": "STRANGER",
-      "fn": "ratify_amendment",
-      "hash": "0xd58c12e8cec632c39e91a127578f0e14402fa795761cf9fb67f552eeab31f985",
+      "fn": "enact_motion",
+      "hash": "0xbf9212bc79f7415f05d156672c63f00aa8c520b12739d8379797fa05dfc0a09e",
       "ok": true,
-      "text": "{\"organization_id\": \"org-00001\", \"constitution_version\": 3}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xd58c12e8cec632c39e91a127578f0e14402fa795761cf9fb67f552eeab31f985"
+      "text": "{\"state\": \"ACTIVE\", \"constitution_version\": 3}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xbf9212bc79f7415f05d156672c63f00aa8c520b12739d8379797fa05dfc0a09e"
     },
-    "v3.corrective_refused": {
-      "name": "v3.corrective_refused",
+    "v3.refuses_old_kind": {
+      "name": "v3.refuses_old_kind",
       "role": "FOUNDER",
       "fn": "create_work_order",
-      "hash": "0x51a80a5071aecf2d5270d24e0ebf09d6aa329015daf8534b8e626e108df1978e",
+      "hash": "0xeb921ebe0428ba327f6a09e2d49ef8e991d4de92366ad9c0639dc2ed354e28ae",
       "ok": false,
-      "text": "[EXPECTED] the constitution in force does not fund corrective maintenance",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x51a80a5071aecf2d5270d24e0ebf09d6aa329015daf8534b8e626e108df1978e"
+      "text": "[EXPECTED] the constitution in force does not fund component replacement",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xeb921ebe0428ba327f6a09e2d49ef8e991d4de92366ad9c0639dc2ed354e28ae"
     },
-    "v3.cap_refused": {
-      "name": "v3.cap_refused",
-      "role": "FOUNDER",
-      "fn": "create_work_order",
-      "hash": "0x8ce67ceb94a3d8c9d9abed14c40a85249c191a3c5c3a7fad4d0eaaba0fbed416",
-      "ok": false,
-      "text": "[EXPECTED] the payment exceeds the constitution's limit for one work order",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x8ce67ceb94a3d8c9d9abed14c40a85249c191a3c5c3a7fad4d0eaaba0fbed416"
-    },
-    "v1.revision_still_v1": {
-      "name": "v1.revision_still_v1",
-      "role": "FOUNDER",
-      "fn": "propose_version",
-      "hash": "0xbc2ab48fdfac0760199171012469e80fe1d337aa9d0515c81e32ae819a625089",
-      "ok": true,
-      "text": "{\"work_order_id\": \"wo-00002\", \"version\": 3, \"pending\": true}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xbc2ab48fdfac0760199171012469e80fe1d337aa9d0515c81e32ae819a625089"
-    },
-    "close": {
-      "name": "close",
+    "order.close": {
+      "name": "order.close",
       "role": "STRANGER",
       "fn": "close_work_order",
-      "hash": "0xcb10efe66b6dd4a51e0c0627fe216f89c106778737ab2dfedcca1d6b9ff8a887",
+      "hash": "0x9b70b09812d0366beee2650c65b090f5e8f5ae7035d6f120dd6d238961c14a1f",
       "ok": true,
-      "text": "{\"work_order_id\": \"wo-00005\", \"state\": \"CLOSED\", \"released_wei\": \"1000000000000000000\"}",
-      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xcb10efe66b6dd4a51e0c0627fe216f89c106778737ab2dfedcca1d6b9ff8a887"
+      "text": "{\"state\": \"CLOSED_UNPAID\", \"released_wei\": \"1000000000000000000\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x9b70b09812d0366beee2650c65b090f5e8f5ae7035d6f120dd6d238961c14a1f"
+    },
+    "order.close.v1": {
+      "name": "order.close.v1",
+      "role": "STRANGER",
+      "fn": "close_work_order",
+      "hash": "0xc085308577399028c6607605aa6e0468d4de96a96bfa1e62af9a6f20969e6074",
+      "ok": false,
+      "text": "[EXPECTED] the deadline has not passed",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xc085308577399028c6607605aa6e0468d4de96a96bfa1e62af9a6f20969e6074"
+    },
+    "dissolve.propose": {
+      "name": "dissolve.propose",
+      "role": "FOUNDER",
+      "fn": "propose_dissolution",
+      "hash": "0x27377119641ddc506dea49fee5a3605c5d827b26c14818d0acc6e34f6d3c7c25",
+      "ok": true,
+      "text": "{\"window_ends\": \"2026-09-27T08:14:02Z\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x27377119641ddc506dea49fee5a3605c5d827b26c14818d0acc6e34f6d3c7c25"
+    },
+    "dissolve.enact": {
+      "name": "dissolve.enact",
+      "role": "STRANGER",
+      "fn": "enact_motion",
+      "hash": "0x70315a460fbf96fd48978f763f355a35d54a3477f653d62dbc8c0db5d334ec7a",
+      "ok": true,
+      "text": "{\"state\": \"DISSOLVING\", \"constitution_version\": 3}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x70315a460fbf96fd48978f763f355a35d54a3477f653d62dbc8c0db5d334ec7a"
+    },
+    "dissolve.no_new_funds": {
+      "name": "dissolve.no_new_funds",
+      "role": "STRANGER",
+      "fn": "fund_treasury",
+      "hash": "0xca87e7fc281e1771e0df0eb4d078daec03afd9dd59f4661a9f18179508e7e16a",
+      "ok": true,
+      "text": "{\"refused\": true, \"reason\": \"the organisation is dissolving and takes no new funds; the value sent is refundable\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xca87e7fc281e1771e0df0eb4d078daec03afd9dd59f4661a9f18179508e7e16a"
+    },
+    "dissolve.blocked": {
+      "name": "dissolve.blocked",
+      "role": "STRANGER",
+      "fn": "complete_dissolution",
+      "hash": "0x9ba756b7b777d9f975242aa8749c67d0cb853c407e85cbf348dc20e3b242916a",
+      "ok": false,
+      "text": "[EXPECTED] work orders are still open; each must settle or close first",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x9ba756b7b777d9f975242aa8749c67d0cb853c407e85cbf348dc20e3b242916a"
+    },
+    "dissolve.close_last": {
+      "name": "dissolve.close_last",
+      "role": "STRANGER",
+      "fn": "close_work_order",
+      "hash": "0xfc52301670d54274f4db61e34e7ac1df7bed9b7d96b6e262e7db07921049f173",
+      "ok": true,
+      "text": "{\"state\": \"CLOSED_UNPAID\", \"released_wei\": \"2000000000000000000\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xfc52301670d54274f4db61e34e7ac1df7bed9b7d96b6e262e7db07921049f173"
+    },
+    "dissolve.complete": {
+      "name": "dissolve.complete",
+      "role": "STRANGER",
+      "fn": "complete_dissolution",
+      "hash": "0x2644f484c4e0e4d5873890efb2e0a53aaaf84abcdb9766f013530d8c99fd48ea",
+      "ok": true,
+      "text": "{\"state\": \"DISSOLVED\", \"returned_wei\": \"6000000000000000000\", \"to\": \"0x328b9d5D3Ee88390c3dbb754E20bcaB3b386Ac6b\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x2644f484c4e0e4d5873890efb2e0a53aaaf84abcdb9766f013530d8c99fd48ea"
+    },
+    "dissolve.claim": {
+      "name": "dissolve.claim",
+      "role": "BENEFICIARY",
+      "fn": "claim_refund",
+      "hash": "0xbbb976294e83245d0ee75dd2451c4faea8a1bd287e870a7827ed90d1512db32b",
+      "ok": true,
+      "text": "{\"to\": \"0x328b9d5D3Ee88390c3dbb754E20bcaB3b386Ac6b\", \"wei\": \"6000000000000000000\"}",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xbbb976294e83245d0ee75dd2451c4faea8a1bd287e870a7827ed90d1512db32b"
     }
   },
   "pending": {}

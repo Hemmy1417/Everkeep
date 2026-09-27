@@ -4,7 +4,7 @@
  * environment override points a checkout at another deployment, and the app
  * says so on every page it renders.
  */
-export const RECORD_ADDRESS = "0x3B144fEf76B942c3DE967c257cc56fde8AEBB79c";
+export const RECORD_ADDRESS = "0x4418253D7332661BfdF917DfE6B554cD0399F97c";
 
 const override = process.env.NEXT_PUBLIC_EVERKEEP_CONTRACT?.trim() ?? "";
 
@@ -14,7 +14,10 @@ export const IS_RECORD = CONTRACT_ADDRESS.toLowerCase() === RECORD_ADDRESS.toLow
 
 /** The sha256 of the contract source these bytes were compiled from. */
 export const SOURCE_SHA256 =
-  "9fbea60d6ca74143a2f4d78230ca9907e07cd048575c53f36164e88c0ad4103f";
+  "b9e2ed47e1c0136b8831d42435e4d75f670e2950da2b5e8f9c33a2767c87e75a";
 
 export const REPO_URL = "https://github.com/Hemmy1417/Everkeep";
 export const SOURCE_URL = `${REPO_URL}/blob/main/contracts/everkeep.py`;
+
+/** The organisation the dashboard opens on. Every other organisation is one click away. */
+export const FEATURED_ORG = process.env.NEXT_PUBLIC_EVERKEEP_ORG?.trim() || "org-00001";

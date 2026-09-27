@@ -32,6 +32,26 @@
       "ret": "string",
       "payable": false
     },
+    "authorize_provider": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "provider",
+          "string"
+        ],
+        [
+          "profile_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
     "cancel_work_order": {
       "params": [
         [
@@ -48,7 +68,7 @@
       "ret": "string",
       "payable": false
     },
-    "claim": {
+    "claim_refund": {
       "params": [],
       "kwparams": {},
       "readonly": false,
@@ -59,6 +79,18 @@
       "params": [
         [
           "wid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "complete_dissolution": {
+      "params": [
+        [
+          "oid",
           "string"
         ]
       ],
@@ -99,10 +131,10 @@
       "ret": "string",
       "payable": false
     },
-    "decide_appeal": {
+    "enact_motion": {
       "params": [
         [
-          "wid",
+          "oid",
           "string"
         ]
       ],
@@ -146,17 +178,6 @@
       "readonly": true,
       "ret": "string"
     },
-    "get_balance": {
-      "params": [
-        [
-          "addr",
-          "string"
-        ]
-      ],
-      "kwparams": {},
-      "readonly": true,
-      "ret": "string"
-    },
     "get_config": {
       "params": [],
       "kwparams": {},
@@ -172,6 +193,17 @@
         [
           "version",
           "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_decision": {
+      "params": [
+        [
+          "did",
+          "string"
         ]
       ],
       "kwparams": {},
@@ -197,18 +229,7 @@
       "readonly": true,
       "ret": "string"
     },
-    "get_image": {
-      "params": [
-        [
-          "eid",
-          "string"
-        ]
-      ],
-      "kwparams": {},
-      "readonly": true,
-      "ret": "bytes"
-    },
-    "get_item": {
+    "get_evidence": {
       "params": [
         [
           "eid",
@@ -219,7 +240,18 @@
       "readonly": true,
       "ret": "string"
     },
-    "get_item_text": {
+    "get_evidence_image": {
+      "params": [
+        [
+          "eid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "bytes"
+    },
+    "get_evidence_text": {
       "params": [
         [
           "eid",
@@ -241,15 +273,22 @@
       "readonly": true,
       "ret": "string"
     },
-    "get_round": {
+    "get_refund": {
       "params": [
         [
-          "wid",
+          "addr",
           "string"
-        ],
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_snapshot": {
+      "params": [
         [
-          "n",
-          "int"
+          "sid",
+          "string"
         ]
       ],
       "kwparams": {},
@@ -272,18 +311,6 @@
       "kwparams": {},
       "readonly": true,
       "ret": "string"
-    },
-    "lapse_appeal": {
-      "params": [
-        [
-          "wid",
-          "string"
-        ]
-      ],
-      "kwparams": {},
-      "readonly": false,
-      "ret": "string",
-      "payable": false
     },
     "list_assets": {
       "params": [
@@ -319,6 +346,17 @@
       "readonly": true,
       "ret": "string"
     },
+    "list_providers": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
     "list_work_orders": {
       "params": [
         [
@@ -338,7 +376,7 @@
       "readonly": true,
       "ret": "string"
     },
-    "object_amendment": {
+    "object_motion": {
       "params": [
         [
           "oid",
@@ -402,6 +440,22 @@
       "ret": "string",
       "payable": false
     },
+    "propose_dissolution": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "reason",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
     "propose_version": {
       "params": [
         [
@@ -418,10 +472,10 @@
       "ret": "string",
       "payable": false
     },
-    "ratify_amendment": {
+    "readjudicate": {
       "params": [
         [
-          "oid",
+          "wid",
           "string"
         ]
       ],
@@ -451,10 +505,6 @@
         [
           "wid",
           "string"
-        ],
-        [
-          "named_json",
-          "string"
         ]
       ],
       "kwparams": {},
@@ -466,6 +516,50 @@
       "params": [
         [
           "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "retire_asset": {
+      "params": [
+        [
+          "aid",
+          "string"
+        ],
+        [
+          "reason",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "revoke_provider": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ],
+        [
+          "provider",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "settle": {
+      "params": [
+        [
+          "wid",
           "string"
         ]
       ],

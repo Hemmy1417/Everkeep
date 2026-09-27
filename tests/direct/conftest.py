@@ -5,8 +5,8 @@
   closure on the leader's result; a validator returning False fails the
   round with nothing written, like the network.
 
-  THE MODEL. `exec_prompt` answers from per-role queues, one for image
-  prompts ("look") and one for criteria prompts ("judge"), so a test can make
+  THE MODEL. `exec_prompt` answers from per-role queues, one for the
+  photograph examination ("look") and one for the adjudication ("judge"), so a test can make
   the leader and the validator read the same evidence differently. It also
   enforces GenVM's image rules measured in docs/PROBE-REPORT: at most two
   images, each at most 5 MB, PNG or JFIF-headed JPEG only.
@@ -37,6 +37,8 @@ CONTRACT_PATH = (pathlib.Path(__file__).resolve().parents[2]
 FOUNDER = to_checksum_address("0x691e25a08e00fa16fc95b159589ba563727d77a8")
 STEWARD2 = to_checksum_address("0x7a1b2c3d4e5f60718293a4b5c6d7e8f901234567")
 PROVIDER = to_checksum_address("0x56e71175c0772a21a6170e3d95184f126526e9f2")
+PROVIDER2 = to_checksum_address("0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc")
+BENEFICIARY = to_checksum_address("0x90f79bf6eb2c4f870365e785982e1f101e93b906")
 INSPECTOR = to_checksum_address("0x69730962ce945c8da10817a6ae53fbaff7675531")
 STRANGER = to_checksum_address("0xd41fca7210904c6d2f4e00c377e76f8aad43ec9e")
 DEPLOYER = to_checksum_address("0x26ed19d786db6c920d0969b2d8a25f6a0fc8e338")
@@ -277,17 +279,17 @@ if sys.platform == "win32":
     os.unlink = _tolerant_unlink
 
 
-_TREES = ("counters", "organizations", "constitutions", "assets", "org_assets", "work_orders",
-          "org_orders", "role_index", "items", "item_bytes", "item_text", "version_items",
-          "rounds", "ledger", "events")
+_TREES = ("counters", "organizations", "constitutions", "providers", "org_providers", "assets",
+          "org_assets", "work_orders", "org_orders", "party_orders", "evidence", "evidence_bytes",
+          "evidence_text", "version_evidence", "decisions", "snapshots", "refunds", "events")
 
-_PUBLIC_WRITES = ("create_organization", "fund_treasury", "propose_amendment", "object_amendment",
-                  "ratify_amendment", "pause_organization", "resume_organization",
-                  "register_asset", "accept_inspector_role", "create_work_order",
-                  "accept_work_order", "propose_version", "cancel_work_order",
-                  "submit_image", "submit_document", "submit_declaration", "submit_reference",
-                  "request_assessment", "open_appeal", "decide_appeal", "lapse_appeal",
-                  "finalize", "close_work_order", "claim")
+_PUBLIC_WRITES = ("create_organization", "fund_treasury", "propose_amendment", "propose_dissolution",
+                  "object_motion", "enact_motion", "complete_dissolution", "pause_organization",
+                  "resume_organization", "authorize_provider", "revoke_provider", "register_asset",
+                  "accept_inspector_role", "retire_asset", "create_work_order", "accept_work_order",
+                  "propose_version", "cancel_work_order", "submit_image", "submit_document",
+                  "submit_declaration", "submit_reference", "request_assessment", "open_appeal",
+                  "readjudicate", "finalize", "settle", "close_work_order", "claim_refund")
 
 
 def _revert_on_raise(inst, name):
@@ -401,117 +403,94 @@ def exif_jpeg(size=4000):
 
 
 
-# ── the domain: parties, constitution, terms, evidence, model answers ─────────
+# ── the domain ───────────────────────────────────────────────────────────────
 
-from _fixtures import (  # noqa: E402  (after the stub is installed)
-    CRITERIA, DEADLINE, PRINCIPLES, asset, constitution, judge_all, judge_answer,
-    look_all, look_answer, terms,
+from _fixtures import (  # noqa: E402
+    CRITERIA, DEADLINE, PRINCIPLES, all_ids, asset, constitution, judgment, provider_profile,
+    ratings, seen, terms,
 )
 
 
 def create_org(module, c, escrow=10 * GEN, stewards=None, **over):
     as_(module, FOUNDER, escrow)
-    out = json.loads(c.create_organization(constitution(stewards or [FOUNDER, STEWARD2], **over)))
+    out = json.loads(c.create_organization(constitution(stewards or [FOUNDER, STEWARD2], BENEFICIARY, **over)))
     assert out["refused"] is False, out
     return out["organization_id"]
 
 
-def register(module, c, oid, who=FOUNDER, **over):
-    as_(module, who)
+def authorize(module, c, oid, who=PROVIDER, **over):
+    as_(module, FOUNDER)
+    return json.loads(c.authorize_provider(oid, who, provider_profile(**over)))
+
+
+def enrol(module, c, oid, **over):
+    as_(module, FOUNDER)
     return json.loads(c.register_asset(oid, asset(**over)))["asset_id"]
 
 
-def create_order(module, c, aid, provider=PROVIDER, who=FOUNDER, **over):
-    as_(module, who)
+def commission(module, c, aid, provider=PROVIDER, **over):
+    as_(module, FOUNDER)
     return json.loads(c.create_work_order(aid, provider, terms(**over)))["work_order_id"]
 
 
-def active_order(module, c, escrow=10 * GEN, inspector="", org_over=None, asset_over=None,
-                 **terms_over):
-    """An organisation with one asset and one work order the provider signed."""
+def active_order(module, c, escrow=10 * GEN, inspector="", org_over=None, **terms_over):
+    """An organisation, an authorised provider, an enrolled asset, and a work
+    order the provider has accepted."""
     oid = create_org(module, c, escrow=escrow, **(org_over or {}))
-    aid = register(module, c, oid, inspector=inspector, **(asset_over or {}))
+    authorize(module, c, oid)
+    aid = enrol(module, c, oid, inspector=inspector)
     if inspector:
         as_(module, inspector)
         c.accept_inspector_role(aid)
-    wid = create_order(module, c, aid, **terms_over)
+    wid = commission(module, c, aid, **terms_over)
     as_(module, PROVIDER)
     c.accept_work_order(wid, 1)
     return oid, aid, wid
 
 
-def image(module, c, wid, who=PROVIDER, crit="C1", data=None,
-          caption="The replacement inverter on the plant-room wall", origin="PHOTO", **meta):
+def photo(module, c, wid, who=PROVIDER, view="AFTER", data=None, description="The new controller on the board"):
     as_(module, who)
-    m = {"criterion_id": crit, "caption": caption, "origin": origin,
-         "claimed_capture": "2026-09-24", "claimed_location": "Ahero health centre"}
-    m.update(meta)
-    return json.loads(c.submit_image(wid, json.dumps(m),
-                                     data if data is not None else jfif(caption.encode())))["item_id"]
+    meta = {"view": view, "description": description, "capture_timestamp": "2026-09-24T10:00:00Z",
+            "location_reference": "Lakeside workshop"}
+    return json.loads(c.submit_image(wid, json.dumps(meta),
+                                     data if data is not None else jfif(f"{view}{description}".encode())))["evidence_id"]
 
 
-def document(module, c, wid, who=PROVIDER, crit="", title="Technical report",
-             doc_type="TECHNICAL_REPORT",
-             text="Replaced the faulted 5 kW inverter with a 6 kW unit; commissioned and producing.",
-             reference="TR-0424"):
+def document(module, c, wid, who=PROVIDER, doc_type="TECHNICAL_REPORT", title="Technician report",
+             text="Replaced the failed controller; system charging at 12.5 V."):
     as_(module, who)
-    meta = {"criterion_id": crit, "title": title, "doc_type": doc_type, "reference": reference}
-    return json.loads(c.submit_document(wid, json.dumps(meta), text))["item_id"]
+    return json.loads(c.submit_document(wid, json.dumps({"doc_type": doc_type, "title": title}), text))["evidence_id"]
 
 
-def declaration(module, c, wid, who=PROVIDER, text="The array is repaired and producing."):
-    as_(module, who)
-    return json.loads(c.submit_declaration(wid, text))["item_id"]
+def standard_file(module, c, wid):
+    """An after photograph and a meter display: what the flagship terms require."""
+    return [photo(module, c, wid, view="AFTER"), photo(module, c, wid, view="METER_DISPLAY",
+                                                       description="Controller display reading")]
 
 
-def reference(module, c, wid, who=PROVIDER, url="https://example.org/video/commissioning.mp4",
-              claimed_sha256="a" * 64, reference_type="VIDEO_REFERENCE"):
-    as_(module, who)
-    meta = {"url": url, "claimed_sha256": claimed_sha256, "reference_type": reference_type,
-            "caption": "Commissioning walk-through"}
-    return json.loads(c.submit_reference(wid, json.dumps(meta)))["item_id"]
-
-
-def _resolve_basis(answer, default_basis):
-    """The fixtures cite "*" as a basis: the harness resolves it to a real
-    item of the round, so a default answer is grounded on an image and a
-    test that wants paperwork as the basis names the document itself."""
-    if callable(answer) or isinstance(answer, BaseException) or not isinstance(answer, dict):
+def llm(look=None, judge=None, v_look=None, v_judge=None, basis_default="ev-000001"):
+    def fill(answer):
+        if isinstance(answer, dict) and isinstance(answer.get("requirements"), list):
+            for row in answer["requirements"]:
+                if row.get("basis") == ["*"]:
+                    row["basis"] = [basis_default]
         return answer
-    for key in ("principles", "criteria"):
-        for row in answer.get(key) or []:
-            if isinstance(row, dict) and row.get("basis") == ["*"]:
-                row["basis"] = [default_basis]
-    return answer
-
-
-def llm(look=None, judge=None, v_look=None, v_judge=None, default_basis="ev-000001"):
-    """Queue model answers; validator queues default to the leader's."""
-    if judge is not None:
-        judge = [_resolve_basis(a, default_basis) for a in judge] if isinstance(judge, list)             else _resolve_basis(judge, default_basis)
-    if v_judge is not None:
-        v_judge = [_resolve_basis(a, default_basis) for a in v_judge] if isinstance(v_judge, list)             else _resolve_basis(v_judge, default_basis)
     for kind, leader, validator in (("look", look, v_look), ("judge", judge, v_judge)):
-        _ANSWERS[kind]["leader"].clear()
-        _ANSWERS[kind]["validator"].clear()
-        _CALLS[kind]["leader"] = 0
-        _CALLS[kind]["validator"] = 0
-        if leader is not None:
-            _ANSWERS[kind]["leader"].extend(leader if isinstance(leader, list) else [leader])
-        if validator is not None:
-            _ANSWERS[kind]["validator"].extend(validator if isinstance(validator, list) else [validator])
+        for role, val in (("leader", leader), ("validator", validator)):
+            _ANSWERS[kind][role].clear()
+            _CALLS[kind][role] = 0
+            if val is not None:
+                vals = val if isinstance(val, list) else [val]
+                _ANSWERS[kind][role].extend(fill(json.loads(json.dumps(v))) if isinstance(v, dict) else v
+                                            for v in vals)
 
 
-def assess(module, c, wid, items, look=None, judge=None, **kw):
-    llm(look=look if look is not None else look_all(),
-        judge=judge if judge is not None else judge_all(),
-        default_basis=items[0] if items else "ev-000001", **kw)
+def assess(module, c, wid, judge=None, look=None, basis=None, **kw):
+    llm(look=look if look is not None else seen(2),
+        judge=judge if judge is not None else judgment(ratings()),
+        basis_default=basis or "ev-000001", **kw)
     as_(module, PROVIDER)
-    return json.loads(c.request_assessment(wid, json.dumps(items)))
-
-
-def claimable(c, addr):
-    return int(json.loads(c.get_balance(addr))["claimable"])
+    return json.loads(c.request_assessment(wid))
 
 
 def order(c, wid):
@@ -522,5 +501,13 @@ def org(c, oid):
     return json.loads(c.get_organization(oid))
 
 
-def rounds(c, wid, n):
-    return json.loads(c.get_round(wid, n))
+def decision(c, did):
+    return json.loads(c.get_decision(did))
+
+
+def asset_view(c, aid):
+    return json.loads(c.get_asset(aid))
+
+
+def refund(c, addr):
+    return int(json.loads(c.get_refund(addr))["owed"])

@@ -1,12 +1,8 @@
-"""Mutation check: break each safety floor of contracts/everkeep.py and prove
-the direct suite fails, then prove the unbroken contract passes.
+"""Mutation sweep: break each rule of contracts/everkeep.py in a scratch copy
+and prove the direct suite fails, then prove the unbroken contract passes.
 
 Run from the repo root:  python tests/mutation/mutate.py
-Exit status 0 only if every mutant is killed and the control passes. The
-sweep works on a temporary copy of contracts/ and tests/, so the repository's
-own files are never touched. A floor guarded in two places is broken in both
-at once (a list of replacements), or one of the two mutants is equivalent and
-would report a false pin.
+Exit status 0 only if every mutant is killed and the control passes.
 """
 import pathlib
 import shutil
@@ -17,263 +13,196 @@ import tempfile
 REPO = pathlib.Path(__file__).resolve().parents[2]
 TEXT = (REPO / "contracts" / "everkeep.py").read_text(encoding="utf-8")
 
+F = "        if False:"
 MUTATIONS = [
-    # ── blindness: a node votes only on evidence it says it saw ─────────────
-    ("a node that never claims to have seen the image counts as a reader",
-     '                readable = bool(row.get("readable", False)) and bool(row.get("shows"))',
-     '                readable = bool(row.get("readable", True)) and bool(row.get("shows"))'),
-    ("a reading with nothing in it counts as a reader",
-     '                readable = bool(row.get("readable", False)) and bool(row.get("shows"))',
-     '                readable = bool(row.get("readable", False))'),
-    ("a blind leader is agreed with",
-     '            if not theirs.get("images_received"):', "            if False:"),
-    ("a blind validator agrees anyway",
-     '            if not mine["images_received"]:', "            if False:"),
+    # ── the outcome and its grounds ─────────────────────────────────────────
+    ("conflicts no longer withhold payment", '    if conflicts:\n        return "UNDETERMINED"\n    values',
+     '    if False:\n        return "UNDETERMINED"\n    values'),
+    ("an unsatisfied requirement no longer rejects",
+     '    if any(v == "NOT_SATISFIED" for v in values):', "    if False:"),
+    ("doubt pays", '    if any(v == "NOT_ESTABLISHED" for v in values) or not sufficient:', "    if False:"),
+    ("insufficiency alone no longer withholds",
+     '    if any(v == "NOT_ESTABLISHED" for v in values) or not sufficient:',
+     '    if any(v == "NOT_ESTABLISHED" for v in values):'),
+    ("a datasheet establishes a requirement",
+     '            out[rid] = status if seen else "NOT_ESTABLISHED"', "            out[rid] = status"),
+    ("any document counts as an observation",
+     '        if kinds[e] == "DOCUMENT" and roles[e] == "INSPECTOR" and docs.get(e) in INSPECTOR_DOCUMENTS:',
+     '        if kinds[e] == "DOCUMENT":'),
+    ("a basis outside the file grounds a finding", "        if e not in kinds:\n            continue",
+     "        if False:\n            continue"),
+    ("consistency needs no provider document", "            seen = seen and paper", "            seen = seen"),
+    # ("an unrated requirement reads as satisfied") alone is equivalent: an
+    # unrated requirement has no basis, so grounding turns SATISFIED back into
+    # NOT_ESTABLISHED. Paired with grounding switched off, it is a real test.
+    ("an unrated requirement reads as satisfied, with grounding off", [
+        ('            elif status not in REQUIREMENT_STATUSES:\n                status = "NOT_ESTABLISHED"',
+         '            elif status not in REQUIREMENT_STATUSES:\n                status = "SATISFIED"'),
+        ('            out[rid] = status if seen else "NOT_ESTABLISHED"', "            out[rid] = status")]),
+    ("a criterion is waived as not applicable",
+     '            elif status == "NOT_APPLICABLE" and not rid.startswith("P"):',
+     '            elif status == "NOT_APPLICABLE" and rid.startswith("S"):'),
+    ("a system requirement is waived by the model",
+     '            elif status == "NOT_APPLICABLE" and not rid.startswith("P"):', "            elif False:"),
+    ("evidence sufficiency read loosely", '        sufficient = out.get("evidence_sufficient") is True',
+     '        sufficient = bool(out.get("evidence_sufficient"))'),
+    ("before and after applicability decided by the model",
+     '            status = "NOT_APPLICABLE"\n            elif status not in', '            pass\n            elif status not in'),
+    # ── consensus ───────────────────────────────────────────────────────────
+    ("an acceptance stands without the validator's own",
+     '    if lo == "ACCEPTED" and mo != "ACCEPTED":', "    if False:"),
+    ("a rejection stands on grounds the validator does not see",
+     '            if tr[i] == "NOT_SATISFIED" and mine["ratings"][i] != "NOT_SATISFIED":', "            if False:"),
+    ("a rejection ignores the validator's conflict", "        if mine[\"conflicts\"]:\n            return \"this node sees",
+     "        if False:\n            return \"this node sees"),
+    ("a leader withholds an acceptance", '    if lo == "UNDETERMINED" and mo == "ACCEPTED":', "    if False:"),
+    ("a leader invents a conflict", '    if bool(theirs.get("conflicts")) and not mine["conflicts"]:', "    if False:"),
+    ("a leader rates only some requirements",
+     "    if any(tr.get(i) not in REQUIREMENT_STATUSES for i in ids):", "    if False:"),
+    ("a blind leader is agreed with", '            if not theirs.get("seen"):', "            if False:"),
+    ("a blind validator agrees", '            if not mine["seen"]:', "            if False:"),
+    ("a node that never says it saw counts as seeing",
+     '                seen = bool(row.get("seen", False)) and bool(_clean(row.get("shows"), LONG_MAX))',
+     '                seen = bool(row.get("seen", True)) and bool(_clean(row.get("shows"), LONG_MAX))'),
     ("a failed leader is agreed with",
-     '                print("[DISAGREE] the leader\'s round failed")\n                return False',
-     '                print("mutant")\n                return True'),
-    ("a malformed leader result is agreed with",
-     '                print("[DISAGREE] the leader\'s result is malformed")\n                return False',
-     '                print("mutant")\n                return True'),
-    ("a validator whose own reading failed agrees",
-     '                print("[DISAGREE] this validator could not judge the evidence: " + str(e)[:200])\n'
-     "                return False",
-     '                print("mutant")\n                return True'),
-
-    # ── grounding: the floors and their mirrors, which are the product ──────
-    ("a criterion is decided on paperwork alone (met and not met)",
-     '        if status in ("MET", "NOT_MET") and not _observed(', "        if False and _observed("),
-    ("a principle is decided on paperwork alone (satisfied and violated)",
-     '        if status in ("SATISFIED", "VIOLATED") and not _observed(', "        if False and _observed("),
-    ("a party's own document counts as an observation",
-     '        if kind_of[e] == "DOCUMENT" and role_of[e] == "INSPECTOR" \\\n'
-     '                and doc_type_of.get(e) == "INSPECTION_REPORT":',
-     '        if kind_of[e] == "DOCUMENT":'),
-    ("the inspector's other paperwork counts as an observation",
-     '                and doc_type_of.get(e) == "INSPECTION_REPORT":', "                and True:"),
-    ("grounding reads a basis the round never held",
-     "        if e not in kind_of:\n            continue", "        if False:\n            continue"),
-    ("an unrated principle is read as satisfied, with grounding off too", [
-        ('            principles[pid] = status if status in PRINCIPLE_STATUSES else "UNCLEAR"',
-         '            principles[pid] = status if status in PRINCIPLE_STATUSES else "SATISFIED"'),
-        ('        if status in ("SATISFIED", "VIOLATED") and not _observed(', "        if False and _observed(")]),
-    ("an unrated criterion is read as met, with grounding off too", [
-        ('            criteria[cid] = status if status in CRITERION_STATUSES else "UNCLEAR"',
-         '            criteria[cid] = status if status in CRITERION_STATUSES else "MET"'),
-        ('        if status in ("MET", "NOT_MET") and not _observed(', "        if False and _observed(")]),
-
-    # ── derivation: doubt and conflict never pay ────────────────────────────
-    ("conflicts no longer undetermine",
-     '    if conflicts:\n        return "UNDETERMINED"\n    crit_values',
-     '    if False:\n        return "UNDETERMINED"\n    crit_values'),
-    ("a violated principle or unmet criterion no longer rejects",
-     '    if any(v == "NOT_MET" for v in crit_values) or any(v == "VIOLATED" for v in prin_values):',
-     "    if False:"),
-    ("doubt pays",
-     '    if any(v != "MET" for v in crit_values) or any(v != "SATISFIED" for v in prin_values):',
-     "    if False:"),
-    ("a violated principle hides behind not applicable",
-     '    prin_values = [v for v in principles.values() if v != "NOT_APPLICABLE"]',
-     '    prin_values = [v for v in principles.values() if v not in ("NOT_APPLICABLE", "VIOLATED")]'),
-    ("the receipt calls insufficient evidence sufficient",
-     '    if any(v == "UNCLEAR" for v in criteria.values()) \\\n'
-     '            or any(v == "UNCLEAR" for v in principles.values()):',
-     "    if False:"),
-
-    # ── consensus: what a validator must reproduce ──────────────────────────
-    ("an acceptance stands without the validator's own acceptance",
-     '    if leader_decision == "ACCEPTED" and my_decision != "ACCEPTED":', "    if False:"),
-    ("a rejection stands on a criterion the validator does not reproduce",
-     '            if tc[cid] == "NOT_MET" and mc[cid] != "NOT_MET":', "            if False:"),
-    ("a rejection stands on a principle the validator does not reproduce",
-     '            if tp[pid] == "VIOLATED" and mp[pid] != "VIOLATED":', "            if False:"),
-    ("a rejection ignores a conflict the validator sees",
-     "        if mine_conflicts:\n            return \"this node sees a conflict",
-     "        if False:\n            return \"this node sees a conflict"),
-    ("a leader withholds an acceptance a validator would grant",
-     '    if leader_decision == "UNDETERMINED" and my_decision == "ACCEPTED":', "    if False:"),
-    ("a conflict the leader alone reports is recorded",
-     "    if theirs_conflicts and not mine_conflicts:", "    if False:"),
-    ("a leader that does not rate every principle stands",
-     "    if any(v not in PRINCIPLE_STATUSES for v in tp.values()):", "    if False:"),
-    ("a leader that does not rate every criterion stands",
-     "    if any(v not in CRITERION_STATUSES for v in tc.values()):", "    if False:"),
-    ("the record overstates what was decisive",
-     '        return {"criteria": [k for k, v in criteria.items() if v == "NOT_MET"],\n'
-     '                "principles": [k for k, v in principles.items() if v == "VIOLATED"]}',
-     '        return {"criteria": list(criteria), "principles": list(principles)}'),
-
-    # ── the prompt: blind reading, fences, and what never reaches it ────────
-    ("the reading step is told what to expect",
-     '        head = ("You are reading photographs from a community infrastructure site: "',
-     '        head = ("Expect a replacement inverter, a labelled isolator and no exposed conductors. "'),
+     '                print("[DISSENT] the leader\'s assessment failed")\n                return False',
+     '                print("x")\n                return True'),
+    # ── what the panel is shown ─────────────────────────────────────────────
+    ("principles out of scope are put to the panel",
+     "            if not p[\"applies_to\"] or maintenance_type in p[\"applies_to\"]]", "            if True]"),
+    ("declarations reach the panel, past both gates", [
+        ('            elif it["kind"] == "DOCUMENT":\n                docs[eid]',
+         '            elif it["kind"] != "IMAGE":\n                docs[eid] = it.get("doc_type", "")\n                texts.append((it, self.evidence_text.get(eid) or ""))\n            if False:\n                docs[eid]'),
+        ('        return [e for e in self._items(wid, version) if self._item(e)["kind"] in ("IMAGE", "DOCUMENT")]',
+         '        return list(self._items(wid, version))')]),
     ("fences can be forged",
-     '    return str(text or "").replace("<<<", "< <<").replace(">>>", ">> >").replace("END ITEM", "END_ITEM")',
-     '    return str(text or "")'),
-    ("a declaration or reference reaches a round, past both gates", [
-        ('            elif it["kind"] == "DOCUMENT":\n                doc_type_of[eid]',
-         '            elif it["kind"] != "IMAGE":\n                doc_type_of[eid]'),
-        ('                  if e not in chosen and self._item(e)["role"] != "PROVIDER"\n'
-         '                  and self._item(e)["kind"] in ("IMAGE", "DOCUMENT")]',
-         '                  if e not in chosen and self._item(e)["role"] != "PROVIDER"]')]),
-    ("an appeal reads a declaration filed since",
-     '                   and self._item(e)["kind"] in ("IMAGE", "DOCUMENT")]\n        eids = recorded + new_ids',
-     '                   ]\n        eids = recorded + new_ids'),
-
-    # ── the enforced half: rules code checks, never a panel ─────────────────
-    ("an unsupported infrastructure type is registered",
-     '        if infra not in c["supported_infrastructure_types"]:', "        if False:"),
-    ("an unfunded maintenance type is commissioned",
-     '    if maintenance_type not in constitution["approved_maintenance_types"]:', "    if False:"),
-    ("a payment above the constitution's cap",
-     '    if payment > int(constitution["funding_rules"]["max_payment_wei"]):', "    if False:"),
-    ("the open work order cap is ignored",
-     '        if self._open_count(o) >= int(c["funding_rules"]["max_open_work_orders"]):', "        if False:"),
-    ("the minimum images rule is not enforced",
-     '    if counts["IMAGE"] < rules["min_images"]:', "    if False:"),
-    ("the inspection report rule is not enforced",
-     '    if rules["inspection_report_required"] and counts["INSPECTION_REPORT"] < 1:', "    if False:"),
-    ("a work order's own evidence requirement is not enforced",
-     '        if counts[req["type"]] < req["min_count"]:', "        if False:"),
-    # ("the provider's own inspection report satisfies the rule") is left out:
-    # _item_meta refuses an INSPECTION_REPORT from anyone but the accepted
-    # inspector at filing, so no other role's report ever reaches
-    # _required_gap and the role check there is a second guard on a locked
-    # door. Its mutant would be equivalent.
-    ("anyone files an inspection report",
-     '            if doc_type == "INSPECTION_REPORT" and who != "INSPECTOR":', "            if False:"),
-    ("a constitution with nothing to judge",
-     "    if not principles:\n        _refuse(\"the constitution needs at least one maintenance principle; \"",
-     "    if False:\n        _refuse(\"the constitution needs at least one maintenance principle; \""),
-    ("a work order with nothing to judge",
-     "    if not criteria:\n        _refuse(\"a work order needs at least one acceptance criterion\")",
-     "    if False:\n        _refuse(\"a work order needs at least one acceptance criterion\")"),
-    ("a deadline in the past",
-     '    if deadline <= now:\n        _refuse("the deadline has already passed")',
-     '    if False:\n        _refuse("the deadline has already passed")'),
-    ("a steward is the provider of the organisation's own order",
-     '        if prov in c["stewards"]:', "        if False:"),
-    ("a steward is the inspector",
-     '            if inspector in c["stewards"]:', "            if False:"),
-
-    # ── governance: who governs, and when an amendment takes effect ─────────
-    ("a stranger acts as a steward",
-     "        if not self._is_steward(o, addr):\n            _refuse(", "        if False:\n            _refuse("),
-    ("a founder keeps power outside the stewards list",
-     '        if sender not in constitution["stewards"]:', "        if False:"),
-    ("an amendment takes effect inside its window",
-     '        if now <= _parse_iso(a["window_ends"]):\n            _refuse("the amendment window is still open")',
-     '        if False:\n            _refuse("the amendment window is still open")'),
-    ("an objection lands after the window",
-     '        if now > _parse_iso(a["window_ends"]):\n            _refuse("the amendment window has closed',
-     '        if False:\n            _refuse("the amendment window has closed'),
-    ("a second amendment replaces a pending one",
-     '        if o.get("amendment") and o["amendment"]["state"] == "PROPOSED":', "        if False:"),
-    ("an amendment reaches an existing work order",
-     '        c = self._constitution(o["organization_id"], int(w["constitution_version"]))\n        terms = _validate_terms(raw, c)',
-     '        c = self._effective(o)\n        terms = _validate_terms(raw, c)'),
-    ("a paused organisation commissions work",
-     '        if o["state"] != "ACTIVE":\n            _refuse("a paused organisation creates no work orders")',
-     '        if False:\n            _refuse("a paused organisation creates no work orders")'),
-
-    # ── evidence: who may file, and what is read ───────────────────────────
-    ("a stranger files evidence",
-     '        if not who:\n            _refuse("only a steward, the provider and the asset\'s accepted inspector file evidence")',
-     '        if False:\n            _refuse("only a steward, the provider and the asset\'s accepted inspector file evidence")'),
-    ("evidence is filed against a standing acceptance",
-     '        if w["state"] == "ACCEPTED":\n            _refuse("the acceptance stands; to contest it, open an appeal, "',
-     '        if False:\n            _refuse("the acceptance stands; to contest it, open an appeal, "'),
-    ("a party files past its quota",
-     "        if len(mine) >= quota:", "        if False:"),
-    ("an appeal reads unbounded new evidence",
-     "        if len(added) >= limit:", "        if False:"),
-    ("an image the runner cannot read is stored",
-     '            _refuse("the runtime reads PNG and JFIF JPEG only; re-save the image and file it again")',
-     "            pass"),
-    ("the provider hides the counterparty's evidence",
-     '        others = [e for e in on_version\n                  if e not in chosen and self._item(e)["role"] != "PROVIDER"',
-     '        others = [e for e in on_version\n                  if False and e not in chosen and self._item(e)["role"] != "PROVIDER"'),
-    ("one round reads unbounded evidence from the provider",
-     '            if counts[_bucket(it["kind"])] > MAX_NAMED[_bucket(it["kind"])]:', "            if False:"),
-    ("an unaccepted inspector's report counts as the inspector's",
-     '        if a.get("inspector") and addr == a["inspector"] and a.get("inspector_accepted_at"):',
-     '        if a.get("inspector") and addr == a["inspector"]:'),
-
-    # ── money and the state machine ────────────────────────────────────────
-    ("a work order commits treasury another order holds",
-     '        if payment > self._available(o):\n            _refuse("the treasury has less uncommitted than this work order would pay")',
-     '        if False:\n            _refuse("the treasury has less uncommitted than this work order would pay")'),
-    ("new terms commit treasury the organisation does not hold",
-     '        if extra > self._available(o):', "        if False:"),
-    ("an acceptance pays inside its appeal window",
-     '        if standing["appealable"] and _now() <= _parse_iso(standing["window_ends"]):\n'
-     '            _refuse("the appeal window is still open")',
-     '        if False:\n            _refuse("the appeal window is still open")'),
-    ("a work order closes before its deadline",
-     '            if now <= _parse_iso(self._terms(w, version)["deadline"]):\n'
-     '                _refuse("the deadline has not passed")',
-     '            if False:\n                _refuse("the deadline has not passed")'),
-    ("a close kills terms the provider can still sign",
-     '        if pending and _parse_iso(self._terms(w, int(pending))["deadline"]) > now:',
+     '    return (str(text or "").replace("<<<", "< <<").replace(">>>", ">> >")',
+     '    return (str(text or "")'),
+    ("before and after are not examined together",
+     '        images.sort(key=lambda p: (order.get(p[0]["view"], 2), _seq(p[0]["evidence_id"])))', "        pass"),
+    # ── preflight and the enforced half ─────────────────────────────────────
+    ("evidence rules are not checked before the panel", "        if gap:\n            _refuse(gap)\n        if not any",
+     "        if False:\n            _refuse(gap)\n        if not any"),
+    # ("the inspector rule counts anyone's report") is left out: filing
+    # already refuses an inspection report or checklist from anyone but the
+    # accepted, independent inspector, so no other role's report reaches the
+    # preflight count. The role check there is a second lock on a locked door.
+    ("a meter display does not count as a reading",
+     '        return (kind == "IMAGE" and view == "METER_DISPLAY") or (kind == "DOCUMENT" and doc == "METER_READING")',
+     '        return kind == "DOCUMENT" and doc == "METER_READING"'),
+    ("an unfunded kind of work is commissioned",
+     '    if mtype not in constitution["eligibility_rules"]["approved_maintenance_types"]:', "    if False:"),
+    ("a provider is assigned outside their work", "    if provider_types and mtype not in provider_types:", "    if False:"),
+    ("the payment cap is ignored", "    if budget > cap:", "    if False:"),
+    ("the payment exceeds the budget", "    if budget < payment:", "    if False:"),
+    ("emergency work uses the ordinary cap",
+     '    limit_key = "emergency_max_payment_wei" if mtype == "EMERGENCY_REPAIR" else None', "    limit_key = None"),
+    ("the reserve floor is ignored",
+     '        return self._available(o) - int(self._in_force(o)["funding_rules"]["reserve_floor_wei"])',
+     "        return self._available(o)"),
+    ("the open-order cap is ignored",
+     '        if self._open_orders(o["organization_id"]) >= int(c["funding_rules"]["max_open_work_orders"]):',
      "        if False:"),
-    ("a close ignores a standing appeal window",
-     '                    and now <= _parse_iso(standing["window_ends"]):\n'
-     '                _refuse("a decision\'s appeal window is still open")',
-     '                    and False:\n                _refuse("a decision\'s appeal window is still open")'),
-    ("a signed order is cancelled",
-     '        if w["state"] != "PROPOSED":\n            _refuse("only an order the provider has not signed can be cancelled")',
-     '        if False:\n            _refuse("only an order the provider has not signed can be cancelled")'),
-    ("a version is signed after its own deadline",
-     '        if _parse_iso(terms["deadline"]) <= _now():\n            _refuse("that version\'s deadline has passed; a steward proposes new terms")',
-     '        if False:\n            _refuse("that version\'s deadline has passed; a steward proposes new terms")'),
-    ("an appeal opens outside its window",
-     '        if now > _parse_iso(standing["window_ends"]):\n            _refuse("the appeal window has closed")',
+    ("an unauthorised provider is assigned", '        if not p or p.get("revoked_at"):\n            _refuse("the provider is not authorised by this organisation")',
+     '        if False:\n            _refuse("the provider is not authorised by this organisation")'),
+    ("unsupported infrastructure is enrolled", '        if atype not in c["supported_infrastructure_types"]:', F),
+    ("a steward inspects their own work", '            if inspector in c["governance"]["stewards"]:', "            if False:"),
+    ("a retired asset takes work", '        if a.get("retired_at"):\n            _refuse("the asset is retired")',
+     '        if False:\n            _refuse("the asset is retired")'),
+    ("a naive deadline is accepted", '    if parsed.tzinfo is None:\n        raise ValueError("no timezone")',
+     "    if False:\n        pass"),
+    ("money arrives as a float", "    if isinstance(raw, bool) or not isinstance(raw, (int, str)):", "    if False:"),
+    # ── who may act ─────────────────────────────────────────────────────────
+    ("anyone acts as a steward", '        if self._sender() not in self._stewards(o):', F),
+    ("the founder need not be a steward",
+     '            if sender not in c["governance"]["stewards"]:', "            if False:"),
+    ("a stranger files evidence", '            _refuse("only the assigned provider, the asset\'s accepted inspector, or a steward "',
+     '            role = "PROVIDER"\n            if False: _refuse("only the assigned provider, the asset\'s accepted inspector, or a steward "'),
+    ("an unaccepted inspector files",
+     '        elif a.get("inspector") and sender == a["inspector"] and a.get("inspector_accepted_at") \\\n',
+     '        elif a.get("inspector") and sender == a["inspector"] \\\n'),
+    ("a provider files an inspection report", '        if doc in INSPECTOR_DOCUMENTS and role != "INSPECTOR":', F),
+    ("anyone requests an assessment", '        if self._sender() != w["provider"]:\n            _refuse("only the assigned provider requests an assessment")',
+     '        if False:\n            _refuse("only the assigned provider requests an assessment")'),
+    ("the provider appeals their own acceptance", '            if sender not in self._stewards(o):\n                _refuse("only a steward appeals an acceptance")',
+     '            if False:\n                _refuse("only a steward appeals an acceptance")'),
+    ("a steward appeals against the provider's interest", '            if sender != w["provider"]:\n                _refuse("only the provider appeals',
+     '            if False:\n                _refuse("only the provider appeals'),
+    ("anyone readjudicates during the evidence period",
+     '        if self._sender() != appeal["opened_by"] and _now() <= _parse_iso(appeal["evidence_ends"]):', F),
+    # ── time and finality ───────────────────────────────────────────────────
+    ("filing after the deadline", '            if now > _parse_iso(self._terms(w, w["current_version"])["deadline"]):\n                _refuse("the deadline has passed")',
+     '            if False:\n                _refuse("the deadline has passed")'),
+    ("filing after the appeal's evidence period", '            if now > _parse_iso(appeal["evidence_ends"]):\n                _refuse("the appeal\'s evidence period has ended")',
+     '            if False:\n                _refuse("the appeal\'s evidence period has ended")'),
+    ("assessment after the deadline", '        if _now() > _parse_iso(terms["deadline"]):\n            _refuse("the deadline has passed; the work order can only be closed")',
+     '        if False:\n            _refuse("the deadline has passed; the work order can only be closed")'),
+    ("a second first-assessment", '        if w["state"] != "ACTIVE":\n            _refuse("an assessment is requested once',
+     '        if w["state"] not in ("ACTIVE", "DECIDED"):\n            _refuse("an assessment is requested once'),
+    ("an appeal after the window", '        if now > _parse_iso(d["appeal_window_ends"]):\n            _refuse("the appeal window has closed")',
      '        if False:\n            _refuse("the appeal window has closed")'),
-    ("the wrong party appeals",
-     "        if who != allowed:", "        if False:"),
-    ("a readjudication runs during the evidence period",
-     '        if _now() <= _parse_iso(appeal["evidence_ends"]):\n            _refuse("the appeal\'s evidence period is still open")',
-     '        if False:\n            _refuse("the appeal\'s evidence period is still open")'),
-    ("an appeal lapses early",
-     '        if _now() <= _parse_iso(appeal["evidence_ends"]) + timedelta(seconds=APPEAL_LAPSE_SECONDS):',
-     "        if False:"),
-    ("a refused creation keeps the value",
-     '            if wei:\n                self._credit(sender, wei)\n            return json.dumps({"refused": True,\n'
-     '                               "reason": f"{str(e).replace(ERROR_EXPECTED + \' \', \'\')}; "\n'
-     '                                         "any value sent is claimable back"})\n\n    def _create_organization',
-     '            return json.dumps({"refused": True,\n'
-     '                               "reason": f"{str(e).replace(ERROR_EXPECTED + \' \', \'\')}; "\n'
-     '                                         "any value sent is claimable back"})\n\n    def _create_organization'),
-    ("a claim is paid before the balance is cleared",
-     '        row["claimable"] = "0"\n        row["claimed"] = str(int(row["claimed"]) + amount)',
-     '        row["claimed"] = str(int(row["claimed"]) + amount)'),
-    ("assessments are unbounded per version",
-     '        if int(w["version_assessments"]) >= MAX_ASSESSMENTS_PER_VERSION:', "        if False:"),
-    ("the finalized payment is not taken from the treasury",
-     '        o["escrow_wei"] = str(int(o["escrow_wei"]) - payment)', "        pass"),
-    ("a lapsed appeal leaves the money committed to nobody", [
-        ('        w["state"] = "UNDETERMINED"\n        w["standing"] = {"round": int(appeal["reviewed_round"]), "decision": "UNDETERMINED",',
-         '        w["state"] = "CLOSED"\n        w["standing"] = {"round": int(appeal["reviewed_round"]), "decision": "UNDETERMINED",')]),
-    ("a round forgets which constitution it applied",
-     '            "constitution_version": int(w["constitution_version"]),\n            "at": _iso(now), "requested_by"',
-     '            "constitution_version": 0,\n            "at": _iso(now), "requested_by"'),
+    ("appeals are unlimited", '        if d["appeals_left"] <= 0:', F),
+    ("a decision finalizes inside its window",
+     '        if d["appeals_left"] > 0 and now <= _parse_iso(d["appeal_window_ends"]):', F),
+    ("the appeals counter never moves", '        w["appeals_used"] = int(w["appeals_used"]) + 1', "        pass"),
+    ("the original decision is not marked superseded",
+     '        prior["lifecycle"], prior["superseded_by"] = "SUPERSEDED", d["decision_id"]', "        pass"),
+    ("terms change after a decision", '        if w["state"] not in ("PROPOSED", "ACTIVE") or w["decisions"]:',
+     '        if w["state"] not in ("PROPOSED", "ACTIVE", "DECIDED"):'),
+    ("an expired version is accepted", '        if _parse_iso(terms["deadline"]) <= _now():\n            _refuse("that version\'s deadline has passed")',
+     '        if False:\n            _refuse("that version\'s deadline has passed")'),
+    ("active work closes before its deadline", '            if now <= _parse_iso(self._terms(w, w["current_version"])["deadline"]):\n                _refuse("the deadline has not passed")',
+     '            if False:\n                _refuse("the deadline has not passed")'),
+    ("an open appeal closes early",
+     '            if now <= stale:', "            if False:"),
+    ("a motion is enacted inside its window",
+     '        if now <= _parse_iso(m["window_ends"]):\n            _refuse("the motion\'s window is still open")',
+     '        if False:\n            _refuse("the motion\'s window is still open")'),
+    ("an objection after the window",
+     '        if _now() > _parse_iso(m["window_ends"]):\n            _refuse("the motion\'s window has closed', F + '\n            _refuse("the motion\'s window has closed'),
+    ("two motions at once", '        if o.get("motion") and o["motion"]["state"] == "PENDING":', F),
+    # ── money ───────────────────────────────────────────────────────────────
+    ("settlement without finality", '        if w["state"] != "PAYMENT_RELEASABLE":\n            _refuse("only a finalized acceptance is settled")',
+     '        if w["state"] not in ("PAYMENT_RELEASABLE", "DECIDED"):\n            _refuse("only a finalized acceptance is settled")'),
+    ("settlement leaves the treasury untouched", '        o["escrow_wei"] = str(int(o["escrow_wei"]) - pay)', "        pass"),
+    ("a rejection pays", '        if d["outcome"] == "ACCEPTED":\n            pay = int(w["committed_wei"])',
+     '        if d["outcome"] in ("ACCEPTED", "REJECTED"):\n            pay = int(w["committed_wei"])'),
+    ("a closed order keeps its commitment", '        released = self._release(o, w)\n        w["closed_at"], w["close_reason"] = _iso(now), "closed without',
+     '        released = 0\n        w["closed_at"], w["close_reason"] = _iso(now), "closed without'),
+    ("dissolution completes with work open", '        if self._open_orders(o["organization_id"]) > 0:', F),
+    ("dissolution refunds nobody", "        if remaining > 0:\n            self._refund(beneficiary, remaining)",
+     "        if False:\n            self._refund(beneficiary, remaining)"),
+    ("a dissolving organisation takes funds", '            if o["state"] in ("DISSOLVING", "DISSOLVED"):', "            if False:"),
+    ("a refused founding keeps the value", "            if wei:\n                self._refund(sender, wei)\n            return json.dumps({\"refused\": True, \"reason\": str(e).replace(ERROR_EXPECTED + \" \", \"\")\n                               + (\"; the value sent is refundable\" if wei else \"\")})\n\n    @gl.public.write.payable",
+     "            return json.dumps({\"refused\": True, \"reason\": str(e).replace(ERROR_EXPECTED + \" \", \"\")\n                               + (\"; the value sent is refundable\" if wei else \"\")})\n\n    @gl.public.write.payable"),
+    ("a refund is paid before it is cleared", '        row["owed"], row["paid"] = "0", str(int(row["paid"]) + owed)',
+     '        row["paid"] = str(int(row["paid"]) + owed)'),
+    ("an acceptance left undecided on appeal closes unpaid",
+     '            if prior["outcome"] == "ACCEPTED":\n                pay = int(w["committed_wei"])',
+     '            if False:\n                pay = int(w["committed_wei"])'),
+    ("the ordinary quota blocks an appeal answer",
+     '        elif len(in_bucket) >= QUOTAS[role][bucket]:',
+     '        if len(in_bucket) >= QUOTAS[role][bucket]:'),
+    ("a steward-inspector still files as independent",
+     '                and sender not in self._stewards(self._org(w["organization_id"])):', "                and True:"),
+    ("a steward is paid for the organisation's work",
+     '        if addr in c["governance"]["stewards"]:\n            _refuse("a steward cannot be paid', '        if False:\n            _refuse("a steward cannot be paid'),
+    ("a paused organisation grows a commitment", '        if delta > 0 and o["state"] != "ACTIVE":', "        if False:"),
+    ("the leader's notes are stored as sent",
+     '                "notes": _clean_notes(result.get("notes"), ids, len(case["images"]))}', '                "notes": result["notes"]}'),
+    ("the asset never returns to monitoring", '        if old in WORK_STATES and new not in WORK_STATES:', F),
+    ("service is not recorded", '        if outcome == "ACCEPTED":\n            a["last_serviced_at"] = now',
+     '        if False:\n            a["last_serviced_at"] = now'),
 ]
 
 
-def suite_passes(work: pathlib.Path) -> tuple:
-    r = subprocess.run([sys.executable, "-m", "pytest", "tests/direct/", "-q", "-x",
-                        "--tb=no", "-p", "no:cacheprovider"],
+def run(work: pathlib.Path) -> tuple:
+    r = subprocess.run([sys.executable, "-m", "pytest", "tests/direct/", "-q", "-x", "--tb=no",
+                        "-p", "no:cacheprovider", "--deselect",
+                        "tests/direct/test_invariants.py::test_the_walk_reaches_the_whole_machine"],
                        cwd=work, capture_output=True, text=True)
     tail = [ln for ln in r.stdout.splitlines() if ln.strip()][-1:] or [""]
     return r.returncode == 0, tail[0]
-
-
-def apply(text: str, edits: list):
-    for old, new in edits:
-        if text.count(old) != 1:
-            return None
-        text = text.replace(old, new)
-    return text
 
 
 def main() -> int:
@@ -281,25 +210,26 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="everkeep-mutants-") as tmp:
         work = pathlib.Path(tmp)
         shutil.copytree(REPO / "contracts", work / "contracts")
-        shutil.copytree(REPO / "tests", work / "tests",
-                        ignore=shutil.ignore_patterns("__pycache__", "mutation"))
+        shutil.copytree(REPO / "tests", work / "tests", ignore=shutil.ignore_patterns("__pycache__", "mutation"))
         shutil.copy(REPO / "pyproject.toml", work / "pyproject.toml")
         target = work / "contracts" / "everkeep.py"
         for entry in MUTATIONS:
             name = entry[0]
             edits = entry[1] if isinstance(entry[1], list) else [(entry[1], entry[2])]
-            mutant = apply(TEXT, edits)
-            if mutant is None:
-                print(f"SKIPPED  {name}: a target is missing or ambiguous", flush=True)
+            if any(TEXT.count(old) != 1 for old, _ in edits):
+                print(f"SKIPPED  {name}: a target is missing or repeated", flush=True)
                 survivors.append(name)
                 continue
+            mutant = TEXT
+            for old, new in edits:
+                mutant = mutant.replace(old, new)
             target.write_text(mutant, encoding="utf-8", newline="\n")
-            passed, tail = suite_passes(work)
+            passed, tail = run(work)
             print(f"{'SURVIVED' if passed else 'killed  '} {name}  ({tail})", flush=True)
             if passed:
                 survivors.append(name)
         target.write_text(TEXT, encoding="utf-8", newline="\n")
-        passed, tail = suite_passes(work)
+        passed, tail = run(work)
     print(f"control, the contract as written: {'passes' if passed else 'FAILS'} ({tail})")
     print(f"{len(MUTATIONS) - len(survivors)}/{len(MUTATIONS)} mutants killed")
     if survivors:

@@ -1,15 +1,14 @@
 /**
- * Which transaction decided which round. The contract cannot know its own
- * transaction hash, so a round's hash is known in two honest ways: this
- * browser sent it (remembered here after it finalized), or it is in the
- * published proof log for the deployment of record (docs/proofs, committed
- * with the run that produced it). Anything else links to the contract's
- * page on the explorer instead of guessing.
+ * Which transaction produced which decision. The contract cannot know its own
+ * transaction hash, so a decision's hash is known in two honest ways: this
+ * browser sent it, or it is in the published proof log for the deployment of
+ * record (docs/proofs). Otherwise the receipt links to the contract's page on
+ * the explorer rather than guessing.
  */
 import { CONTRACT_ADDRESS } from "./config";
 import proofLog from "./proof-log.json";
 
-const KEY = `everkeep.${CONTRACT_ADDRESS}.round-tx`;
+const KEY = `everkeep.${CONTRACT_ADDRESS}.decision-tx`;
 
 function read(): Record<string, string> {
   try {
@@ -19,26 +18,22 @@ function read(): Record<string, string> {
   }
 }
 
-export function rememberRoundTx(mid: string, round: number, hash: string): void {
+export function rememberDecisionTx(did: string, hash: string): void {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify({ ...read(), [`${mid}/${round}`]: hash }));
+    window.localStorage.setItem(KEY, JSON.stringify({ ...read(), [did]: hash }));
   } catch {
-    /* not remembered: the certificate links to the explorer instead */
+    /* not remembered: the receipt links to the explorer instead */
   }
 }
 
-export interface RoundTx {
-  hash: string;
-  source: "this browser" | "the published proof log";
-}
+export interface DecisionTx { hash: string; source: "this browser" | "the published proof log" }
 
-export function roundTx(mid: string, round: number): RoundTx | null {
-  const key = `${mid}/${round}`;
-  const mine = read()[key];
+export function decisionTx(did: string): DecisionTx | null {
+  const mine = read()[did];
   if (mine) return { hash: mine, source: "this browser" };
-  const log = proofLog as { address?: string; rounds?: Record<string, string> };
-  if (log.address?.toLowerCase() === CONTRACT_ADDRESS.toLowerCase() && log.rounds?.[key]) {
-    return { hash: log.rounds[key], source: "the published proof log" };
+  const log = proofLog as { address?: string; decisions?: Record<string, string> };
+  if (log.address?.toLowerCase() === CONTRACT_ADDRESS.toLowerCase() && log.decisions?.[did]) {
+    return { hash: log.decisions[did], source: "the published proof log" };
   }
   return null;
 }

@@ -1,4 +1,4 @@
-/** Shared chain config and transport for every ICARUS script. */
+/** Shared chain config and transport for the EVERKEEP scripts. */
 import { studioDevnet } from "genlayer-js/chains";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -20,7 +20,7 @@ export async function rpc(method, params) {
     try {
       const res = await fetch(RPC, {
         method: "POST",
-        headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 icarus-scripts" },
+        headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 everkeep-scripts" },
         body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
       });
       const text = await res.text();
@@ -114,7 +114,7 @@ export async function transferFees(client, { address, functionName, args, value 
  * Every node's model, vote and diagnostic lines, for every leader rotation
  * (consensus_history), not only the last one.
  */
-export async function dumpReceipt(hash, tags = ["[ROUND]", "[DISAGREE]", "[LOOK]"]) {
+export async function dumpReceipt(hash, tags = ["[ASSESS]", "[DISSENT]"]) {
   const t = (await rpc("eth_getTransactionByHash", [hash])).result;
   const rotations = t?.consensus_history?.consensus_results?.length
     ? t.consensus_history.consensus_results.map((r) => ({

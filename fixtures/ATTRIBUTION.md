@@ -1,36 +1,31 @@
 # Evidence used in the demonstration
 
-Every photograph on the deployment of record is a real photograph of a real
-installation, published under a free licence and attributed here. None of it is
-anyone's actual contract: the projects are demonstrations written to show how
-the record works.
+The photographs on the deployment of record are three public-domain photographs of one real, small off-grid
+solar installation in Wisconsin, taken by Cody Kabus and published on Wikimedia Commons. The organisation,
+asset, work orders and people on the record are fictional: a demonstration of how the record works, not
+anyone's contract.
 
-| file | what it shows | author | licence | source |
+| File | What it shows | Author | Licence | Source |
 |---|---|---|---|---|
-| `growatt-inverter.jpg` | A Growatt string inverter installed on a wall, front face, with the manufacturer's name legible and the model not | Zátonyi Sándor (ifj.) Fizped | CC BY 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Growatt_MOD_4000TL3-X_inverter.jpg) |
-| `growatt-nameplate.jpg` | The rating plate on the side of the same unit: `Growatt PV Grid Inverter, Model name MOD 4000TL3-X, 4000 W`, with serial and CE marks | Zátonyi Sándor (ifj.) Fizped | CC BY 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Growatt_MOD_4000TL3-X_inverter_data_sheet.jpg) |
-| `kostal-inverter.jpg` | A Kostal Piko inverter installed on a wall: a different manufacturer and model, used where the terms specify something the site does not have | Asurnipal | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Dornbirn-Kostal_Inverter-Piko_10.1-02ASD.jpg) |
-| `array-kenya.jpg` | An installed photovoltaic array | PowerAfricaSolar | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Solar_Installation_in_Kenya.jpg) |
+| `bank-overview.jpg` | The equipment board: a solar charge controller (left), two deep-cycle batteries, and an inverter, with temporary clip leads on the battery terminals | Cody Kabus | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:Kabus_000244_171294_516060_4578_(36775931686).jpg) |
+| `controller-display.jpg` | The PWM solar charge controller, screwed to the board, cables landed in its terminals, its LCD reading 12.5 V | Cody Kabus | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:Kabus_000245_171295_516064_4578_(36775931446).jpg) |
+| `battery-terminals.jpg` | The two batteries with temporary clip leads on their terminals, and the controller alongside | Cody Kabus | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:Kabus_000246_171296_516068_4578_(36775938376).jpg) |
 
-Each image is redrawn to a JFIF JPEG under 400,000 bytes before it is filed,
-because that is what the runner's decoder reads and what the contract accepts.
-The contract stores those exact bytes and computes their digest itself, so what
-the validators judged can be fetched back from the chain and hashed.
+`scripts/fixtures.mjs` fetches each at a width that keeps it under the contract's 400,000-byte cap. It inserts
+a JFIF header, which is what validators read, and leaves every other byte as the photographer's. The contract
+stores those exact bytes and hashes them, so what validators judged can be fetched back and checked.
 
-## Why these four
+## How each case uses them, honestly
 
-The demonstration turns on questions a constitution can state and a
-photograph can answer: is the replacement inverter on that wall the model the
-work order named, and is it identifiable from its own rating plate as the
-organisation's principle requires?
+- **Accepted.** A charge controller replacement: the overview as the after photograph, the close-up as the
+  meter display, a technician report, and the inspector's checklist. The work order asks what the photographs
+  can show: the controller fixed and wired, and a normal reading on its display.
+- **Rejected.** A battery service that must leave every connection permanent. The battery photograph shows
+  temporary clip leads on the terminals, which the constitution's battery principle forbids.
+- **Undetermined, then decided on appeal.** A restoration first filed with the overview (on which the display
+  cannot be read) and a reading on paper. The paper cannot establish the reading. On appeal the provider files
+  the close-up of the display.
 
-- The front photograph shows an inverter installed on a wall, and the word
-  Growatt. It does not show a model number. On its own it satisfies a
-  criterion about mounting, not one about identity.
-- The rating plate photograph reads the model. Together the two establish the
-  criterion and the identification principle.
-- The Kostal photograph is the same role and a different product, with no
-  plate in frame: the case where the order's own criterion can be met while
-  the constitution's identification principle is not.
-- The array photograph is a second site, kept for demonstrations that need
-  one.
+There is no before photograph in the demonstration, because none of this installation exists. The contract
+therefore records its before-and-after check as not applicable for these files, rather than being shown a
+fabricated "before".

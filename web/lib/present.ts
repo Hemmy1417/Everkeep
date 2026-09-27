@@ -20,130 +20,123 @@ function label(map: Record<string, string>, key: string | null | undefined): str
 }
 
 const ORDER_STATE: Record<string, string> = {
-  PROPOSED: "Awaiting the provider",
-  AWAITING_EVIDENCE: "Collecting evidence",
-  ACCEPTED: "Accepted",
-  REJECTED: "Rejected",
-  UNDETERMINED: "Undetermined",
-  APPEALED: "Under appeal",
-  FINALIZED: "Paid",
-  CLOSED: "Closed",
-  CANCELLED: "Withdrawn",
+  PROPOSED: "Awaiting the provider", ACTIVE: "Work in progress", DECIDED: "Decided",
+  UNDER_APPEAL: "Under appeal", PAYMENT_RELEASABLE: "Payment releasable", SETTLED: "Settled",
+  CLOSED_UNPAID: "Closed unpaid", CANCELLED: "Cancelled",
 };
 export const orderState = (s: string) => label(ORDER_STATE, s);
 
-export const orgState = (s: string) => label({ ACTIVE: "Active", PAUSED: "Paused" }, s);
+export const orgState = (s: string) =>
+  label({ ACTIVE: "Active", PAUSED: "Paused", DISSOLVING: "Dissolving", DISSOLVED: "Dissolved" }, s);
 
-const AMENDMENT_STATE: Record<string, string> = {
-  PROPOSED: "Pending ratification",
-  EFFECTIVE: "In force",
-  WITHDRAWN: "Withdrawn by objection",
-};
-export const amendmentState = (s: string) => label(AMENDMENT_STATE, s);
+export const assetStatus = (s: string) => label({
+  MONITORING: "Monitoring", SERVICE_DUE: "Service due", UNDER_MAINTENANCE: "Under maintenance", RETIRED: "Retired",
+}, s);
 
-const DECISION: Record<string, string> = {
-  ACCEPTED: "Accepted", REJECTED: "Rejected", UNDETERMINED: "Undetermined",
-};
-export const decision = (s: string) => label(DECISION, s);
+export const outcome = (s: string) => label({ ACCEPTED: "Accepted", REJECTED: "Rejected", UNDETERMINED: "Undetermined" }, s);
+export const outcomeHeadline = (s: string) => label({
+  ACCEPTED: "Maintenance accepted", REJECTED: "Maintenance rejected", UNDETERMINED: "Undetermined",
+}, s);
 
-const PRINCIPLE: Record<string, string> = {
-  SATISFIED: "Kept", VIOLATED: "Broken", NOT_APPLICABLE: "Does not apply", UNCLEAR: "Not settled",
-};
-export const principleStatus = (s: string) => label(PRINCIPLE, s);
+export const requirementStatus = (s: string) => label({
+  SATISFIED: "Satisfied", NOT_SATISFIED: "Not satisfied", NOT_ESTABLISHED: "Not established", NOT_APPLICABLE: "Does not apply",
+}, s);
 
-const CRITERION: Record<string, string> = { MET: "Met", NOT_MET: "Not met", UNCLEAR: "Not settled" };
-export const criterionStatus = (s: string) => label(CRITERION, s);
+export const lifecycle = (s: string) => label({
+  APPEALABLE: "Open to appeal", APPEALED: "Under appeal", SUPERSEDED: "Superseded on appeal", FINALIZED: "Final",
+}, s);
 
-const QUALITY: Record<string, string> = {
-  SUFFICIENT: "The evidence settled every question",
-  INSUFFICIENT: "Some questions were left unsettled",
-  CONFLICTING: "The observations conflicted",
-};
-export const quality = (s: string) => label(QUALITY, s);
+export const source = (s: string) => label({ CONSTITUTION: "Constitution", WORK_ORDER: "Work order", SYSTEM: "Always asked" }, s);
 
-const ROLE: Record<string, string> = { STEWARD: "Steward", PROVIDER: "Provider", INSPECTOR: "Inspector" };
-export const role = (s: string) => label(ROLE, s);
+export const motionKind = (s: string) => label({ AMENDMENT: "Amendment", DISSOLUTION: "Dissolution" }, s);
+export const motionState = (s: string) => label({ PENDING: "Pending", ENACTED: "Enacted", WITHDRAWN: "Withdrawn" }, s);
 
-const ROUND_KIND: Record<string, string> = { ASSESSMENT: "Assessment", APPEAL: "Appeal" };
-export const roundKind = (s: string) => label(ROUND_KIND, s);
+export const role = (s: string) => label({ STEWARD: "Steward", PROVIDER: "Provider", INSPECTOR: "Inspector" }, s);
 
 const INFRA: Record<string, string> = {
   COMMUNITY_SOLAR: "Community solar", BATTERY_STORAGE: "Battery storage", WATER_SYSTEM: "Water system",
   EV_CHARGING: "Vehicle charging", TELECOM_SITE: "Telecom site", MICROGRID: "Microgrid",
-  PUBLIC_LIGHTING: "Public lighting", AGRICULTURAL_POWER: "Agricultural power",
-  COMMUNITY_FACILITY: "Community facility",
+  PUBLIC_LIGHTING: "Public lighting", AGRICULTURAL_POWER: "Agricultural power", COMMUNITY_FACILITY: "Community facility",
 };
 export const infraType = (s: string) => label(INFRA, s);
 
 const MAINT: Record<string, string> = {
   INSPECTION: "Inspection", PREVENTIVE_MAINTENANCE: "Preventive maintenance",
   CORRECTIVE_MAINTENANCE: "Corrective maintenance", COMPONENT_REPLACEMENT: "Component replacement",
-  ELECTRICAL_REPAIR: "Electrical repair", BATTERY_SERVICE: "Battery service",
-  INVERTER_REPAIR: "Inverter repair", SYSTEM_RESTORATION: "System restoration",
-  EMERGENCY_REPAIR: "Emergency repair", FINAL_VERIFICATION: "Final verification",
+  ELECTRICAL_REPAIR: "Electrical repair", BATTERY_SERVICE: "Battery service", INVERTER_REPAIR: "Inverter repair",
+  SYSTEM_RESTORATION: "System restoration", EMERGENCY_REPAIR: "Emergency repair", FINAL_VERIFICATION: "Final verification",
 };
 export const maintenanceType = (s: string) => label(MAINT, s);
 
-const ORIGIN: Record<string, string> = {
-  PHOTO: "Photograph", NAMEPLATE: "Rating plate", METER_DISPLAY: "Meter display",
-  VIDEO_FRAME: "Video frame", SCAN: "Scan",
+const VIEW: Record<string, string> = {
+  BEFORE: "Before photograph", AFTER: "After photograph", NAMEPLATE: "Nameplate", METER_DISPLAY: "Meter display",
+  SITE: "Site photograph", DOCUMENT_SCAN: "Document scan",
 };
-export const imageOrigin = (s: string) => label(ORIGIN, s);
+export const imageView = (s: string) => label(VIEW, s);
 
 const DOC: Record<string, string> = {
-  TECHNICAL_REPORT: "Technical report", INSPECTION_REPORT: "Inspection report",
-  METER_READING: "Meter reading", MAINTENANCE_LOG: "Maintenance log",
-  WORK_ORDER_DOCUMENT: "Work order document", INVOICE: "Invoice", OTHER: "Document",
+  TECHNICAL_REPORT: "Technician report", INSPECTION_REPORT: "Inspection report", INSPECTION_CHECKLIST: "Inspection checklist",
+  METER_READING: "Meter reading", MAINTENANCE_LOG: "Maintenance log", WORK_ORDER_DOCUMENT: "Work order document",
+  EQUIPMENT_DOCUMENT: "Equipment document", INVOICE: "Invoice",
 };
 export const docType = (s: string) => label(DOC, s);
 
-const REQ: Record<string, string> = {
-  IMAGE: "photograph", INSPECTION_REPORT: "inspection report", METER_READING: "meter reading",
-  TECHNICAL_REPORT: "technical report", MAINTENANCE_LOG: "maintenance log",
+const REQ: Record<string, [string, string]> = {
+  BEFORE_PHOTO: ["before photograph", "before photographs"], AFTER_PHOTO: ["after photograph", "after photographs"],
+  NAMEPLATE_PHOTO: ["nameplate photograph", "nameplate photographs"],
+  OPERATIONAL_READING: ["operational reading", "operational readings"],
+  TECHNICAL_REPORT: ["technician report", "technician reports"],
+  INSPECTION_CHECKLIST: ["inspector's checklist", "inspector's checklists"],
+  INSPECTION_REPORT: ["inspector's report", "inspector's reports"],
+  EQUIPMENT_DOCUMENT: ["equipment document", "equipment documents"],
 };
-export function requirement(r: { type: string; min_count: number }): string {
-  const noun = REQ[r.type] ?? humanize(r.type).toLowerCase();
-  return `${r.min_count} ${noun}${r.min_count === 1 ? "" : "s"}`;
+export function requirementType(type: string, n = 1): string {
+  const pair = REQ[type];
+  return pair ? pair[n === 1 ? 0 : 1] : humanize(type).toLowerCase();
 }
+export const requirement = (r: { type: string; min_count: number }) => `${r.min_count} ${requirementType(r.type, r.min_count)}`;
 
-export function itemKind(it: { kind: string; origin?: string; doc_type?: string; reference_type?: string }): string {
-  if (it.kind === "IMAGE") return imageOrigin(it.origin ?? "PHOTO");
-  if (it.kind === "DOCUMENT") return docType(it.doc_type ?? "OTHER");
-  if (it.kind === "DECLARATION") return "Declaration";
-  if (it.kind === "REFERENCE") return it.reference_type === "VIDEO_REFERENCE" ? "Video reference" : "External source";
-  return humanize(it.kind);
+export function evidenceKind(e: { kind: string; view?: string; doc_type?: string; reference_type?: string }): string {
+  if (e.kind === "IMAGE") return imageView(e.view ?? "");
+  if (e.kind === "DOCUMENT") return docType(e.doc_type ?? "");
+  if (e.kind === "TEXT_DECLARATION") return "Declaration";
+  if (e.kind === "REFERENCE") return e.reference_type === "VIDEO_REFERENCE" ? "Video reference" : "External source";
+  return humanize(e.kind);
 }
 
 const EVENT: Record<string, string> = {
-  ORGANIZATION_CREATED: "Organisation founded", CONSTITUTION_EFFECTIVE: "Constitution in force",
+  ORGANIZATION_FOUNDED: "Organisation founded", CONSTITUTION_IN_FORCE: "Constitution in force",
   TREASURY_FUNDED: "Treasury funded", AMENDMENT_PROPOSED: "Amendment proposed",
-  AMENDMENT_WITHDRAWN: "Amendment withdrawn", ORGANIZATION_PAUSED: "Paused",
-  ORGANIZATION_RESUMED: "Resumed", ASSET_REGISTERED: "Asset registered",
-  INSPECTOR_ACCEPTED: "Inspector accepted the role", WORK_ORDER_CREATED: "Work order created",
-  TERMS_ACCEPTED: "Terms signed", VERSION_PROPOSED: "New terms proposed",
-  WORK_ORDER_CANCELLED: "Work order withdrawn", EVIDENCE_FILED: "Evidence filed",
-  DECISION: "Decision recorded", APPEAL_OPENED: "Appeal opened", APPEAL_LAPSED: "Appeal lapsed",
-  WORK_ORDER_PAID: "Work order paid", WORK_ORDER_CLOSED: "Work order closed",
+  DISSOLUTION_PROPOSED: "Dissolution proposed", MOTION_WITHDRAWN: "Motion withdrawn",
+  DISSOLUTION_ENACTED: "Dissolution enacted", DISSOLVED: "Dissolved", PAUSED: "Paused", RESUMED: "Resumed",
+  PROVIDER_AUTHORIZED: "Provider authorised", PROVIDER_REVOKED: "Provider revoked",
+  ASSET_ENROLLED: "Asset enrolled", INSPECTOR_ACCEPTED: "Inspector accepted", ASSET_RETIRED: "Asset retired",
+  WORK_ORDER_CREATED: "Work order created", TERMS_ACCEPTED: "Terms accepted", TERMS_PROPOSED: "New terms proposed",
+  WORK_ORDER_CANCELLED: "Work order cancelled", EVIDENCE_SUBMITTED: "Evidence submitted",
+  DECISION_RECORDED: "Decision recorded", APPEAL_OPENED: "Appeal opened", PAYMENT_RELEASABLE: "Payment releasable",
+  SETTLED: "Payment settled", WORK_ORDER_CLOSED: "Work order closed",
 };
 export const eventKind = (s: string) => label(EVENT, s);
 
 const tail = (id: string) => String(id ?? "").split("-").pop()?.replace(/^0+/, "") || "";
-export const itemName = (eid: string) => `Item ${tail(eid)}`;
-export const orderNumber = (wid: string) => tail(wid);
-export const orgNumber = (oid: string) => tail(oid);
-export const assetNumber = (aid: string) => tail(aid);
-export const roundName = (kind: string, n: number) => `${roundKind(kind) || "Round"} ${n}`;
+export const numberOf = (id: string) => tail(id);
+export const evidenceName = (eid: string) => `Evidence ${tail(eid)}`;
+export const decisionName = (did: string) => `Decision ${tail(did)}`;
+export const snapshotName = (sid: string) => `Snapshot ${tail(sid)}`;
+export const orderName = (wid: string) => `Work order ${tail(wid)}`;
 
-/** P2 reads "Principle 2", C1 reads "Criterion 1". */
+/** P2 reads "Principle 2", C1 "Criterion 1", S3 "Consistency check 3". */
 export const ruleName = (id: string) =>
-  id.startsWith("P") ? `Principle ${id.slice(1)}` : id.startsWith("C") ? `Criterion ${id.slice(1)}` : id;
+  id.startsWith("P") ? `Principle ${id.slice(1)}` : id.startsWith("C") ? `Criterion ${id.slice(1)}`
+    : id.startsWith("S") ? `Consistency check ${id.slice(1)}` : id;
 
 /** A panel cites items and rules by id; a page writes them out. The panel's words are kept. */
 export function writeOut(text: string | null | undefined): string {
   const written = prose(text)
-    .replace(/ev-0*(\d+)/gi, (_m, d: string) => `item ${parseInt(d, 10)}`)
+    .replace(/ev-0*(\d+)/gi, (_m, d: string) => `evidence ${parseInt(d, 10)}`)
     .replace(/\bP(\d{1,2})\b/g, (_m, d: string) => `principle ${d}`)
-    .replace(/\bC(\d{1,2})\b/g, (_m, d: string) => `criterion ${d}`);
+    .replace(/\bC(\d{1,2})\b/g, (_m, d: string) => `criterion ${d}`)
+    .replace(/\bS(\d)\b/g, (_m, d: string) => `consistency check ${d}`);
   return written.replace(/(^|[.!?]\s+)([a-z])/g, (_m, lead: string, ch: string) => lead + ch.toUpperCase());
 }
 

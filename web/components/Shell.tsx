@@ -9,13 +9,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { ClaimBar } from "./ClaimBar";
+import { RefundBar } from "./RefundBar";
 import { ConfirmedNotice } from "./Confirmed";
 import { WalletDock } from "./WalletDock";
 import { CONTRACT_ADDRESS, IS_RECORD, REPO_URL } from "@/lib/config";
 import { addressUrl } from "@/lib/chain";
 
 const LINKS = [
+  { href: "/", label: "Dashboard" },
   { href: "/organizations", label: "Organisations" },
   { href: "/mine", label: "My work" },
   { href: "/how", label: "How it works" },
@@ -41,7 +42,7 @@ export function Shell({ children }: { children: ReactNode }) {
           </Link>
           <nav className="flex flex-wrap items-center gap-2">
             {LINKS.map((l) => {
-              const active = path === l.href || path.startsWith(`${l.href}/`);
+              const active = l.href === "/" ? path === "/" : path === l.href || path.startsWith(`${l.href}/`);
               return (
                 <Link key={l.href} href={l.href} aria-current={active ? "page" : undefined}
                       className={`t-label rounded-[12px] border px-3 py-2 ${
@@ -62,15 +63,15 @@ export function Shell({ children }: { children: ReactNode }) {
         ) : null}
       </header>
       <ConfirmedNotice />
-      <ClaimBar />
+      <RefundBar />
       <main className="flex-1">{children}</main>
       <footer className="bg-void text-paper">
         <div className="page grid gap-10 py-16 md:grid-cols-[2fr_1fr_1fr]">
           <div>
-            <p className="t-heading">Paid when the evidence keeps the rules.</p>
+            <p className="t-heading">Infrastructure that keeps itself funded, verified and maintained.</p>
             <p className="t-small mt-4 max-w-[46ch] text-haze">
-              A demonstration on GenLayer Studio Next. The organisations on the record are fictional
-              and the photographs are freely licensed.
+              A demonstration on GenLayer Studio Next. The organisations on the record are fictional,
+              and the photographs are public-domain images of a real installation.
             </p>
           </div>
           <ul className="flex flex-col gap-3">

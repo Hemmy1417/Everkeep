@@ -1,68 +1,80 @@
-# Consensus: what a validator must reproduce
+# Consensus
 
-One assessment is one `gl.vm.run_nondet` round. The leader observes the
-evidence and returns its result; each validator observes the same evidence
-for itself and then decides whether the leader's result can stand. The
-code is `_run_round`, `_observe` and `_unconfirmed` in
-`contracts/everkeep.py`.
+An assessment or a readjudication is one `gl.vm.run_nondet(leader_fn,
+validator_fn)` round. Nondeterministic code produces a structured result and
+never writes state; the contract records the decision afterwards, in
+deterministic code.
 
-## What one node does
+## What each node does (`_assess`)
 
-1. **Look.** The images, two per prompt, are shown without the constitution
-   or the work order: describe what is visible, transcribe legible text, note
-   concerns, and say whether an image actually arrived. A node counts as a
-   reader only when it says it saw the image and describes what it saw.
-2. **Judge.** The node is given the organisation's principles, the order's
-   acceptance criteria, its own reading of the images and every document,
-   and rates each principle `SATISFIED | VIOLATED | NOT_APPLICABLE | UNCLEAR`
-   and each criterion `MET | NOT_MET | UNCLEAR`, citing the items it relied
-   on. Party text arrives inside fences it cannot close.
-3. **Ground.** Code, not the model: a criterion is `MET` or `NOT_MET`, and a
-   principle `SATISFIED` or `VIOLATED`, only when its basis holds an image or
-   the accepted inspector's report. Otherwise the rating becomes `UNCLEAR`.
-   The favourable floor and its mirror fall the same way.
-4. **Derive.** Code again: conflicts give `UNDETERMINED`; any `NOT_MET` or
-   `VIOLATED` gives `REJECTED`; any `UNCLEAR` gives `UNDETERMINED`; otherwise
-   `ACCEPTED`. `NOT_APPLICABLE` is ignored.
+1. **Examine.** Photographs go to the model two at a time (the runtime's
+   limit), before and after together so they can be compared. The node is
+   given the asset and the work order and asked to report only what is
+   visible: equipment and condition, legible text, readings as quantity,
+   value and unit, anything suggesting a different site, and for a before
+   and after pair what changed. A node counts as having seen a photograph
+   only if it says so and describes it; otherwise it is blind.
+2. **Judge.** The node rates every requirement in scope:
+   - the constitution's maintenance principles that apply to this kind of work
+     (the scope is chosen in code);
+   - the work order's acceptance criteria;
+   - three consistency checks the contract always asks: the evidence belongs
+     to this asset (S1), before and after support the work (S2), the
+     provider's documentation matches what was seen (S3).
 
-## What is compared
+   Each is `SATISFIED`, `NOT_SATISFIED`, `NOT_ESTABLISHED`, or, for a
+   principle only, `NOT_APPLICABLE`, with the evidence it relied on. It also
+   says whether the evidence as a whole suffices and whether anything
+   contradicts anything else.
+3. **Ground, in code.** A requirement is satisfied or not satisfied only if
+   its basis includes a photograph or the independent inspector's report or
+   checklist. S3 needs a provider document and an observation both. Anything
+   else becomes not established. Whether S2 and S3 can apply at all is
+   decided in code from the file.
+4. **Derive, in code.** The outcome follows the decision rule in
+   `constitution.md`.
 
-| The leader says | A validator agrees only if |
+## What is compared (`_dissent`)
+
+A validator agrees only if it saw every photograph, the leader did too, and:
+
+| The leader says | the validator must |
 |---|---|
-| anything | it received the images, and the leader did |
-| anything | the leader rated every principle and every criterion with a known status |
-| a conflict | it sees a conflict too |
-| `ACCEPTED` | it derives `ACCEPTED` from its own grounded ratings |
-| `REJECTED` | every criterion the leader found `NOT_MET` it finds `NOT_MET`, every principle the leader found `VIOLATED` it finds `VIOLATED`, and it sees no conflict |
-| `UNDETERMINED` | it would not accept |
+| anything | find every requirement rated with a known status by the leader |
+| a conflict | see a conflict too |
+| `ACCEPTED` | reach `ACCEPTED` itself |
+| `REJECTED` | find every requirement the leader failed not satisfied too, and see no conflict |
+| `UNDETERMINED` | not reach `ACCEPTED` |
 
-Prose, notes, the leader's reasoning and the ratings that decided nothing
-are free to differ. What is bound is the consequence: whether the money
-moves, and on which findings.
+Consensus binds the outcome and the grounds it rests on. Prose (the
+reasoning, the notes) is free to differ and is stored only after being cut
+back to shape; it is never what agreement was about.
 
-## Why the asymmetries
+## Why the asymmetry
 
-- **Doubt is cheap to agree to.** A validator that finds a principle unclear
-  where the leader found it satisfied refuses an acceptance, but a leader
-  that reports doubt where a validator would reject is not overruled: the
-  outcome either way withholds payment, and the provider's remedy is new
-  evidence, never a re-roll of the same question.
-- **A rejection names its grounds.** The record shows which findings the
-  rejection rests on, and every validator that agreed reproduced each one.
-  A leader cannot reject on a principle the panel did not find violated.
-- **`NOT_APPLICABLE` is not a hiding place.** A leader that calls a principle
-  not applicable and accepts is refused by any validator that finds it
-  violated or unclear, because each node derives its own decision and the
-  decisions are compared.
-- **A blind node cannot vote.** Measured on Studio Next: a validator that
-  received no image once reported it as readable and explained the missing
-  image in the description. Now a node is a reader only when it says so and
-  describes what it saw, and a round with a blind leader or a blind validator
-  fails in words, writing nothing, so it can be asked again.
+Doubt never pays, so a validator that shares the leader's doubt agrees
+whatever its wording. A leader cannot withhold an acceptance the validator
+would grant, cannot invent a conflict, and cannot reject on grounds the
+validator does not reproduce.
 
-## What a failed round leaves
+## Failure
 
-Nothing. A round that reaches no majority is `UNDETERMINED` at the network
-level and the work order is untouched. The proof scripts ask again and keep
-every attempt in the log, because a run that shows only the attempt that
-carried is not reporting what this network does.
+If a node cannot answer (an unreadable model reply, a lost image), it asks
+once more, then fails. A validator that cannot assess disagrees. A round
+without a majority writes nothing: the work order is untouched and the
+provider or appellant can ask again. Malformed output is read as nothing,
+and never as agreement: an unknown status becomes not established, a string
+where a list belongs becomes no basis, and `evidence_sufficient` counts only
+if it is exactly `true`.
+
+## Finality
+
+A decision is appealable for the constitution's window, if appeals remain.
+Readjudication records a new decision linked to the one it reviews, and
+marks the old one superseded without changing it. When no appeal is open and
+none remains possible, anyone finalizes. GenLayer's own transaction finality
+is separate from this: the app shows a write as confirmed only once its
+transaction is finalized with a successful execution.
+
+This document describes what the contract does. It does not claim anything
+about validator selection or network internals the runtime does not expose.

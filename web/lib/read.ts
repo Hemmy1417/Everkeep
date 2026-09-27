@@ -15,7 +15,7 @@ import { isTransient, STUDIO_NEXT } from "./chain";
 import { CONTRACT_ADDRESS, CONTRACT_CONFIGURED } from "./config";
 import { sha256Hex } from "./hash";
 import type {
-  Asset, Balance, Config, Constitution, EventsPage, EvidenceItem, Organization, Round, Stats,
+  Asset, Config, Constitution, Decision, EventsPage, Evidence, Organization, Provider, Refund, Snapshot, Stats,
   WorkOrder, WorkOrderSummary,
 } from "./types";
 
@@ -263,112 +263,81 @@ export async function getConfig(): Promise<Config> {
   return configFlight;
 }
 
-export function getStats(fresh = false): Promise<Stats> {
-  return cachedView<Stats>("stats", "get_stats", [], fresh);
-}
+export const getStats = (fresh = false) => cachedView<Stats>("stats", "get_stats", [], fresh);
 
-export function listOrganizations(skip = 0, limit = 20, fresh = false):
-    Promise<{ total: number; organizations: Organization[] }> {
-  return cachedView(`orgs.${skip}.${limit}`, "list_organizations", [skip, limit], fresh);
-}
+export const listOrganizations = (skip = 0, limit = 20, fresh = false) =>
+  cachedView<{ total: number; organizations: Organization[] }>(`orgs.${skip}.${limit}`, "list_organizations", [skip, limit], fresh);
 
-export async function getOrganization(oid: string, fresh = false): Promise<Organization | null> {
+async function orNull<T>(p: Promise<T>, missing: RegExp): Promise<T | null> {
   try {
-    return await cachedView<Organization>(`org.${oid}`, "get_organization", [oid], fresh);
+    return await p;
   } catch (e) {
-    if (notFound(e, /unknown organisation/i)) return null;
+    if (notFound(e, missing)) return null;
     throw e;
   }
 }
 
-/** An effective constitution never changes; a proposed one gains its ratification. */
+export const getOrganization = (oid: string, fresh = false) =>
+  orNull(cachedView<Organization>(`org.${oid}`, "get_organization", [oid], fresh), /unknown organisation/i);
+
+/** An effective constitution never changes; a proposed one gains its effective date. */
 export async function getConstitution(oid: string, version: number, fresh = false): Promise<Constitution | null> {
   const key = `constitution.${oid}.${version}`;
   const hit = cached<Constitution>(key);
   if (hit && hit.effective_at && !fresh) return hit;
-  try {
-    const c = await view<Constitution>("get_constitution", [oid, version]);
-    return remember(key, c, Boolean(c.effective_at));
-  } catch (e) {
-    if (notFound(e, /unknown constitution/i)) return null;
-    throw e;
-  }
+  const c = await orNull(view<Constitution>("get_constitution", [oid, version]), /unknown constitution/i);
+  return c ? remember(key, c, Boolean(c.effective_at)) : null;
 }
 
-export function listAssets(oid: string, skip = 0, limit = 50, fresh = false):
-    Promise<{ total: number; assets: Asset[] }> {
-  return cachedView(`assets.${oid}.${skip}.${limit}`, "list_assets", [oid, skip, limit], fresh);
-}
+export const listProviders = (oid: string, fresh = false) =>
+  cachedView<{ total: number; providers: Provider[] }>(`providers.${oid}`, "list_providers", [oid], fresh);
 
-export async function getAsset(aid: string, fresh = false): Promise<Asset | null> {
-  try {
-    return await cachedView<Asset>(`asset.${aid}`, "get_asset", [aid], fresh);
-  } catch (e) {
-    if (notFound(e, /unknown asset/i)) return null;
-    throw e;
-  }
-}
+export const listAssets = (oid: string, skip = 0, limit = 50, fresh = false) =>
+  cachedView<{ total: number; assets: Asset[] }>(`assets.${oid}.${skip}.${limit}`, "list_assets", [oid, skip, limit], fresh);
 
-export function listWorkOrders(oid: string, skip = 0, limit = 50, fresh = false):
-    Promise<{ total: number; work_orders: WorkOrderSummary[] }> {
-  return cachedView(`orders.${oid}.${skip}.${limit}`, "list_work_orders", [oid, skip, limit], fresh);
-}
+export const getAsset = (aid: string, fresh = false) =>
+  orNull(cachedView<Asset>(`asset.${aid}`, "get_asset", [aid], fresh), /unknown asset/i);
 
-export function workOrdersOf(addr: string, skip = 0, limit = 50, fresh = false):
-    Promise<{ total: number; work_orders: WorkOrderSummary[] }> {
-  return cachedView(`of.${addr}.${skip}.${limit}`, "work_orders_of", [addr, skip, limit], fresh);
-}
+export const listWorkOrders = (oid: string, skip = 0, limit = 50, fresh = false) =>
+  cachedView<{ total: number; work_orders: WorkOrderSummary[] }>(`orders.${oid}.${skip}.${limit}`, "list_work_orders", [oid, skip, limit], fresh);
 
-export async function getWorkOrder(wid: string, fresh = false): Promise<WorkOrder | null> {
-  try {
-    return await cachedView<WorkOrder>(`order.${wid}`, "get_work_order", [wid], fresh);
-  } catch (e) {
-    if (notFound(e, /unknown work order/i)) return null;
-    throw e;
-  }
-}
+export const workOrdersOf = (addr: string, skip = 0, limit = 50, fresh = false) =>
+  cachedView<{ total: number; work_orders: WorkOrderSummary[] }>(`of.${addr}.${skip}.${limit}`, "work_orders_of", [addr, skip, limit], fresh);
 
-/** A recorded round never changes: read once, keep for good. */
-export async function getRound(wid: string, n: number): Promise<Round | null> {
-  const key = `round.${wid}.${n}`;
-  const hit = cached<Round>(key);
+export const getWorkOrder = (wid: string, fresh = false) =>
+  orNull(cachedView<WorkOrder>(`order.${wid}`, "get_work_order", [wid], fresh), /unknown work order/i);
+
+/** A decision changes only in its lifecycle; it is re-read, never assumed. */
+export const getDecision = (did: string, fresh = false) =>
+  orNull(cachedView<Decision>(`decision.${did}`, "get_decision", [did], fresh), /unknown decision/i);
+
+/** A snapshot never changes: read once, keep for good. */
+export async function getSnapshot(sid: string): Promise<Snapshot | null> {
+  const hit = cached<Snapshot>(`snapshot.${sid}`);
   if (hit) return hit;
-  try {
-    return remember(key, await view<Round>("get_round", [wid, n]), true);
-  } catch (e) {
-    if (notFound(e, /no round/i)) return null;
-    throw e;
-  }
+  const s = await orNull(view<Snapshot>("get_snapshot", [sid]), /unknown evidence snapshot/i);
+  return s ? remember(`snapshot.${sid}`, s, true) : null;
 }
 
-/** A filed item never changes: read once, keep for good. */
-export async function getItem(eid: string): Promise<EvidenceItem | null> {
-  const key = `item.${eid}`;
-  const hit = cached<EvidenceItem>(key);
+export async function getEvidence(eid: string): Promise<Evidence | null> {
+  const hit = cached<Evidence>(`evidence.${eid}`);
   if (hit) return hit;
-  try {
-    return remember(key, await view<EvidenceItem>("get_item", [eid]), true);
-  } catch (e) {
-    if (notFound(e, /unknown evidence item/i)) return null;
-    throw e;
-  }
+  const e = await orNull(view<Evidence>("get_evidence", [eid]), /unknown evidence item/i);
+  return e ? remember(`evidence.${eid}`, e, true) : null;
 }
 
-export function getEvents(oid: string, skip = 0, limit = 30, fresh = false): Promise<EventsPage> {
-  return cachedView<EventsPage>(`events.${oid}.${skip}.${limit}`, "get_events", [oid, skip, limit], fresh);
-}
+export const getEvents = (oid: string, skip = 0, limit = 30, fresh = false) =>
+  cachedView<EventsPage>(`events.${oid}.${skip}.${limit}`, "get_events", [oid, skip, limit], fresh);
 
-export function getBalance(addr: string, fresh = true): Promise<{ claimable: string; claimed: string }> {
-  return cachedView<Balance>(`balance.${addr}`, "get_balance", [addr], fresh);
-}
+export const getRefund = (addr: string, fresh = true) => cachedView<Refund>(`refund.${addr}`, "get_refund", [addr], fresh);
 
 /** A document's body, as it was filed. Never changes: read once, keep. */
-export async function getItemText(eid: string): Promise<string | null> {
+export async function getEvidenceText(eid: string): Promise<string | null> {
   const key = `text.${eid}`;
   const hit = cached<string>(key);
   if (hit !== undefined) return hit;
   try {
-    return remember(key, String(await call("get_item_text", [eid])), true);
+    return remember(key, String(await call("get_evidence_text", [eid])), true);
   } catch (e) {
     if (notFound(e, /unknown evidence item|carries no text/i)) return null;
     throw e;
@@ -400,7 +369,7 @@ const images = new Map<string, Promise<StoredImage>>();
 export function getImage(eid: string): Promise<StoredImage> {
   let flight = images.get(eid);
   if (!flight) {
-    flight = call("get_image", [eid]).then(async (raw) => {
+    flight = call("get_evidence_image", [eid]).then(async (raw) => {
       const bytes = bytesFrom(raw);
       return { bytes, digest: await sha256Hex(bytes) };
     });
