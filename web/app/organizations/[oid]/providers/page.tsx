@@ -4,9 +4,10 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 import { Act } from "@/components/Act";
-import { Band, Card, Empty, Field, Loading, Status, Tag } from "@/components/bits";
+import { Band, Button, Card, Empty, Field, Loading, Status } from "@/components/bits";
+import { Info } from "@/components/tabs";
 import { orgActs } from "@/lib/acts";
-import { maintenanceType, moment, shortAddress } from "@/lib/present";
+import { maintenanceType, moment } from "@/lib/present";
 import { getConstitution, getOrganization, invalidateReads, listProviders } from "@/lib/read";
 import { useChain } from "@/lib/useChain";
 import { useNow } from "@/lib/useNow";
@@ -23,6 +24,7 @@ export default function Providers() {
   const [addr, setAddr] = useState("");
   const [name, setName] = useState("");
   const [types, setTypes] = useState<string[]>([]);
+  const [adding, setAdding] = useState(false);
   if (!org.data || !c.data) return <Band dark><Loading what="the provider registry" dark /></Band>;
   const acts = orgActs(org.data, c.data, w.address, Math.max(Date.parse(org.data.now), clock));
   const reload = () => { invalidateReads(); providers.reload(); };
@@ -31,38 +33,28 @@ export default function Providers() {
   return (
     <>
       <section className="band-dark">
-        <div className="page py-14 md:py-20">
-          <Tag dark>Service providers</Tag>
-          <h1 className="t-display mt-6 max-w-[18ch]">Who may be paid, and for what.</h1>
-          <p className="t-body-lg mt-6 max-w-[62ch] text-haze">
-            Stewards authorise providers for named kinds of work. A work order can be assigned only to an
-            authorised provider, for work they are authorised for. Revoking stops new assignments; work
-            already assigned runs to its end, so a revocation can never be used to avoid paying for work done.
+        <div className="page pb-12 pt-12">
+          <p className="t-label text-haze">Service providers
+            <Info dark>A work order goes only to a provider authorised for that kind of work. Revoking stops new assignments; work already assigned runs to its end, so a revocation cannot avoid paying for work done.</Info>
           </p>
+          <h1 className="t-heading-lg mt-5">Who may be paid, and for what.</h1>
         </div>
       </section>
       <Band>
         <div className="flex flex-col gap-4">
           {providers.data?.total === 0 ? <Empty>No provider has been authorised yet.</Empty> : null}
-          {providers.data?.providers.map((p) => (
-            <Card key={p.address} className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <Status>{p.revoked_at ? "Revoked" : "Authorised"}</Status>
-                  <span className="t-label text-graphite">{shortAddress(p.address)}</span>
-                </div>
-                <p className="t-heading mt-3">{p.name}</p>
-                <p className="t-small mt-2 text-graphite">
-                  {p.maintenance_types.map(maintenanceType).join(", ")}. Authorised {moment(p.authorized_at)}
-                  {p.revoked_at ? `; revoked ${moment(p.revoked_at)}` : ""}.
-                </p>
+          <div className="border-t border-lichen">
+            {providers.data?.providers.map((p) => (
+              <div key={p.address} className="grid items-center gap-3 border-b border-lichen py-4 md:grid-cols-[2fr_2fr_1fr_auto]">
+                <div><p className="t-sub">{p.name}</p><p className="t-small text-graphite">Authorised {moment(p.authorized_at)}{p.revoked_at ? `, revoked ${moment(p.revoked_at)}` : ""}</p></div>
+                <span className="t-small text-graphite">{p.maintenance_types.map(maintenanceType).join(", ")}</span>
+                <div><Status>{p.revoked_at ? "Revoked" : "Authorised"}</Status></div>
+                <div>{acts.revokeProvider && !p.revoked_at ? <Act label="Revoke" method="revoke_provider" variant="secondary" args={[oid, p.address]} onAnswer={reload} /> : null}</div>
               </div>
-              {acts.revokeProvider && !p.revoked_at ? (
-                <Act label="Revoke" method="revoke_provider" variant="secondary" args={[oid, p.address]} onAnswer={reload} />
-              ) : null}
-            </Card>
-          ))}
-          {acts.authorizeProvider ? (
+            ))}
+          </div>
+          {acts.authorizeProvider && !adding ? <div className="mt-2"><Button variant="secondary" onClick={() => setAdding(true)}>Authorise a provider</Button></div> : null}
+          {acts.authorizeProvider && adding ? (
             <Card tone="tissue">
               <p className="t-sub">Authorise a provider.</p>
               <div className="mt-6 grid gap-5 md:grid-cols-2">
@@ -85,7 +77,7 @@ export default function Providers() {
                 </Field>
               </div>
               <div className="mt-6">
-                <Act label="Authorise" method="authorize_provider" onAnswer={reload}
+                <Act label="Authorise" method="authorize_provider" onAnswer={() => { setAdding(false); reload(); }}
                      prepare={() => (!/^0x[0-9a-fA-F]{40}$/.test(addr.trim()) ? "Enter the provider's wallet."
                        : !name.trim() ? "Name the provider." : !types.length ? "Choose the work they may do."
                        : [oid, addr.trim(), JSON.stringify({ name: name.trim(), maintenance_types: types })])} />

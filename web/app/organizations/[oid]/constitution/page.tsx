@@ -4,7 +4,8 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 import { Act } from "@/components/Act";
-import { Band, Button, Card, Fact, Loading, Status, Tag } from "@/components/bits";
+import { Band, Button, Card, Fact, Loading, Status } from "@/components/bits";
+import { Info, Tabs } from "@/components/tabs";
 import { ConstitutionForm, constitutionJson, draftFrom, type Draft } from "@/components/ConstitutionForm";
 import { orgActs } from "@/lib/acts";
 import { duration, gen, infraType, maintenanceType, moment, requirementType, shortAddress } from "@/lib/present";
@@ -16,47 +17,56 @@ import { useWallet } from "@/lib/wallet";
 
 function Body({ c }: { c: Constitution }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      <Card>
-        <Tag>Enforced in code</Tag>
-        <dl className="mt-6 grid gap-5 sm:grid-cols-2">
-          <Fact label="Supported infrastructure">{c.supported_infrastructure_types.map(infraType).join(", ")}</Fact>
-          <Fact label="Funded maintenance">{c.eligibility_rules.approved_maintenance_types.map(maintenanceType).join(", ")}</Fact>
-          <Fact label="Inspector's report required for">{c.eligibility_rules.inspection_report_required_for.map(maintenanceType).join(", ") || "Nothing"}</Fact>
-          <Fact label="Payments">Up to {gen(c.funding_rules.max_payment_wei)}; emergencies up to {gen(c.emergency_rules.emergency_max_payment_wei)}</Fact>
-          <Fact label="Open work at once">{c.funding_rules.max_open_work_orders}</Fact>
+    <Tabs items={[
+      { id: "rules", label: "Rules", content: (
+        <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Fact label="Maintains">{c.supported_infrastructure_types.map(infraType).join(", ")}</Fact>
+          <Fact label="Funds">{c.eligibility_rules.approved_maintenance_types.map(maintenanceType).join(", ")}</Fact>
+          <Fact label="Payments">Up to {gen(c.funding_rules.max_payment_wei)}, emergencies {gen(c.emergency_rules.emergency_max_payment_wei)}</Fact>
           <Fact label="Reserve">{gen(c.funding_rules.reserve_floor_wei)}</Fact>
-          <Fact label="Appeals">{c.appeal_rules.max_appeals_per_work_order} per order; window {duration(c.appeal_rules.appeal_window_seconds)} ({duration(c.emergency_rules.emergency_appeal_window_seconds)} in emergencies); evidence period {duration(c.appeal_rules.evidence_period_seconds)}</Fact>
-          <Fact label="Governance">{c.governance.stewards.length} steward{c.governance.stewards.length === 1 ? "" : "s"}; motions wait {duration(c.governance.motion_window_seconds)}</Fact>
+          <Fact label="Open work at once">{c.funding_rules.max_open_work_orders}</Fact>
+          <Fact label="Appeals">{c.appeal_rules.max_appeals_per_work_order} per order, within {duration(c.appeal_rules.appeal_window_seconds)}</Fact>
         </dl>
-        <div className="mt-8 border-t border-lichen pt-5">
-          <p className="t-label text-graphite">Evidence required before any assessment</p>
-          <ul className="mt-3 flex flex-col gap-1">
-            {c.evidence_requirements.map((r, i) => (
-              <li key={i} className="t-small">{r.min_count} {requirementType(r.type, r.min_count)} for {r.maintenance_type === "ALL" ? "every kind of work" : maintenanceType(r.maintenance_type).toLowerCase()}</li>
-            ))}
-          </ul>
-        </div>
-        <details className="mt-6">
-          <summary className="t-label cursor-pointer text-graphite">The stewards&apos; and beneficiary&apos;s wallets</summary>
-          <ul className="mt-3 flex flex-col gap-1">
-            {c.governance.stewards.map((s) => <li key={s} className="t-mono break-all text-graphite">Steward {s}</li>)}
-            <li className="t-mono break-all text-graphite">Beneficiary {c.governance.dissolution_beneficiary}</li>
-          </ul>
-        </details>
-      </Card>
-      <Card tone="tissue">
-        <Tag>Maintenance principles, judged on GenLayer</Tag>
-        <ol className="mt-6">
+      ) },
+      { id: "principles", label: "Principles", count: c.maintenance_principles.length, content: (
+        <ol className="border-t border-lichen">
           {c.maintenance_principles.map((p, i) => (
-            <li key={p.id} className="border-t border-lichen py-5 first:border-t-0">
-              <p className="t-label text-graphite">Principle {i + 1} · {p.applies_to.length ? p.applies_to.map(maintenanceType).join(", ") : "every kind of work"}</p>
-              <p className="t-body-lg mt-2">{p.text}</p>
+            <li key={p.id} className="grid gap-2 border-b border-lichen py-4 md:grid-cols-[48px_1fr_220px]">
+              <span className="t-label text-graphite">{i + 1}</span>
+              <span className="t-body">{p.text}</span>
+              <span className="t-small text-graphite md:text-right">{p.applies_to.length ? p.applies_to.map(maintenanceType).join(", ") : "Every kind of work"}</span>
             </li>
           ))}
         </ol>
-      </Card>
-    </div>
+      ) },
+      { id: "evidence", label: "Evidence required", content: (
+        <div>
+          <ul className="border-t border-lichen">
+            {c.evidence_requirements.map((r, i) => (
+              <li key={i} className="t-body border-b border-lichen py-3">{r.min_count} {requirementType(r.type, r.min_count)} for {r.maintenance_type === "ALL" ? "every kind of work" : maintenanceType(r.maintenance_type).toLowerCase()}</li>
+            ))}
+          </ul>
+          <p className="t-small mt-4 text-graphite">An inspector&apos;s report is required for {c.eligibility_rules.inspection_report_required_for.map(maintenanceType).join(", ").toLowerCase() || "nothing"}.</p>
+        </div>
+      ) },
+      { id: "governance", label: "Governance", content: (
+        <div>
+          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <Fact label="Stewards">{c.governance.stewards.length}</Fact>
+            <Fact label="Motions wait">{duration(c.governance.motion_window_seconds)}</Fact>
+            <Fact label="Appeal evidence period">{duration(c.appeal_rules.evidence_period_seconds)}</Fact>
+            <Fact label="Emergency appeal window">{duration(c.emergency_rules.emergency_appeal_window_seconds)}</Fact>
+          </dl>
+          <details className="mt-6">
+            <summary className="t-label cursor-pointer text-graphite">Wallets</summary>
+            <ul className="mt-3 flex flex-col gap-1">
+              {c.governance.stewards.map((s) => <li key={s} className="t-mono break-all text-graphite">Steward {s}</li>)}
+              <li className="t-mono break-all text-graphite">Beneficiary {c.governance.dissolution_beneficiary}</li>
+            </ul>
+          </details>
+        </div>
+      ) },
+    ]} />
   );
 }
 
@@ -81,14 +91,12 @@ export default function ConstitutionPage() {
   return (
     <>
       <section className="band-dark">
-        <div className="page py-14 md:py-20">
-          <Tag dark>Constitution</Tag>
-          <h1 className="t-display mt-6 max-w-[20ch]">{c.data?.organization_name ?? "Constitution"}</h1>
-          <p className="t-body-lg mt-6 max-w-[64ch] text-haze">
-            Versioned and immutable once in force. Every work order is bound to the version in force when it
-            was created, and every decision cites it: a later amendment never changes an earlier decision.
+        <div className="page pb-12 pt-12">
+          <p className="t-label text-haze">Constitution
+            <Info dark>Immutable once in force. Each work order is bound to the version in force when it was created, so a later amendment never changes an earlier decision.</Info>
           </p>
-          <div className="mt-10 flex flex-wrap gap-2">
+          <h1 className="t-heading-lg mt-5 max-w-[24ch]">{c.data?.organization_name ?? "Constitution"}</h1>
+          <div className="mt-8 flex flex-wrap gap-2">
             {Array.from({ length: count }, (_, i) => i + 1).map((v) => (
               <button key={v} type="button" onClick={() => setPicked(v)} aria-pressed={v === shown}
                       className={`t-label rounded-[12px] border px-3 py-1.5 ${v === shown ? "border-lime bg-lime text-ink" : "border-graphite text-lichen"}`}>
@@ -104,11 +112,10 @@ export default function ConstitutionPage() {
             <div className="mb-8 flex flex-wrap items-center gap-4">
               <Status>{c.data.effective_at ? (c.data.version === inForce ? "In force" : "Historical") : "Proposed, not in force"}</Status>
               <span className="t-small text-graphite">
-                Proposed by {shortAddress(c.data.proposed_by)} {moment(c.data.proposed_at)}
-                {c.data.effective_at ? `; in force from ${moment(c.data.effective_at)}` : ""}.
+                {c.data.effective_at ? `In force from ${moment(c.data.effective_at)}` : `Proposed ${moment(c.data.proposed_at)}`}
+                <Info>Proposed by {shortAddress(c.data.proposed_by)}, {moment(c.data.proposed_at)}. Mission: {c.data.mission}</Info>
               </span>
             </div>
-            <p className="t-body-lg mb-10 max-w-[70ch]">{c.data.mission}</p>
             <Body c={c.data} />
           </>
         ) : <Loading what="the constitution" />}
