@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+import { Info, Stat } from "@/components/tabs";
 import { Act } from "@/components/Act";
-import { Arrow, Band, Card, Empty, Fact, Field, Loading, Status, Tag } from "@/components/bits";
+import { Arrow, Band, Card, Empty, Field, Loading, Status, Tag } from "@/components/bits";
 import { assetActs, isSteward } from "@/lib/acts";
-import { assetStatus, infraType, maintenanceType, moment, orderState, outcome } from "@/lib/present";
+import { assetStatus, infraType, maintenanceType, day, moment, orderState, outcome } from "@/lib/present";
 import { getAsset, getOrganization, invalidateReads, listWorkOrders } from "@/lib/read";
 import { useChain } from "@/lib/useChain";
 import { useWallet } from "@/lib/wallet";
@@ -34,19 +35,19 @@ export default function AssetPage() {
   return (
     <>
       <section className="band-dark">
-        <div className="page pb-16 pt-12 md:pb-20">
+        <div className="page pb-12 pt-12">
           <div className="flex flex-wrap items-center gap-5">
             <Status dark>{assetStatus(a.status)}</Status>
             <Tag dark>{infraType(a.asset_type)}</Tag>
             {org.data ? <Link href={`/organizations/${a.organization_id}`} className="t-label text-haze underline underline-offset-4">{org.data.name}</Link> : null}
           </div>
-          <h1 className="t-display mt-6 max-w-[20ch]">{a.name}</h1>
-          {a.description ? <p className="t-body-lg mt-6 max-w-[64ch] text-haze">{a.description}</p> : null}
-          <dl className="mt-12 grid grid-cols-2 gap-8 border-t border-graphite pt-8 md:grid-cols-4">
-            <Fact dark label="Location">{a.location_reference || "Not given"}</Fact>
-            <Fact dark label="Operator">{a.operator || "Not given"}</Fact>
-            <Fact dark label="Last serviced">{a.last_serviced_at ? moment(a.last_serviced_at) : "Not yet"}</Fact>
-            <Fact dark label="Next service due">{a.next_service_due ? moment(a.next_service_due) : "No interval set"}</Fact>
+          <h1 className="t-heading-lg mt-5 max-w-[24ch]">{a.name}</h1>
+          {a.description ? <p className="t-body mt-3 line-clamp-2 max-w-[60ch] text-haze">{a.description}</p> : null}
+          <p className="t-small mt-3 text-haze">{[a.location_reference, a.operator].filter(Boolean).join(" · ")}</p>
+          <dl className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3">
+            <Stat dark label="Last serviced" value={a.last_serviced_at ? day(a.last_serviced_at) : "Not yet"} />
+            <Stat dark label="Next due" value={a.next_service_due ? day(a.next_service_due) : "None"} info={a.maintenance_interval_days ? `Serviced every ${a.maintenance_interval_days} days.` : "No service interval."} />
+            <Stat dark label="Service records" value={a.service_log.length} />
           </dl>
         </div>
       </section>
@@ -95,16 +96,14 @@ export default function AssetPage() {
             <Card tone="tissue">
               <Tag>Technical profile</Tag>
               <p className="t-body mt-4">{a.technical_profile || "Not given."}</p>
-              <p className="t-small mt-4 text-graphite">
-                {a.maintenance_interval_days ? `Serviced every ${a.maintenance_interval_days} days.` : "No service interval."} Enrolled under constitution {a.constitution_version}.
-              </p>
+
             </Card>
             <Card>
-              <Tag>Independent inspector</Tag>
+              <Tag>Independent inspector</Tag><Info>Their reports and checklists can establish findings once they accept the role.</Info>
               <p className="t-body mt-4">
                 {!a.inspector ? "None named. Findings rest on photographs alone."
-                  : a.inspector_accepted_at ? `Appointed and accepted ${moment(a.inspector_accepted_at)}. Their reports and checklists can establish findings.`
-                  : "Named, not yet accepted. Until they accept, nothing they file counts."}
+                  : a.inspector_accepted_at ? `Accepted ${moment(a.inspector_accepted_at)}.`
+                  : "Named, not yet accepted."}
               </p>
               {acts?.acceptInspector ? <div className="mt-5"><Act label="Accept the inspector role" method="accept_inspector_role" args={[aid]} onAnswer={reload} /></div> : null}
             </Card>
@@ -122,3 +121,4 @@ export default function AssetPage() {
     </>
   );
 }
+

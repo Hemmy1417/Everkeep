@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 import { Band, Card, Empty, Fact, Loading, Status, Tag } from "@/components/bits";
+import { Info, Stat, Tabs } from "@/components/tabs";
 import { addressUrl, txUrl } from "@/lib/chain";
 import { CONTRACT_ADDRESS } from "@/lib/config";
 import {
-  decisionName, evidenceName, gen, imageView, lifecycle, maintenanceType, moment, outcomeHeadline, validatorNote,
+  evidenceName, gen, imageView, lifecycle, maintenanceType, moment, outcomeHeadline, validatorNote,
   requirementStatus, role, ruleName, shortAddress, shortDigest, snapshotName, source, writeOut,
 } from "@/lib/present";
 import { getAsset, getDecision, getOrganization, getSnapshot, getWorkOrder, listProviders } from "@/lib/read";
@@ -16,9 +17,9 @@ import { useChain } from "@/lib/useChain";
 import { useNow } from "@/lib/useNow";
 
 const EXPLAIN: Record<string, string> = {
-  ACCEPTED: "The evidence establishes that the maintenance satisfies the organisation's constitution and this work order.",
-  REJECTED: "The evidence establishes that at least one requirement is not satisfied. The requirements it rests on are marked below.",
-  UNDETERMINED: "The submitted evidence did not establish the maintenance requirement with enough certainty for the organisation to authorise payment. Additional evidence and an appeal are the way forward where the constitution allows one.",
+  ACCEPTED: "The evidence shows the work meets the constitution and the work order.",
+  REJECTED: "The evidence shows at least one requirement is not met.",
+  UNDETERMINED: "The evidence did not establish the work well enough to authorise payment.",
 };
 
 export default function DecisionReceipt() {
@@ -40,56 +41,78 @@ export default function DecisionReceipt() {
   const provider = providers.data?.providers.find((p) => p.address.toLowerCase() === x.provider.toLowerCase());
   const tx = decisionTx(did);
   const now = Math.max(clock, Date.parse(org.data?.now ?? "") || 0);
-  const settlement = !w ? "Reading" : w.state === "SETTLED" && w.settlement ? `${gen(w.settlement.wei)} settled to the provider ${moment(w.settlement.at)}`
-    : w.state === "PAYMENT_RELEASABLE" ? `${gen(w.committed_wei)} releasable; anyone may settle it`
-    : x.outcome === "ACCEPTED" && x.lifecycle !== "FINALIZED" ? `${gen(x.payment_wei)} releasable once final`
-    : "Nothing releasable on this decision";
-  const appealStatus = x.lifecycle === "SUPERSEDED" ? "Appealed; superseded by a readjudication"
+  const settlement = !w ? "Reading" : w.state === "SETTLED" && w.settlement ? "Paid"
+    : w.state === "PAYMENT_RELEASABLE" ? "Releasable"
+    : x.outcome === "ACCEPTED" && x.lifecycle !== "FINALIZED" ? "Once final"
+    : "None";
+  const appealStatus = x.lifecycle === "SUPERSEDED" ? "Superseded"
     : x.lifecycle === "APPEALED" ? "Under appeal"
-    : x.lifecycle === "FINALIZED" ? "Closed; the decision is final"
-    : x.appeals_left > 0 && now <= Date.parse(x.appeal_window_ends) ? `Available until ${moment(x.appeal_window_ends)}`
-    : "No appeal available";
+    : x.lifecycle === "FINALIZED" ? "Final"
+    : x.appeals_left > 0 && now <= Date.parse(x.appeal_window_ends) ? "Open"
+    : "Closed";
 
   return (
     <>
       <section className="band-dark">
-        <div className="page pb-14 pt-12 md:pb-20">
-          <div className="flex flex-wrap items-center gap-5">
-            <Tag dark>EVERKEEP maintenance decision</Tag>
+        <div className="page pb-12 pt-12">
+          <div className="flex flex-wrap items-center gap-4">
             <Status dark>{x.lifecycle === "APPEALABLE" && !(x.appeals_left > 0 && now <= Date.parse(x.appeal_window_ends))
               ? "Awaiting finalization" : lifecycle(x.lifecycle)}</Status>
-            <span className="t-label text-haze">{decisionName(x.decision_id)}{x.kind === "READJUDICATION" ? " · readjudication on appeal" : ""}</span>
+            <span className="t-label text-haze">{x.kind === "READJUDICATION" ? "Readjudication on appeal" : "Assessment"} · {moment(x.decided_at)}</span>
           </div>
-          <h1 className="t-hero mt-8">{outcomeHeadline(x.outcome)}.</h1>
-          <p className="t-body-lg mt-8 max-w-[62ch] text-haze">{EXPLAIN[x.outcome]}</p>
-          <dl className="mt-12 grid grid-cols-2 gap-8 border-t border-graphite pt-8 md:grid-cols-4">
-            <Fact dark label="Organisation">{org.data?.name ?? "Reading"}</Fact>
-            <Fact dark label="Asset">{asset.data?.name ?? "Reading"}</Fact>
-            <Fact dark label="Work order">{terms?.title ?? "Reading"}</Fact>
-            <Fact dark label="Version">Work order {x.work_order_version}, constitution {x.constitution_version}</Fact>
-            <Fact dark label="Service provider">{provider?.name ?? shortAddress(x.provider)}</Fact>
-            <Fact dark label="Payment">{gen(x.payment_wei)}</Fact>
-            <Fact dark label="Appeal status">{appealStatus}</Fact>
-            <Fact dark label="Treasury">{settlement}</Fact>
+          <h1 className="t-display mt-6">{outcomeHeadline(x.outcome)}.</h1>
+          <p className="t-body mt-4 max-w-[60ch] text-haze">{EXPLAIN[x.outcome]}</p>
+          <p className="t-small mt-3 text-haze">
+            {terms ? <Link href={`/work-orders/${x.work_order_id}`} className="underline underline-offset-4">{terms.title}</Link> : "Reading"}
+            {asset.data ? <> · {asset.data.name}</> : null}
+            {org.data ? <> · {org.data.name}</> : null}
+          </p>
+          <dl className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4">
+            <Stat dark label="Payment" value={gen(x.payment_wei)} />
+            <Stat dark label="Treasury" value={settlement} info={w?.settlement ? `${gen(w.settlement.wei)} settled ${moment(w.settlement.at)}.` : "A payment is releasable only after a finalized acceptance, and anyone may then settle it."} />
+            <Stat dark label="Appeal" value={appealStatus} info={x.appeals_left > 0 ? `Window closes ${moment(x.appeal_window_ends)}.` : "No appeals remain on this work order."} />
+            <Stat dark label="Provider" value={<span className="text-[1.25rem] md:text-[1.5rem]">{provider?.name ?? shortAddress(x.provider)}</span>} />
           </dl>
-          {org.data ? <p className="t-small mt-8 text-lichen">Mission: {org.data.mission}</p> : null}
         </div>
       </section>
 
-      <Band>
-        <Tag>Requirements, as decided</Tag>
-        <div className="mt-6">
+      <section className="band-light py-12">
+        <div className="page">
+          <Tabs items={[
+            { id: "requirements", label: "Requirements", count: x.requirements.length, content: <Requirements x={x} /> },
+            { id: "reasoning", label: "Reasoning", content: <Reasoning x={x} /> },
+            ...(x.appeal || x.superseded_by ? [{ id: "appeal", label: "Appeal", content: <Appeal x={x} prior={prior.data ?? null} snap={snap.data ?? null} /> }] : []),
+            { id: "verify", label: "Verification", content: <Verification x={x} snap={snap.data ?? null} tx={tx} /> },
+          ]} />
+        </div>
+      </section>
+    </>
+  );
+}
+
+type D = NonNullable<Awaited<ReturnType<typeof getDecision>>>;
+type S = NonNullable<Awaited<ReturnType<typeof getSnapshot>>>;
+
+function Requirements({ x }: { x: D }) {
+  return (
+    <div>
+        <div>
           {x.requirements.map((r) => {
             const raw = x.notes.raw?.[r.id];
             const decisive = x.failed.includes(r.id) || x.not_established.includes(r.id);
             return (
-              <div key={r.id} className="grid gap-4 border-t border-lichen py-6 md:grid-cols-[1fr_200px]">
+              <div key={r.id} className="grid gap-3 border-t border-lichen py-4 md:grid-cols-[1fr_200px]">
                 <div>
                   <p className="t-label text-graphite">{ruleName(r.id)} · {source(r.source)}{decisive && x.outcome !== "ACCEPTED" ? " · decided this" : ""}</p>
-                  <p className="t-body-lg mt-2">{r.text}</p>
-                  {x.notes.requirement_notes?.[r.id] ? <p className="t-small mt-3 text-graphite">What the validators noted: {validatorNote(x.notes.requirement_notes[r.id])}</p> : null}
+                  <p className="t-body mt-2">{r.text}</p>
+                  {x.notes.requirement_notes?.[r.id] ? (
+                    <details className="mt-2">
+                      <summary className="t-label cursor-pointer text-graphite">Why</summary>
+                      <p className="t-small mt-2 text-graphite">{validatorNote(x.notes.requirement_notes[r.id])}</p>
+                    </details>
+                  ) : null}
                   {raw && raw !== r.status ? (
-                    <p className="t-small mt-2 text-graphite">The validators rated it {requirementStatus(raw).toLowerCase()} on evidence that cannot establish it, so code set it to {requirementStatus(r.status).toLowerCase()}.</p>
+                    <p className="t-small mt-2 text-graphite">Validators rated it {requirementStatus(raw).toLowerCase()} on evidence that cannot establish it, so code set it to {requirementStatus(r.status).toLowerCase()}.</p>
                   ) : null}
                 </div>
                 <div className="md:text-right"><Status>{requirementStatus(r.status)}</Status></div>
@@ -101,23 +124,24 @@ export default function DecisionReceipt() {
             <p className="t-body">Material contradiction: <strong>{x.conflicts_detected ? `yes. ${writeOut(x.notes.conflict_note)}` : "none found"}</strong></p>
           </div>
         </div>
-      </Band>
+    </div>
+  );
+}
 
-      {x.appeal || x.superseded_by ? (
-        <Band className="border-t border-lichen">
-          <Tag>Appeal</Tag>
-          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+function Appeal({ x, prior, snap }: { x: D; prior: D | null; snap: S | null }) {
+  return (
+          <div className="grid gap-6 lg:grid-cols-2">
             {x.appeal ? (
               <Card>
                 <p className="t-sub">This decision is a readjudication.</p>
                 <dl className="mt-5 grid gap-4">
                   <Fact label="Original decision">
-                    {prior.data ? <Link className="underline underline-offset-4" href={`/decisions/${x.appeal_of}`}>{outcomeHeadline(prior.data.outcome)}, {moment(prior.data.decided_at)}</Link> : "Reading"}
+                    {prior ? <Link className="underline underline-offset-4" href={`/decisions/${x.appeal_of}`}>{outcomeHeadline(prior.outcome)}, {moment(prior.decided_at)}</Link> : "Reading"}
                   </Fact>
                   <Fact label="Appellant">{role(x.appeal.by)}, {moment(x.appeal.opened_at)}</Fact>
                   <Fact label="Reason">&ldquo;{x.appeal.reason}&rdquo;</Fact>
                   <Fact label="Same rules and terms">Constitution {x.constitution_version}, work order version {x.work_order_version}</Fact>
-                  <Fact label="Additional evidence">{snap.data ? snap.data.evidence.filter((e) => e.new_on_appeal).map((e) => evidenceName(e.evidence_id)).join(", ") || "None" : "Reading"}</Fact>
+                  <Fact label="Additional evidence">{snap ? snap.evidence.filter((e) => e.new_on_appeal).map((e) => evidenceName(e.evidence_id)).join(", ") || "None" : "Reading"}</Fact>
                 </dl>
               </Card>
             ) : null}
@@ -129,15 +153,16 @@ export default function DecisionReceipt() {
               </Card>
             ) : null}
           </div>
-        </Band>
-      ) : null}
+  );
+}
 
-      <Band className="border-t border-lichen">
+function Reasoning({ x }: { x: D }) {
+  return (
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <Tag>The leader&apos;s reasoning</Tag>
             <p className="t-body-lg mt-5">{writeOut(x.notes.reasoning) || "No reasoning was recorded."}</p>
-            <p className="t-small mt-5 text-graphite">Prose is not what consensus agreed on: validators agreed on the outcome and the requirements it rests on, each from its own examination.</p>
+            <p className="t-small mt-5 text-graphite">One validator&apos;s words.<Info>Consensus agreed on the outcome and the requirements it rests on, not on this prose.</Info></p>
           </Card>
           <Card tone="tissue">
             <Tag>What the photographs showed</Tag>
@@ -155,17 +180,20 @@ export default function DecisionReceipt() {
             </div>
           </Card>
         </div>
-      </Band>
+  );
+}
 
-      <Band dark>
-        <Tag dark>Evidence snapshot and verification</Tag>
-        <h2 className="t-heading mt-6 max-w-[34ch]">{snap.data ? `${snapshotName(snap.data.snapshot_id)}: ${snap.data.evidence_count} items, with the hash the contract computed for each when it was filed.` : "Reading the snapshot."}</h2>
-        {snap.data ? (
+function Verification({ x, snap, tx }: { x: D; snap: S | null; tx: ReturnType<typeof decisionTx> }) {
+  return (
+      <div className="rounded-[20px] bg-ink p-6 text-paper md:p-10">
+        <p className="t-label text-haze">{snap ? `${snapshotName(snap.snapshot_id)}, ${snap.evidence_count} items` : "Reading the snapshot"}
+          <Info dark>The hash the contract computed for each item when it was filed. Fetch the bytes and compare.</Info></p>
+        {snap ? (
           <div className="mt-8 overflow-x-auto">
             <table className="w-full min-w-[640px] text-left">
               <thead><tr className="t-label text-haze"><th className="py-3 font-normal">Evidence</th><th className="py-3 font-normal">Type</th><th className="py-3 font-normal">Filed by</th><th className="py-3 font-normal">SHA-256</th></tr></thead>
               <tbody>
-                {snap.data.evidence.map((e) => (
+                {snap.evidence.map((e) => (
                   <tr key={e.evidence_id} className="border-t border-graphite">
                     <td className="t-small py-3">{evidenceName(e.evidence_id)}{e.new_on_appeal ? ", filed on appeal" : ""}</td>
                     <td className="t-small py-3">{e.kind === "IMAGE" ? imageView(e.type) : maintenanceType(e.type) || e.type.replace(/_/g, " ").toLowerCase()}</td>
@@ -184,10 +212,9 @@ export default function DecisionReceipt() {
         </dl>
         <p className="t-small mt-8 text-haze">
           {tx ? <>Produced by <a className="underline underline-offset-4" href={txUrl(tx.hash)} target="_blank" rel="noreferrer">this transaction</a>, known from {tx.source}. </> : null}
-          This receipt is read from the contract&apos;s state, not written by this page: the contract&apos;s own history is on{" "}
+          Read from the contract&apos;s state. Its history is on{" "}
           <a className="underline underline-offset-4" href={addressUrl(CONTRACT_ADDRESS)} target="_blank" rel="noreferrer">the explorer</a>.
         </p>
-      </Band>
-    </>
+      </div>
   );
 }
