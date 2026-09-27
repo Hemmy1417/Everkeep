@@ -8,7 +8,7 @@
   THE MODEL. `exec_prompt` answers from per-role queues, one for the
   photograph examination ("look") and one for the adjudication ("judge"), so a test can make
   the leader and the validator read the same evidence differently. It also
-  enforces GenVM's image rules measured in docs/PROBE-REPORT: at most two
+  enforces GenVM's image rules on Studio Next: at most two
   images, each at most 5 MB, PNG or JFIF-headed JPEG only.
 
   THE CLOCK. `set_now(iso)` sets the transaction datetime; nothing advances
