@@ -62,7 +62,7 @@ export function TxPanel({
   tx: SubmitInput;
   value?: bigint;
   confirmText: string;
-  /** What the validators are doing while it runs, for the long rounds. */
+  /** What the validators are doing while it runs, for the long adjudications. */
   working?: string;
   onDone?: (outcome: TxOutcome) => void;
   onClose?: () => void;

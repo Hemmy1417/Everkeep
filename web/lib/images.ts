@@ -1,7 +1,7 @@
 /**
  * Preparing images for the record. GenVM's model gateway accepts only PNG
  * and JPEG whose bytes begin FF D8 FF E0 (JFIF), and the contract refuses
- * anything else at filing (docs/PROBE-REPORT). Camera photos are usually
+ * anything else at filing. Camera photos are usually
  * EXIF JPEGs (FF D8 FF E1), so every image is redrawn here, at no more than
  * 1,024 pixels, and re-encoded as a JFIF JPEG under the contract's size
  * limit. The capture date and position are read from the original's EXIF
@@ -120,54 +120,5 @@ export async function preparePhoto(file: File): Promise<PreparedImage> {
     return { bytes, width, height, preview, claimedCapture: claims.capture, claimedLocation: claims.location };
   } finally {
     bitmap.close();
-  }
-}
-
-export function timecode(seconds: number): string {
-  const s = Math.max(0, Math.floor(seconds));
-  return `${two(Math.floor(s / 60))}:${two(s % 60)}`;
-}
-
-/** One frame of a video, at a chosen second, as an image for the record. */
-export async function prepareVideoFrame(file: File, atSeconds: number): Promise<PreparedImage> {
-  if (!file.type.startsWith("video/")) throw new Error("Choose a video file.");
-  const url = URL.createObjectURL(file);
-  const video = document.createElement("video");
-  video.muted = true;
-  video.playsInline = true;
-  video.preload = "auto";
-  video.src = url;
-  try {
-    await new Promise<void>((resolve, reject) => {
-      video.onloadeddata = () => resolve();
-      video.onerror = () => reject(new Error("This browser cannot read that video."));
-    });
-    const at = Math.min(Math.max(0, atSeconds), Math.max(0, video.duration - 0.05));
-    await new Promise<void>((resolve, reject) => {
-      video.onseeked = () => resolve();
-      video.onerror = () => reject(new Error("This browser could not seek in that video."));
-      video.currentTime = at;
-    });
-    const { bytes, width, height } = await encodeForRecord(video, video.videoWidth, video.videoHeight);
-    const preview = URL.createObjectURL(new Blob([bytes as BlobPart], { type: "image/jpeg" }));
-    return { bytes, width, height, preview, claimedCapture: "", claimedLocation: "" };
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
-
-/** A video's length in seconds, to offer the frame picker its range. */
-export async function videoDuration(file: File): Promise<number> {
-  const url = URL.createObjectURL(file);
-  const video = document.createElement("video");
-  video.preload = "metadata";
-  video.src = url;
-  try {
-    return await new Promise<number>((resolve, reject) => {
-      video.onloadedmetadata = () => resolve(Number.isFinite(video.duration) ? video.duration : 0);
-      video.onerror = () => reject(new Error("This browser cannot read that video."));
-    });
-  } finally {
-    URL.revokeObjectURL(url);
   }
 }

@@ -7,7 +7,7 @@
  * allows 30 calls per rolling minute per IP, and the wallet's fee estimates
  * spend from the same bucket. Reads run concurrently up to a rolling budget
  * with headroom left for the wallet, retry transient failures, and cache
- * what cannot change (images, finished rounds) for good.
+ * what cannot change (images, evidence, snapshots) for good.
  */
 import { createClient } from "genlayer-js";
 
@@ -105,10 +105,6 @@ function paced<T>(work: () => Promise<T>): Promise<T> {
   return wait > 0 ? new Promise((r) => setTimeout(r, wait)).then(begin) : begin();
 }
 
-/** How long this page's next queued read still waits for the budget. */
-export function readWaitMs(): number {
-  return pending.length ? Math.max(0, Math.min(...pending) - Date.now()) : 0;
-}
 
 // Studio Next runs gen_calls in a small pool of execution slots shared by
 // every visitor; one page never holds more than half of them.
@@ -379,18 +375,3 @@ export function getImage(eid: string): Promise<StoredImage> {
   return flight;
 }
 
-/** Poll a predicate after a write until the state shows it (or tries end). */
-export async function pollUntil(
-  predicate: () => Promise<boolean>,
-  { tries = 30, gapMs = 4_000 } = {},
-): Promise<boolean> {
-  for (let i = 0; i < tries; i++) {
-    try {
-      if (await predicate()) return true;
-    } catch {
-      /* transient reads never abort a poll */
-    }
-    await new Promise((r) => setTimeout(r, gapMs));
-  }
-  return false;
-}

@@ -3,8 +3,8 @@
 /**
  * The Transaction Kit, bound to the CONNECTED wallet's provider (never a
  * bare window.ethereum grab). Prices come from the network's live fee
- * policy; the one write that sends value out of the contract (claim) is
- * priced by simulation, see withTransferAllocations.
+ * policy; the two writes that send value out of the contract (settle and
+ * claim_refund) are priced by simulation, see withTransferAllocations.
  */
 import {
   createTransactionKit,
@@ -23,7 +23,7 @@ import { useWallet } from "./wallet";
  * leader refuses such a write unless its fees carry the message
  * allocations the fee SIMULATION measured (`fee no_matching_allocation #
  * external`) and the transaction still FINALIZES, so the wallet sees a
- * "successful" round that paid nothing. The kit (0.1.0-rc.2) prices from
+ * "successful" transaction that paid nothing. The kit (0.1.0-rc.2) prices from
  * defaults and submits without allocations, so these methods are priced
  * by simulation instead.
  */

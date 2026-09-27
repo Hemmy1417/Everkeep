@@ -1,9 +1,8 @@
 /**
- * Reading one transaction's consensus record straight from Studio Next:
- * the contract's refusal sentence for a refused write, and for a round, the
- * panel itself: every leader rotation, each node's model, its vote, and the
- * lines the contract printed (the leader's reading, a validator's reason
- * for disagreeing). Nothing here is inferred; it is the receipt, decoded.
+ * Reading one transaction's leader receipt straight from Studio Next: the
+ * JSON a write returned (an organisation id, a decision id, or a payable
+ * write's refusal) and the contract's sentence for a refused write. Nothing
+ * here is inferred; it is the receipt, decoded.
  */
 import { RPC_URL } from "./chain";
 
@@ -66,4 +65,3 @@ export async function refusalOf(hash: string): Promise<string | null> {
   return text || null;
 }
 
-/* ── the panel ── */

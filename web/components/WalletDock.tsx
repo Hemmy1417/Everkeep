@@ -1,8 +1,7 @@
 "use client";
 
 /**
- * The wallet, as the one graphite button the reference puts on the right of
- * the nav pill.
+ * The wallet, as the one light button at the right of the navigation bar.
  *
  * The connected address is machine text and never reaches the page surface.
  * It is shown inside the dropdown, where somebody has asked which account is
