@@ -1,9 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="EVERKEEP">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 96" role="img" aria-label="EVERKEEP">
+  <style>.word{fill:#222f30}@media (prefers-color-scheme: dark){.word{fill:#f7f7f5}}</style>
+  <g transform="translate(8 8) scale(1.25)">
   <rect width="64" height="64" rx="16" fill="#222f30"/>
-  <!-- ever: the maintenance cycle, one loop that keeps coming round -->
   <path d="M51.05 21 A22 22 0 1 1 39.52 11.33" fill="none" stroke="#cef79e" stroke-width="3.5" stroke-linecap="round"/>
   <path d="M45.2 13.3 L40.6 7.2 L37.9 15.6 Z" fill="#cef79e" stroke="#cef79e" stroke-width="1.5" stroke-linejoin="round"/>
-  <!-- keep: the tower it protects, with its door -->
   <path fill="#cef79e" fill-rule="evenodd"
         d="M23 45 V19 H27.5 V23 H30 V19 H34 V23 H36.5 V19 H41 V45 Z M29 45 V38.5 A3 3 0 0 1 35 38.5 V45 Z"/>
+  </g>
+  <text x="112" y="60" font-family="'Inter Tight', Inter, 'Helvetica Neue', Arial, sans-serif" font-size="40" letter-spacing="-1" class="word">Everkeep</text>
 </svg>

@@ -23,7 +23,7 @@ const LINKS = [
   { href: "/verify", label: "Verify" },
 ];
 
-export function Mark({ size = 28 }: { size?: number }) {
+export function Mark({ size = 34 }: { size?: number }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img src="/icon.svg" width={size} height={size} alt="" aria-hidden className="rounded-[8px]" />

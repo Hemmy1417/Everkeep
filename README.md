@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/Hemmy1417/Everkeep/main/web/public/icon.svg" width="112" alt="EVERKEEP"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Hemmy1417/Everkeep/main/web/public/logo.svg" width="320" alt="EVERKEEP"/></p>
 
 # EVERKEEP - Autonomous Infrastructure Stewardship Fund
 
