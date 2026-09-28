@@ -1,0 +1,145 @@
+{
+  "deployment": "0xF71522A090BFDd32f3C5B0d87E518563B19fec4f",
+  "site": "https://everkeep-v1.vercel.app",
+  "date": "2026-09-28",
+  "organisation": "org-00002",
+  "work_order": "wo-00008",
+  "steps": [
+    {
+      "step": "found",
+      "method": "create_organization",
+      "role": "FOUNDER",
+      "hash": "0x663c17439177aecb2337209570c41b958c6786b11b3518175319788a69a38152",
+      "result": "org-00002",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x663c17439177aecb2337209570c41b958c6786b11b3518175319788a69a38152"
+    },
+    {
+      "step": "authorise provider",
+      "method": "authorize_provider",
+      "role": "FOUNDER",
+      "hash": "0x8f58d6e7f0d007916904a0e622040d8b49ac1159ba654c0dd3ea40b71327edef",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x8f58d6e7f0d007916904a0e622040d8b49ac1159ba654c0dd3ea40b71327edef"
+    },
+    {
+      "step": "enrol asset",
+      "method": "register_asset",
+      "role": "FOUNDER",
+      "hash": "0x08fbce31e23083e60155496297aca41e473aa89016a800411fe1494ce3c05490",
+      "result": "as-00002",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x08fbce31e23083e60155496297aca41e473aa89016a800411fe1494ce3c05490"
+    },
+    {
+      "step": "commission work",
+      "method": "create_work_order",
+      "role": "FOUNDER",
+      "hash": "0xfef57dd0b2df9bf91ee28ada7d6e9f2d624a17782b6edbb85f7537ca69a3e5d8",
+      "result": "wo-00008",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xfef57dd0b2df9bf91ee28ada7d6e9f2d624a17782b6edbb85f7537ca69a3e5d8"
+    },
+    {
+      "step": "accept terms",
+      "method": "accept_work_order",
+      "role": "PROVIDER",
+      "hash": "0x3a32ddbd962ec92390070942dde0df0913d08a081fd5702c4a97f3f0f0b7f533",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x3a32ddbd962ec92390070942dde0df0913d08a081fd5702c4a97f3f0f0b7f533"
+    },
+    {
+      "step": "file after photograph",
+      "method": "submit_image",
+      "role": "PROVIDER",
+      "hash": "0xaeff7769a0a336774b41009e8cd0904096f296d9b60937e0bb19fefc630a1130",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xaeff7769a0a336774b41009e8cd0904096f296d9b60937e0bb19fefc630a1130"
+    },
+    {
+      "step": "file meter display photograph",
+      "method": "submit_image",
+      "role": "PROVIDER",
+      "hash": "0x471a2e2f96e86bfb30fcf6100f512ae0420204ddd0186aae6d1703ab871f471f",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x471a2e2f96e86bfb30fcf6100f512ae0420204ddd0186aae6d1703ab871f471f"
+    },
+    {
+      "step": "request assessment",
+      "method": "request_assessment",
+      "role": "PROVIDER",
+      "hash": "0x1c023f75a35c63fa138c36d1dd0693e15bab623108a084cd87b337c090a33cb5",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x1c023f75a35c63fa138c36d1dd0693e15bab623108a084cd87b337c090a33cb5"
+    },
+    {
+      "step": "decision",
+      "result": "dec-000008 REJECTED on S1 (photograph shows a trailer-mounted setup; asset enrolled as a fixed workshop board); P1, C1, C2 satisfied"
+    },
+    {
+      "step": "open appeal",
+      "method": "open_appeal",
+      "role": "PROVIDER",
+      "hash": "0xe0bd57cd4f51802c34340dd031688634c3d8129d75aea286a0d5cdcb2058bfa8",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xe0bd57cd4f51802c34340dd031688634c3d8129d75aea286a0d5cdcb2058bfa8"
+    },
+    {
+      "step": "readjudicate, first asking",
+      "method": "readjudicate",
+      "role": "PROVIDER",
+      "hash": "0x19678eb0926b93f4b65ed49bb3cce78b613cabbdae54a571ea9c7f92ca402bf2",
+      "result": "MAJORITY_DISAGREE",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_DISAGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x19678eb0926b93f4b65ed49bb3cce78b613cabbdae54a571ea9c7f92ca402bf2",
+      "note": "no majority, so nothing was recorded; the app then said Confirmed, which was wrong and is fixed"
+    },
+    {
+      "step": "readjudicate again",
+      "method": "readjudicate",
+      "role": "PROVIDER",
+      "hash": "0xf5d445d31622104575486fe8391b28e45287eb6b3da9bea159dfea6dd0cc8da9",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0xf5d445d31622104575486fe8391b28e45287eb6b3da9bea159dfea6dd0cc8da9"
+    },
+    {
+      "step": "readjudication recorded",
+      "result": "dec-000009 ACCEPTED on appeal, linked to dec-000008"
+    },
+    {
+      "step": "finalize",
+      "method": "finalize",
+      "role": "PROVIDER",
+      "hash": "0x815f545a7ee26db8e52bce6a7b03bf0646e81af81fd8f3e62fc393cff26c8a05",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x815f545a7ee26db8e52bce6a7b03bf0646e81af81fd8f3e62fc393cff26c8a05"
+    },
+    {
+      "step": "settle",
+      "method": "settle",
+      "role": "PROVIDER",
+      "hash": "0x9150b2a8778caac9de2ceae2c932d71173621b15159e8995bb17c649ba11eeb3",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "explorer": "https://explorer-studio-dev.genlayer.com/tx/0x9150b2a8778caac9de2ceae2c932d71173621b15159e8995bb17c649ba11eeb3"
+    }
+  ],
+  "settlement": {
+    "treasury_before_wei": "5000000000000000000",
+    "treasury_after_wei": "3000000000000000000",
+    "paid_after_wei": "2000000000000000000",
+    "provider_delta_wei": "1999873673749999177"
+  }
+}

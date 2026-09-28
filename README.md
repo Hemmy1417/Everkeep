@@ -113,8 +113,8 @@ its readjudication and kept exactly as recorded. A work order runs:
 | Source | byte-for-byte identical to `contracts/everkeep.py` (`node scripts/deploy.mjs verify`) |
 | Contract tests | 120 direct tests, including a randomized walk that asserts the brief's invariants after every action and reaches every work order state, and one test per judges' standard in `tests/direct/test_standards.py` |
 | Contract sweep | 99 mutants, 99 killed, control passes ([docs/proofs/sweep.txt](docs/proofs/sweep.txt)) |
-| App tests | 25, including every contract write reachable from a page, the action rules on shapes the contract writes, and a write signed by the connected wallet |
-| App sweep | 37 mutants, 37 killed |
+| App tests | 26, including every contract write reachable from a page, the action rules on shapes the contract writes, and a write signed by the connected wallet |
+| App sweep | 38 mutants, 38 killed |
 | Adversarial review | eight defects found before deployment, all fixed and pinned ([docs/security.md](docs/security.md)) |
 
 **The flagship story, live** ([docs/proofs/proof-run.txt](docs/proofs/proof-run.txt), every hash in
@@ -159,11 +159,12 @@ block the contract the app writes to (one once did):
 - **Dissolution.** It was proposed and enacted, refused while work was open, then completed, and the
   beneficiary claimed the full treasury.
 
-**The app, in a browser** ([docs/proofs/ui-bench.md](docs/proofs/ui-bench.md)): on the previous
-deployment, a stranger finalized a decision, and the provider accepted the next cycle's terms and filed a
-declaration, each composed by the pages, signed through the app's own wallet picker and confirmed from
-the chain. The signing path is unchanged in this deployment; its action rules are proved against this
-deployment's chain in the run above.
+**The app, in a browser** ([docs/proofs/ui-e2e.md](docs/proofs/ui-e2e.md)): the submission's whole path was walked
+through the live site's pages on the deployment of record, from founding an organisation in the wizard to
+settlement, with every write composed by a page and signed through the app's own wallet menu. The work was first
+rejected, appealed, accepted on readjudication, finalized and settled for exactly 2 GEN. The run found one defect:
+a round that reached no majority was reported as confirmed. The panel now reads the network's consensus result.
+An earlier browser test on the previous deployment is in [docs/proofs/ui-bench.md](docs/proofs/ui-bench.md).
 
 ## Deployment, environment and testing
 

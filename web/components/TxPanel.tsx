@@ -23,7 +23,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, InkLink } from "./bits";
 import { txUrl } from "@/lib/chain";
 import { plural, prose, refusal } from "@/lib/present";
-import { refusalOf } from "@/lib/receipt";
+import { consensusOf, refusalOf } from "@/lib/receipt";
 
 const PHASES = ["submitted", "pending", "processing", "decided", "finalized"] as const;
 const PHASE_TEXT: Record<(typeof PHASES)[number], string> = {
@@ -73,22 +73,31 @@ export function TxPanel({
   const { state } = flow;
   const fired = useRef(false);
   const [refused, setRefused] = useState<string | null>(null);
+  // null until read: a finalized round is only a write once the validators agreed.
+  const [agreed, setAgreed] = useState<boolean | null>(null);
 
   const status = state.step === "tracking" || state.step === "done" ? state.status : null;
   const hash = status?.genlayerTxId ?? null;
   const done = state.step === "done";
   const finalized = status?.phase === "finalized";
-  const succeeded = done && finalized && status?.successful === true;
+  const executed = done && finalized && status?.successful === true;
+  const succeeded = executed && agreed === true;
+
+  useEffect(() => {
+    if (!executed || !hash || agreed !== null) return;
+    void consensusOf(hash).then(setAgreed).catch(() => setAgreed(false));
+  }, [executed, hash, agreed]);
 
   useEffect(() => {
     if (!done || fired.current) return;
+    if (executed && agreed === null) return;
     fired.current = true;
     if (status?.successful === false && hash) {
       void refusalOf(hash).then(setRefused).catch(() => setRefused(null));
     }
     if (succeeded) announceChange();
     onDone?.({ successful: succeeded, hash });
-  }, [done, succeeded, status, hash, onDone]);
+  }, [done, executed, agreed, succeeded, status, hash, onDone]);
 
   const shell = "rounded-[16px] border border-lichen bg-paper p-8";
 
@@ -226,6 +235,16 @@ export function TxPanel({
               <p className="t-sub">Confirmed</p>
               <p className="t-small text-graphite mt-1">
                 Finalized on chain with a successful execution.
+              </p>
+            </>
+          ) : executed && agreed === null ? (
+            <p className="t-small text-graphite">Reading the validators&apos; verdict.</p>
+          ) : executed ? (
+            <>
+              <p className="t-sub">The validators did not agree</p>
+              <p className="mt-2 t-small text-graphite">
+                The network could not reach a majority on this request, so nothing was recorded and the
+                record is unchanged. You can send it again.
               </p>
             </>
           ) : finalized ? (

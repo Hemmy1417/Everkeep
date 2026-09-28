@@ -65,3 +65,19 @@ export async function refusalOf(hash: string): Promise<string | null> {
   return text || null;
 }
 
+
+/**
+ * Whether the validators agreed on a finalized transaction. A round that
+ * reaches no majority still finalizes, and its leader's own execution can
+ * still read as successful, yet nothing it did was recorded. Only an
+ * agreeing result means the write happened.
+ */
+export function consensusAgreed(resultName: unknown): boolean {
+  return resultName === "MAJORITY_AGREE" || resultName === "AGREE";
+}
+
+/** The network's consensus result for one transaction, read from the chain. */
+export async function consensusOf(hash: string): Promise<boolean> {
+  const tx = await fetchTx(hash);
+  return consensusAgreed(tx.result_name);
+}

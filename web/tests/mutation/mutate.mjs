@@ -72,12 +72,14 @@ const M = [
   ["present", "raw principle ids reach the page", String.raw`    .replace(/\bP(\d{1,2})\b/g, (_m, d: string) => ` + "`principle ${d}`)", ""],
   ["present", "fractions of GEN vanish", '  if (frac > 0n) text += `.${frac.toString().padStart(4, "0").replace(/0+$/, "")}`;', ""],
   ["present", "a cut note looks whole", "  return wasCut(text) ? `${body}… (the record keeps the first 200 characters)` : body;", "  return body;"],
+  ["receipt", "a round the validators rejected reads as confirmed", '  return resultName === "MAJORITY_AGREE" || resultName === "AGREE";', "  return true;"],
 ];
 
-const files = { acts: "lib/acts.ts", present: "lib/present.ts" };
+const files = { acts: "lib/acts.ts", present: "lib/present.ts", receipt: "lib/receipt.ts" };
 const tests = {
   acts: "tests/acts.test.ts",
   present: "tests/present.test.ts",
+  receipt: "tests/consensus.test.ts",
 };
 
 const [MAJOR, MINOR] = process.versions.node.split(".").map(Number);
