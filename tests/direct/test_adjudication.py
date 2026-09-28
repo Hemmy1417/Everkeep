@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from conftest import (FOUNDER, GEN, INSPECTOR, PROVIDER, STEWARD2, STRANGER, active_order, as_, assess,
+from conftest import (FOUNDER, INSPECTOR, PROVIDER, STRANGER, active_order, as_, assess,
                       decision, document, err, exif_jpeg, jfif, judgment, llm, order, photo, prints, prompts,
                       ratings, seen, standard_file)
 
@@ -90,7 +90,6 @@ def test_preflight_refuses_before_any_prompt(module, c):
 
 
 def test_inspection_report_rule_counts_only_the_inspector(module, c):
-    from conftest import BENEFICIARY
     oid, aid, wid = active_order(module, c, inspector=INSPECTOR, org_over={"eligibility_rules": {
         "approved_maintenance_types": ["COMPONENT_REPLACEMENT", "BATTERY_SERVICE", "SYSTEM_RESTORATION",
                                        "EMERGENCY_REPAIR", "INSPECTION"],
@@ -101,8 +100,16 @@ def test_inspection_report_rule_counts_only_the_inspector(module, c):
         assess(module, c, wid)
     rep = document(module, c, wid, who=INSPECTOR, doc_type="INSPECTION_REPORT", text="Controller installed and charging.")
     own = "ev-000003"
-    assert assess(module, c, wid, judge=judgment(ratings(), basis={"S3": ["ev-000001", own]}))["outcome"] == "ACCEPTED"
-    assert rep
+    # With an accepted inspector on the asset, the provider's photographs
+    # alone cannot carry a principle or a criterion as met.
+    paid_side = {i: ["ev-000001"] for i in ratings() if i[0] in "PC"}
+    alone = assess(module, c, wid, judge=judgment(ratings(), basis=dict(paid_side, S3=["ev-000001", own])))
+    assert alone["outcome"] == "UNDETERMINED"
+    as_(module, PROVIDER)
+    c.open_appeal(wid, "The inspector's report bears on every requirement.")
+    backed = {i: ["ev-000001", rep] for i in ratings() if i[0] in "PC"}
+    llm(look=seen(2), judge=judgment(ratings(), basis=dict(backed, S3=["ev-000001", own])))
+    assert json.loads(c.readjudicate(wid))["outcome"] == "ACCEPTED"
 
 
 def test_principles_in_scope_are_chosen_in_code(module, c):
@@ -161,7 +168,7 @@ def test_a_photographed_failure_rejects(module, c):
 def test_consistency_s3_needs_a_provider_document_and_an_observation(module, c):
     oid, aid, wid = active_order(module, c)
     ids = standard_file(module, c, wid)
-    doc = document(module, c, wid)
+    document(module, c, wid)
     out = assess(module, c, wid, judge=judgment(ratings(), basis={"S3": [ids[0]]}))
     assert out["outcome"] == "UNDETERMINED", "a photograph alone cannot show documents agree with it"
     d = decision(c, out["decision_id"])

@@ -65,7 +65,7 @@ async function balance(role) {
 }
 
 const ROUNDS = new Set(["request_assessment", "readjudicate"]);
-const ROUND_ATTEMPTS = 3;
+const ROUND_ATTEMPTS = 4;
 
 /**
  * One signed write, remembered by name so a rerun skips what already landed.
@@ -240,14 +240,55 @@ async function decide(key, fn, wid, role = "PROVIDER") {
   }
 }
 
+/**
+ * The app's own rules (web/lib/acts.ts), run against chain state. Before a
+ * write the script asserts the page would offer it to that wallet; before a
+ * refusal, that the page would not. A mismatch fails the run.
+ */
+const { orderActs, orgActs, seatOn, preflightGap, currentTerms } = await import("../web/lib/acts.ts");
+async function offered(label, wid, role, act, expected) {
+  // Checked once, at the moment it belongs to; a resumed run keeps the result.
+  if (run.app?.[label]) return;
+  const w = await readJson("get_work_order", [wid]);
+  const o = await readJson("get_organization", [w.organization_id]);
+  const a = await readJson("get_asset", [w.asset_id]);
+  const c = await readJson("get_constitution", [w.organization_id, w.constitution_version]);
+  const d = w.current_decision_id ? await readJson("get_decision", [w.current_decision_id]) : null;
+  const addr = KEYS[role].addr;
+  const items = (w.evidence[String(w.current_version || 1)] ?? []).filter((it) => it.kind === "IMAGE" || it.kind === "DOCUMENT");
+  const gap = w.current_version ? preflightGap(c, currentTerms(w), items) : "";
+  const now = Date.parse(w.now);
+  const got = orderActs(w, o, d, seatOn(w, a, o.stewards, addr), addr, now, gap)[act];
+  run.app = run.app ?? {};
+  run.app[label] = { role, act, expected, got };
+  save();
+  assert(got === expected, `the app ${expected ? "does not offer" : "offers"} ${act} to ${role} at ${label}`);
+}
+async function orgOffered(label, role, act, expected) {
+  if (run.app?.[label]) return;
+  const o = await readJson("get_organization", [OID]);
+  const c = await readJson("get_constitution", [OID, o.constitution_version]);
+  const got = orgActs(o, c, KEYS[role].addr, Date.parse(o.now))[act];
+  run.app = run.app ?? {};
+  run.app[label] = { role, act, expected, got };
+  save();
+  assert(got === expected, `the app ${expected ? "does not offer" : "offers"} ${act} to ${role} at ${label}`);
+}
+
 say(`proofs on ${ADDRESS}`);
 const cfg = await readJson("get_config", []);
-assert(cfg.ruleset === "everkeep-rules-2", "unexpected ruleset");
+assert(cfg.ruleset === "everkeep-rules-3", "unexpected ruleset");
 
 // 0. The organisation, its provider registry and its infrastructure.
-const founded = await step("org.found", "FOUNDER", "create_organization", [CONSTITUTION], { value: 9n * GEN });
+const founded = await step("org.found", "FOUNDER", "create_organization", [CONSTITUTION], { value: 14n * GEN });
 const OID = jsonFrom(founded.text)?.organization_id;
 assert(OID && !jsonFrom(founded.text).refused, `founding failed: ${founded.text}`);
+await orgOffered("steward.before_accepting", "STEWARD", "pause", false);
+await step("walls.unaccepted_steward", "STEWARD", "pause_organization", [OID, ""],
+           { refused: "who has accepted the role" });
+await orgOffered("steward.accept_offered", "STEWARD", "acceptSteward", true);
+await step("steward.accept", "STEWARD", "accept_steward_role", [OID]);
+await orgOffered("steward.after_accepting", "STEWARD", "acceptSteward", false);
 await step("provider.authorize", "FOUNDER", "authorize_provider", [OID, KEYS.PROVIDER.addr,
   JSON.stringify({ name: "Brightline Solar Services (demonstration)",
                    maintenance_types: ["COMPONENT_REPLACEMENT", "BATTERY_SERVICE", "SYSTEM_RESTORATION"] })]);
@@ -255,7 +296,8 @@ const AID = jsonFrom((await step("asset.enrol", "FOUNDER", "register_asset", [OI
 assert(AID, "no asset id");
 await step("inspector.accept", "INSPECTOR", "accept_inspector_role", [AID]);
 let asset = await readJson("get_asset", [AID]);
-assert(asset.status === "MONITORING", `a new asset should be monitored: ${asset.status}`);
+// A state check belongs to its moment: a resumed run past it skips it.
+if (!run.steps["flagship.create"]) assert(asset.status === "MONITORING", `a new asset should be monitored: ${asset.status}`);
 
 // 1. The enforced half, refused in code with no panel asked.
 await step("enforced.unsupported_asset", "FOUNDER", "register_asset",
@@ -286,6 +328,7 @@ const flag = await workOrder("flagship", terms({
   criteria: ["A solar charge controller is fixed to the equipment board with its cables landed in its terminals.",
              "The controller's display shows the battery bank at a normal voltage for a 12 V bank."],
   required: [{ type: "OPERATIONAL_READING", min_count: 1 }] }));
+await offered("flagship.before_evidence", flag, "PROVIDER", "assess", false);
 await step("flagship.preflight_refused", "PROVIDER", "request_assessment", [flag],
            { refused: "1 after photo before assessment; 0 on file" });
 await image("flagship.after", "PROVIDER", flag, "bank-overview", "AFTER",
@@ -296,14 +339,28 @@ await doc("flagship.report", "PROVIDER", flag, "TECHNICAL_REPORT", "Technician r
           "Removed the failed charge controller. Fitted a 12/24 V PWM controller with LCD display, fixed "
           + "with two screws to the equipment board. Landed panel and battery cables in the controller "
           + "terminals. On completion the display read 12.5 V for the battery bank.");
-await doc("flagship.checklist", "INSPECTOR", flag, "INSPECTION_CHECKLIST", "Inspection checklist",
+const flagChecklist = await doc("flagship.checklist", "INSPECTOR", flag, "INSPECTION_CHECKLIST", "Inspection checklist",
           "Controller fixed to board: yes. Cables landed in terminals: yes. Display lit and reading battery "
           + "voltage: yes, 12.5 V. No loose conductors at the controller: yes.");
 await step("walls.provider_inspection_report", "PROVIDER", "submit_document",
            [flag, JSON.stringify({ doc_type: "INSPECTION_REPORT", title: "My own inspection" }), "Fine."],
            { refused: "only the asset's accepted inspector" });
+await offered("flagship.ready", flag, "PROVIDER", "assess", true);
 const flagDecision = await decide("flagship.assess", "request_assessment", flag);
 assert(flagDecision.outcome === "ACCEPTED", `flagship: ${flagDecision.outcome}`);
+// Negative controls: on a clean, consistent file neither flag is raised.
+assert(flagDecision.conflicts_detected === false, "a conflict was recorded on the clean flagship file");
+assert(flagDecision.requirements.find((r) => r.id === "S1")?.status === "SATISFIED",
+       "the flagship's photographs were not found to show the enrolled asset");
+// With an inspector on the asset, every principle and criterion met cites
+// the inspector's observation (the S8 floor), read back from the record.
+for (const r of flagDecision.requirements.filter((x) => /^[PC]/.test(x.id) && x.status === "SATISFIED")) {
+  const cited = flagDecision.notes.basis[r.id] ?? [];
+  assert(cited.some((e) => e === flagChecklist), `${r.id} was accepted without the inspector's observation`);
+}
+await offered("flagship.steward_may_appeal", flag, "STEWARD", "appeal", true);
+await offered("flagship.provider_may_not_appeal", flag, "PROVIDER", "appeal", false);
+await offered("flagship.not_final_yet", flag, "STRANGER", "finalize", false);
 assert(flagDecision.constitution_version === 1 && flagDecision.work_order_version === 1,
        "the decision does not cite the exact rules and terms");
 const flagSnap = await readJson("get_snapshot", [flagDecision.snapshot_id]);
@@ -324,7 +381,62 @@ await image("clipleads.after", "PROVIDER", clip, "battery-terminals", "AFTER",
             "The battery bank after servicing");
 const clipDecision = await decide("clipleads.assess", "request_assessment", clip);
 assert(clipDecision.outcome !== "ACCEPTED", `clip leads on the terminals were accepted`);
+if (clipDecision.outcome === "REJECTED") {
+  assert(clipDecision.evidence_sufficient === true, "a rejection was recorded on evidence found insufficient");
+  assert(clipDecision.failed.includes("P2"), "the rejection does not rest on the clip-lead principle");
+  assert(JSON.stringify(clipDecision.bound.requirements) === JSON.stringify(clipDecision.failed),
+         "the record does not say which failures every validator reproduced");
+} else {
+  // The inspector floor: a SATISFIED the provider's photograph alone cannot
+  // carry is recorded as not established, so doubt, never payment.
+  const floored = Object.entries(clipDecision.notes.raw).filter(([id, raw]) => /^[PC]/.test(id) && raw === "SATISFIED");
+  for (const [id] of floored) {
+    assert(clipDecision.requirements.find((r) => r.id === id)?.status === "NOT_ESTABLISHED",
+           `${id} was read as met on the provider's photograph alone and kept`);
+  }
+  assert(clipDecision.bound.requirements.length === 0, "a doubtful result claims bound requirements");
+  run.floored = floored.map(([id]) => id);
+  save();
+  say(`clipleads: the panel read ${floored.map(([id]) => id).join(", ") || "nothing"} as met on the provider's photograph alone; the inspector floor recorded doubt`);
+}
 say(`clipleads: ${clipDecision.outcome}, failed ${JSON.stringify(clipDecision.failed)}`);
+
+// 3b. Mislabelled equipment (S1 and label guardrail, positive control): the
+//     back of a solar panel, filed as the new charge controller.
+const wrong = await workOrder("mislabel", terms({
+  type: "COMPONENT_REPLACEMENT", title: "Replace the charge controller (mislabelled file)", payment: GEN,
+  requirements: "Replace the failed solar charge controller and fix it to the equipment board.",
+  criteria: ["A solar charge controller is fixed to the equipment board with its cables landed in its terminals."] }));
+await image("mislabel.after", "PROVIDER", wrong, "panel-backside", "AFTER",
+            "The new charge controller fixed to the equipment board");
+await step("walls.same_bytes_twice", "PROVIDER", "submit_image",
+           [wrong, JSON.stringify({ view: "BEFORE", description: "Before" }), IMG("panel-backside")],
+           { refused: "these exact bytes are already on file" });
+const wrongDecision = await decide("mislabel.assess", "request_assessment", wrong);
+assert(wrongDecision.outcome !== "ACCEPTED", "a photograph of a solar panel was accepted as a charge controller");
+const wrongS1 = wrongDecision.requirements.find((r) => r.id === "S1")?.status;
+const wrongC1 = wrongDecision.requirements.find((r) => r.id === "C1")?.status;
+assert(wrongC1 !== "SATISFIED", "the criterion was met on a photograph of different equipment");
+run.mislabel = { raw_c1: wrongDecision.notes.raw.C1, shows: wrongDecision.notes.observations.map((o) => o.shows) };
+save();
+say(`mislabel: ${wrongDecision.outcome}, S1 ${wrongS1}, C1 ${wrongC1} (the panel's own rating ${wrongDecision.notes.raw.C1}), conflicts ${wrongDecision.conflicts_detected}`);
+say(`mislabel: the panel saw ${JSON.stringify(run.mislabel.shows)}`);
+
+// 3c. A contradiction (conflict flag, positive control): the provider's report
+//     states a reading the photographed display does not show.
+const cont = await workOrder("conflict", terms({
+  type: "COMPONENT_REPLACEMENT", title: "Replace the charge controller (contradictory report)", payment: GEN,
+  requirements: "Replace the failed solar charge controller and show the battery reading on its display.",
+  criteria: ["The controller's display shows the battery bank at a normal voltage for a 12 V bank."],
+  required: [{ type: "OPERATIONAL_READING", min_count: 1 }] }));
+await image("conflict.display", "PROVIDER", cont, "controller-display", "AFTER",
+            "The replacement controller and its display after the work");
+await doc("conflict.report", "PROVIDER", cont, "METER_READING", "Reading taken on site",
+          "After replacement the controller display read 14.6 V for the battery bank, in float.");
+const contDecision = await decide("conflict.assess", "request_assessment", cont);
+assert(contDecision.outcome !== "ACCEPTED", "a report contradicting the photographed display was accepted");
+assert(contDecision.conflicts_detected === true, "the contradiction between report and display was not flagged");
+say(`conflict: ${contDecision.outcome}, note ${JSON.stringify(contDecision.notes.conflict_note)}`);
 
 // 4. Undetermined, then accepted on appeal: the first file cannot show the
 //    reading; the provider appeals with the close-up of the display.
@@ -337,6 +449,7 @@ await doc("restore.reading", "PROVIDER", rest, "METER_READING", "Reading taken o
           "Battery voltage at the controller after restoration: 12.5 V.");
 const restFirst = await decide("restore.assess", "request_assessment", rest);
 assert(restFirst.outcome !== "ACCEPTED", "a reading on paper alone was accepted");
+await offered("restore.provider_may_appeal", rest, "PROVIDER", "appeal", restFirst.outcome !== "ACCEPTED");
 if (restFirst.outcome === "UNDETERMINED") {
   await step("restore.appeal", "PROVIDER", "open_appeal",
              [rest, "The reading was taken on site; the attached photograph shows the controller's display."]);
@@ -354,16 +467,52 @@ if (restFirst.outcome === "UNDETERMINED") {
   }
 }
 
+// 4b. A steward appeals an acceptance with photographs of their own (S42):
+//     whatever the panel finds, no requirement fails on the payer's
+//     photographs alone. Asserted on the recorded basis.
+const sa = await workOrder("stewardappeal", terms({
+  type: "COMPONENT_REPLACEMENT", title: "Replace the charge controller (contested)", payment: GEN,
+  requirements: "Replace the failed solar charge controller, fix it to the equipment board and land its cables.",
+  criteria: ["A solar charge controller is fixed to the equipment board with its cables landed in its terminals."] }));
+await image("stewardappeal.after", "PROVIDER", sa, "controller-display", "AFTER",
+            "The replacement controller, screwed down, cables landed");
+const saChecklist = await doc("stewardappeal.checklist", "INSPECTOR", sa, "INSPECTION_CHECKLIST", "Inspection checklist",
+          "Controller fixed to board: yes. Cables landed in its terminals: yes. Display lit: yes.");
+const saFirst = await decide("stewardappeal.assess", "request_assessment", sa);
+say(`stewardappeal: first ${saFirst.outcome}`);
+if (saFirst.outcome === "ACCEPTED") {
+  await offered("stewardappeal.steward_may_appeal", sa, "STEWARD", "appeal", true);
+  await step("stewardappeal.appeal", "STEWARD", "open_appeal",
+             [sa, "The battery terminals still carry temporary clip leads."]);
+  const sp = await image("stewardappeal.steward_photo", "STEWARD", sa, "battery-terminals", "SITE",
+                         "The battery terminals today");
+  const saSecond = await decide("stewardappeal.readjudicate", "readjudicate", sa, "STEWARD");
+  const roleOf = Object.fromEntries((await readJson("get_snapshot", [saSecond.snapshot_id])).evidence.map((e) => [e.evidence_id, e.role]));
+  for (const id of saSecond.failed) {
+    const cited = saSecond.notes.basis[id] ?? [];
+    assert(cited.some((e) => roleOf[e] && roleOf[e] !== "STEWARD"),
+           `${id} failed on the steward's own photographs alone`);
+  }
+  say(`stewardappeal: ${saFirst.outcome} -> ${saSecond.outcome} on the steward's appeal; failed ${JSON.stringify(saSecond.failed)}`);
+  assert(sp && saChecklist, "the contested file is incomplete");
+}
+
 // 5. Finality: the flagship settles once its window has passed, the asset
 //    returns to monitoring, and the next cycle's work order can be created.
 await waitUntil(flagDecision.appeal_window_ends, "the flagship's appeal window");
+await offered("flagship.final_now", flag, "STRANGER", "finalize", true);
 await step("flagship.finalize", "STRANGER", "finalize", [flag]);
+await offered("flagship.settle_offered", flag, "STRANGER", "settle", true);
+const settledEarlier = !!run.steps["flagship.settle"];
 const before = await balance("PROVIDER");
 const orgBefore = await readJson("get_organization", [OID]);
 await step("flagship.settle", "STRANGER", "settle", [flag], { transfer: true });
 const orgAfter = await readJson("get_organization", [OID]);
-assert(BigInt(orgBefore.escrow_wei) - BigInt(orgAfter.escrow_wei) === 2n * GEN, "the treasury did not pay exactly 2 GEN");
-assert((await balance("PROVIDER")) > before, "the provider's wallet did not receive the payment");
+if (!settledEarlier) {
+  // Measured around the settlement itself; a resumed run past it has no "before".
+  assert(BigInt(orgBefore.escrow_wei) - BigInt(orgAfter.escrow_wei) === 2n * GEN, "the treasury did not pay exactly 2 GEN");
+  assert((await balance("PROVIDER")) > before, "the provider's wallet did not receive the payment");
+}
 assert((await readJson("get_work_order", [flag])).settlement?.to === KEYS.PROVIDER.addr, "no settlement recorded");
 await waitUntil(clipDecision.appeal_window_ends, "the rejection's appeal window");
 await step("clipleads.finalize", "STRANGER", "finalize", [clip]);
@@ -379,5 +528,8 @@ assert(jsonFrom(next.text)?.work_order_id, "the next cycle's work order was not 
 
 say(`stats ${JSON.stringify(await readJson("get_stats", []))}`);
 const missed = run.no_consensus ?? [];
-say(missed.length ? `${missed.length} round(s) reached no majority and were asked again` : "every round reached a majority first time");
+const rotated = Object.entries(run.steps).filter(([, v]) => (v.nodes ?? []).some((n) => n.rotation > 0)).map(([k]) => k);
+say(missed.length ? `${missed.length} round(s) reached no majority and were asked again` : "no round had to be asked again");
+say(rotated.length ? `rounds that needed a leader rotation: ${rotated.join(", ")}` : "no round needed a leader rotation");
+say(`the app's own rules agreed with the chain at ${Object.keys(run.app ?? {}).length} checks`);
 say("every proof passed");

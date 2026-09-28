@@ -5,8 +5,8 @@ import json
 import pytest
 
 from conftest import (BENEFICIARY, FOUNDER, GEN, INSPECTOR, PROVIDER, STEWARD2, STRANGER, active_order, as_,
-                      assess, authorize, commission, constitution, create_org, decision, document, enrol, err,
-                      forge_leader, judgment, llm, order, org, photo, prints, ratings, refund, seen, set_now,
+                      assess, authorize, commission, constitution, create_org, decision, enrol, err,
+                      forge_leader, judgment, llm, org, photo, prints, ratings, refund, seen, set_now,
                       standard_file)
 
 

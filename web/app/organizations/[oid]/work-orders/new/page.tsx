@@ -5,7 +5,7 @@ import { Suspense, useState } from "react";
 
 import { Act } from "@/components/Act";
 import { Band, Button, Card, Field, Loading, Tag } from "@/components/bits";
-import { isSteward } from "@/lib/acts";
+import { acting, isSteward } from "@/lib/acts";
 import { gen, maintenanceType, parseGen, requirementType } from "@/lib/present";
 import { getConfig, getConstitution, getOrganization, invalidateReads, listAssets, listProviders } from "@/lib/read";
 import { useChain } from "@/lib/useChain";
@@ -69,7 +69,7 @@ function Wizard() {
   });
 
   if (!org.data || !c.data || !config.data) return <Band><Loading what="the organisation's rules" /></Band>;
-  if (!isSteward(org.data.stewards, w.address)) {
+  if (!isSteward(acting(org.data), w.address)) {
     return <Band><p className="t-body text-graphite">Only a steward under the constitution in force commissions work. Connect a steward&apos;s wallet.</p></Band>;
   }
 

@@ -99,11 +99,16 @@ function Requirements({ x }: { x: D }) {
         <div>
           {x.requirements.map((r) => {
             const raw = x.notes.raw?.[r.id];
-            const decisive = x.failed.includes(r.id) || x.not_established.includes(r.id);
+            // A rejection rests on its failures; doubt rests on what was not established.
+            const decisive = x.outcome === "REJECTED" ? x.failed.includes(r.id)
+              : x.outcome === "UNDETERMINED" ? x.not_established.includes(r.id) : false;
+            // An S check ruled out by the file is decided in code, not read by a validator.
+            const byCode = r.id.startsWith("S") && r.status === "NOT_APPLICABLE";
+            const agreed = !x.bound || byCode || x.bound.requirements.includes(r.id);
             return (
               <div key={r.id} className="grid gap-3 border-t border-lichen py-4 md:grid-cols-[1fr_200px]">
                 <div>
-                  <p className="t-label text-graphite">{ruleName(r.id)} · {source(r.source)}{decisive && x.outcome !== "ACCEPTED" ? " · decided this" : ""}</p>
+                  <p className="t-label text-graphite">{ruleName(r.id)} · {source(r.source)}{decisive ? " · decided this" : ""}{byCode ? " · ruled out by the file, in code" : ""}</p>
                   <p className="t-body mt-2">{r.text}</p>
                   {x.notes.requirement_notes?.[r.id] ? (
                     <details className="mt-2">
@@ -115,7 +120,10 @@ function Requirements({ x }: { x: D }) {
                     <p className="t-small mt-2 text-graphite">Validators rated it {requirementStatus(raw).toLowerCase()} on evidence that cannot establish it, so code set it to {requirementStatus(r.status).toLowerCase()}.</p>
                   ) : null}
                 </div>
-                <div className="md:text-right"><Status>{requirementStatus(r.status)}</Status></div>
+                <div className="flex flex-col gap-1 md:items-end md:text-right">
+                  <Status>{requirementStatus(r.status)}</Status>
+                  {agreed ? null : <span className="t-small text-graphite">One validator&apos;s reading<Info>Every validator agreed on the outcome. This rating is the leader&apos;s reading, recorded as such; the others did not have to match it.</Info></span>}
+                </div>
               </div>
             );
           })}

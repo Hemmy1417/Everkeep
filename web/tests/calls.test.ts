@@ -4,7 +4,7 @@
  * call is an untyped array, so neither the typechecker nor the behaviour tests
  * would notice a write nobody can reach or value sent to the wrong method.
  * Argument counts are read off the live pages by the browser bench
- * (docs/ui-bench.md); this pins what can be pinned statically.
+ * (docs/proofs/ui-bench.md); this pins what can be pinned statically.
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";

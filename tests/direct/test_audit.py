@@ -5,7 +5,7 @@ import json
 import pytest
 
 from conftest import (BENEFICIARY, FOUNDER, GEN, INSPECTOR, PROVIDER, STEWARD2, STRANGER, active_order, as_,
-                      assess, commission, constitution, decision, err, judgment, order, org, photo, ratings,
+                      assess, commission, constitution, decision, err, judgment, org, photo, ratings,
                       set_now, standard_file, terms)
 
 
@@ -38,7 +38,7 @@ def test_a_provider_who_used_their_quota_can_still_answer_an_appeal(module, c):
     oid, aid, wid = active_order(module, c)
     for view in ("AFTER", "METER_DISPLAY", "SITE", "SITE", "SITE", "SITE"):
         photo(module, c, wid, view=view)
-    out = assess(module, c, wid, judge=judgment(ratings(C2="NOT_ESTABLISHED")), look=[{"images": [
+    assess(module, c, wid, judge=judgment(ratings(C2="NOT_ESTABLISHED")), look=[{"images": [
         {"n": i, "seen": True, "shows": "x", "text": [], "readings": []} for i in (1, 2)]}] * 3)
     as_(module, PROVIDER)
     c.open_appeal(wid, "A clearer reading follows.")

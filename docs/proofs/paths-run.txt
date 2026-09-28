@@ -1,118 +1,149 @@
-# paths on 0x4418253D7332661BfdF917DfE6B554cD0399F97c
-[00:50:40] paths on 0x4418253D7332661BfdF917DfE6B554cD0399F97c
-[00:50:43] org.found: FOUNDER create_organization 0x6c151416b6a0c5867e08852f3804437ba00fba1bf51466ede2e7ad54b6893f9b
-[00:51:27] org.found: ok
-[00:51:29] fund.stranger: STRANGER fund_treasury 0x2030392d2743d2a8e1cd25512d462d143341d55d26d6ed1c2ad2220f99e9d4ca
-[07:30:53] fund.stranger: ok
-[07:30:56] motion.stranger: STRANGER propose_amendment 0xa2b0fb0c0be187b65d1fc0a7ec1d723c9d517bd9824a5dde6ee705ca119fe64e
-[07:31:36] motion.stranger: refused as expected
-[07:31:38] motion.v2: FOUNDER propose_amendment 0x86591373d88069c20e62dc46c2e433590a7c30c8b03d1bdc054f36394b00cbf0
-[07:32:12] motion.v2: ok
-[07:32:14] motion.stranger_objects: STRANGER object_motion 0x4c3bb15c05cd1e588eb89f9579d4004cf7c66a8aae019c63f603cb2033a0939f
-[07:32:53] motion.stranger_objects: refused as expected
-[07:32:55] motion.enact_early: STRANGER enact_motion 0x02c13434af7059f73b3fa1d0051949ab89a3632f0cbb660351bead17ae4b9589
-[07:33:38] motion.enact_early: refused as expected
-[07:33:40] motion.object_v2: STEWARD object_motion 0x5a814388ee45ebf0f8570400f5372fd447d89eb4d675072240c9d2dab8a9b5cb
-[07:34:19] motion.object_v2: ok
-[07:34:21] motion.never_governed: STRANGER pause_organization 0x30773796e6d8f33366bb2b9696ab73f82ddbc8b2df5abb1dc85dea72b30be8e8
-[07:34:56] motion.never_governed: refused as expected
-[07:34:58] provider.a: FOUNDER authorize_provider 0xa7e007dc115c1b06ca754399b62b4e4b46936fed793070fa18bddccfc1ca525f
-[07:35:38] provider.a: ok
-[07:35:40] provider.b: FOUNDER authorize_provider 0x4a1cbc75c5403d1fec353ffd1c71bdbfe5117b356c666c4b25d510bbb06f66c7
-[07:36:25] provider.b: ok
-[07:36:28] asset.enrol: STEWARD register_asset 0x01db1627f0c54262fcc525388de8bfcfc756615464d4219477a8f2d5d5947e4c
-[07:37:07] asset.enrol: ok
-[07:37:09] order.v1: FOUNDER create_work_order 0x9a1d2b1a37834a17f31510e68ff972cb7b9b63f505f141e14794539c559f4b18
-[07:37:49] order.v1: ok
-[07:37:51] order.v1.accept: PROVIDER accept_work_order 0xd4c23861c5aeed869ec3fa2e6e4534ed13d9e8b04b314ada491056e17f09b4e4
-[07:38:29] order.v1.accept: ok
-[07:38:31] motion.v3: STEWARD propose_amendment 0x02f715715cf344ff728d6e230f5817ed8cab9230c9942280b899a180df5fea83
-  … motion.v3 PENDING
-  … motion.v3 ACCEPTED
-[07:40:38] motion.v3: ok
-[07:40:39] provider.revoke_b: FOUNDER revoke_provider 0x4d5e36490be17b8c2a9a6325e6c79b3d319d14fc4d1c63792708298e537b479c
-[07:41:18] provider.revoke_b: ok
-[07:41:20] provider.revoked_assign: FOUNDER create_work_order 0xa29519ceed122540c1dfb76590f1eeb0f7741fb553b9b7e04fde27d09fd8c7bb
-[07:42:00] provider.revoked_assign: refused as expected
-[07:42:02] order.v1.revise: FOUNDER propose_version 0x874f40522d3fb1fa695a5ed95d4f9b7ce152104e4a565c43a94e13c4ef6a3204
-[07:42:42] order.v1.revise: ok
-[07:42:45] order.v1.accept_revision: PROVIDER accept_work_order 0x9c4e47e948eb5759ddc70c605f7ada0cbb600f943b8666ac068ced452ed3b511
-[07:43:24] order.v1.accept_revision: ok
-[07:43:28] pause: STEWARD pause_organization 0x40bb40e33159666be9bf89872508498bb6bf190378557304827b948633eaa31b
-[07:44:08] pause: ok
-[07:44:08] pause.no_new_work: send failed (An unknown RPC error occurred.
+[04:05:22] paths on 0xb4665b7c7189B4800bbCD1bbA6b9ecB4FD485d8A
+[04:05:25] org.found: FOUNDER create_organization 0x9122026277c33cf736a627c11f616c42065dbfe9da48cd3de6a675581782efab
+[04:06:01] org.found: ok
+[04:06:03] steward.unaccepted: STEWARD pause_organization 0xb9e85d378b8a55d5ce0c333bb23184be1f28875339a5d429b24035046a8c0cb7
+[04:06:38] steward.unaccepted: refused as expected
+[04:06:40] steward.accept: STEWARD accept_steward_role 0x9998ae4ffc66f83769342230da8ae0acedb80abae066f74e317fc0f492709c84
+[04:07:21] steward.accept: ok
+[04:07:22] steward.stranger_accepts: STRANGER accept_steward_role 0x24acc84fc8e7523c1b2998eaff87150675f8a9040cb22eb70344b2e06862ddc2
+[04:07:57] steward.stranger_accepts: refused as expected
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[04:07:57] abandoned.too_soon: send failed (An unknown RPC error occurred.
 
 Details: fetch failed
 Version: viem@2.56.9), retrying
-[07:44:18] pause.no_new_work: FOUNDER create_work_order 0xd77eb21ba0bf04a42fd950a2fc65e5a465b727933a532237486394ef5e47e758
-[07:44:57] pause.no_new_work: refused as expected
-[07:44:59] pause.work_continues: PROVIDER submit_declaration 0x720324d31af8613139a9f70ec851670dd9e064bdf3c3ada6cf714f1a9a1109fa
-  … pause.work_continues ACCEPTED
-[07:46:18] pause.work_continues: ok
-[07:46:20] resume: FOUNDER resume_organization 0x76004966ab117cfdba2382aa446a0bd09808a7a1df120d2370c31ae2834150af
-[07:47:00] resume: ok
-[07:47:02] order.cancel.create: FOUNDER create_work_order 0x31c1cae247559f1f4000f15c4073d2bb55d4eaff176c18eca11c3e43907fb6d5
-[07:47:42] order.cancel.create: ok
-[07:47:44] order.cancel: STEWARD cancel_work_order 0x2062f493a863672536b4f4d2c8c9fd22041e131e6f2ab2a8ed01d07f9e7918ce
-[07:48:23] order.cancel: ok
-[07:48:24] order.close.create: FOUNDER create_work_order 0x850604672612c456ff6d2e78d51ddcfa228a9aeb4edbec84fba9b262bc9b05f3
-[07:49:03] order.close.create: ok
-[07:49:05] order.close.accept: PROVIDER accept_work_order 0xf0f3dc94144e585b76fd46566833c30c263b3d89a976e1a13c2efd25d9b3c90c
-  … order.close.accept ACCEPTED
-[07:50:13] order.close.accept: ok
-[07:50:15] order.close.early: STRANGER close_work_order 0xa77c0927e35d3f7a332dadf614fe32605d5db5bb66e2a8880635e41aee589c4a
-[07:50:49] order.close.early: refused as expected
-[07:50:51] motion.enact_v3: STRANGER enact_motion 0xbf9212bc79f7415f05d156672c63f00aa8c520b12739d8379797fa05dfc0a09e
-[07:51:30] motion.enact_v3: ok
-[07:51:34] v3.refuses_old_kind: FOUNDER create_work_order 0xeb921ebe0428ba327f6a09e2d49ef8e991d4de92366ad9c0639dc2ed354e28ae
-[07:52:09] v3.refuses_old_kind: refused as expected
-[07:52:09] waiting for the unassessed order's deadline (619 s)
-[07:53:09] waiting for the unassessed order's deadline (559 s)
-[07:54:09] waiting for the unassessed order's deadline (499 s)
-[07:55:09] waiting for the unassessed order's deadline (439 s)
-[07:56:09] waiting for the unassessed order's deadline (379 s)
-[07:57:09] waiting for the unassessed order's deadline (319 s)
-[07:58:10] waiting for the unassessed order's deadline (258 s)
-[07:59:10] waiting for the unassessed order's deadline (198 s)
-[08:00:10] waiting for the unassessed order's deadline (138 s)
-[08:01:10] waiting for the unassessed order's deadline (78 s)
-[08:02:10] waiting for the unassessed order's deadline (18 s)
-[08:02:31] order.close: STRANGER close_work_order 0x9b70b09812d0366beee2650c65b090f5e8f5ae7035d6f120dd6d238961c14a1f
-[08:03:08] order.close: ok
-[08:03:08] order.close.v1: send failed (An unknown RPC error occurred.
+[04:08:08] abandoned.too_soon: STRANGER dissolve_abandoned 0x91efeccc7ad0000ec4222ac4f596d19a96561c16d219262e5840cc405f2b15b3
+[04:08:45] abandoned.too_soon: refused as expected
+[04:08:47] fund.stranger: STRANGER fund_treasury 0xe5cfcddff6753f7855c7f9ceb6389a579f06aeb39af537e0f670f96d06c09396
+[04:09:21] fund.stranger: ok
+[04:09:23] motion.stranger: STRANGER propose_amendment 0x8b23f5dd4dbb4a2a93c294c9fb263327ff494da430d0adef501f8da74e66ebd2
+[04:09:58] motion.stranger: refused as expected
+[04:10:00] motion.v2: FOUNDER propose_amendment 0xdd119ba2e821a52db43e90d562dda98df28bf675340caf9f041faa238c57a303
+[04:10:35] motion.v2: ok
+[04:10:37] motion.stranger_objects: STRANGER object_motion 0xa69373e553d883ce480474869f5493b143647d5ce717bdafd914a03f9ee82c79
+[04:11:16] motion.stranger_objects: refused as expected
+[04:11:18] motion.enact_early: STRANGER enact_motion 0xa3bc81a122f31cfc800baf5cc7cfb8c931d48ecead27ddbe5362f58469ea0a30
+[04:11:54] motion.enact_early: refused as expected
+[04:11:56] motion.object_v2: STEWARD object_motion 0x3bd2b2c952778d33e69db48736bf6735bde5fc3c4841b2060c23b03fbed5c157
+[04:12:31] motion.object_v2: ok
+[04:12:34] motion.never_governed: STRANGER pause_organization 0x006462cfbf723cca31ef8f7870b6d4133f1c05a48213fe3b56a98dc06827b453
+[04:13:11] motion.never_governed: refused as expected
+[04:13:13] provider.a: FOUNDER authorize_provider 0x9b3c7408b5110ed2cdd0a94cef76082c88d2922b6a6c0caecedbdf71e6145325
+[04:13:52] provider.a: ok
+[04:13:54] provider.b: FOUNDER authorize_provider 0x297cb48bb63cff02a23b0e16a4d420609d1600e1a1596ab69a880a3d984bc2bf
+[04:14:32] provider.b: ok
+[04:14:34] asset.enrol: STEWARD register_asset 0xd0585f8af8a64c2441e89a996a3d70000b8d141160e009450637bd6683a68d47
+[04:15:08] asset.enrol: ok
+GenLayer RPC error (eth_sendRawTransaction): fetch failed
+[04:15:09] order.v1: send failed (An unknown RPC error occurred.
 
 Details: fetch failed
 Version: viem@2.56.9), retrying
-[08:03:18] order.close.v1: STRANGER close_work_order 0xc085308577399028c6607605aa6e0468d4de96a96bfa1e62af9a6f20969e6074
-[08:03:59] order.close.v1: refused as expected
-[08:04:02] dissolve.propose: FOUNDER propose_dissolution 0x27377119641ddc506dea49fee5a3605c5d827b26c14818d0acc6e34f6d3c7c25
-[08:04:37] dissolve.propose: ok
-[08:04:37] waiting for the dissolution window (570 s)
-[08:05:37] waiting for the dissolution window (510 s)
-[08:06:37] waiting for the dissolution window (450 s)
-[08:07:37] waiting for the dissolution window (390 s)
-[08:08:37] waiting for the dissolution window (330 s)
-[08:09:37] waiting for the dissolution window (270 s)
-[08:10:37] waiting for the dissolution window (210 s)
-[08:11:37] waiting for the dissolution window (150 s)
-[08:12:37] waiting for the dissolution window (90 s)
-[08:13:37] waiting for the dissolution window (30 s)
-[08:14:09] dissolve.enact: STRANGER enact_motion 0x70315a460fbf96fd48978f763f355a35d54a3477f653d62dbc8c0db5d334ec7a
-[08:14:45] dissolve.enact: ok
-[08:14:47] dissolve.no_new_funds: STRANGER fund_treasury 0xca87e7fc281e1771e0df0eb4d078daec03afd9dd59f4661a9f18179508e7e16a
-[08:15:27] dissolve.no_new_funds: ok
-[08:15:29] dissolve.blocked: STRANGER complete_dissolution 0x9ba756b7b777d9f975242aa8749c67d0cb853c407e85cbf348dc20e3b242916a
-[08:16:12] dissolve.blocked: refused as expected
-[08:16:13] waiting for the remaining order's deadline (352 s)
-[08:17:13] waiting for the remaining order's deadline (292 s)
-[08:18:13] waiting for the remaining order's deadline (232 s)
-[08:19:13] waiting for the remaining order's deadline (172 s)
-[08:20:13] waiting for the remaining order's deadline (112 s)
-[08:21:13] waiting for the remaining order's deadline (52 s)
-[08:22:07] dissolve.close_last: STRANGER close_work_order 0xfc52301670d54274f4db61e34e7ac1df7bed9b7d96b6e262e7db07921049f173
-[08:22:49] dissolve.close_last: ok
-[08:22:51] dissolve.complete: STRANGER complete_dissolution 0x2644f484c4e0e4d5873890efb2e0a53aaaf84abcdb9766f013530d8c99fd48ea
-[08:23:32] dissolve.complete: ok
-[08:23:36] dissolve.claim: BENEFICIARY claim_refund 0xbbb976294e83245d0ee75dd2451c4faea8a1bd287e870a7827ed90d1512db32b
-[08:24:16] dissolve.claim: ok
-[08:24:16] every path passed
+[04:15:19] order.v1: FOUNDER create_work_order 0x0fdbb450905a0c387788f95e901c9c7f1240c6dc6bfcb14fbffcd25963b22933
+[04:15:57] order.v1: ok
+[04:15:59] order.v1.accept: PROVIDER accept_work_order 0xfd7967ad9b66d19adc26d7b9bf055c9783e3ce240fac63e815b3dc45f6aac5b5
+[04:16:36] order.v1.accept: ok
+[04:16:38] motion.v3: STEWARD propose_amendment 0x1e823acf2c1de5cd10ec5e62e77e903d7d45dbbd43696199fe2e09150249cffe
+[04:17:12] motion.v3: ok
+[04:17:14] provider.revoke_b: FOUNDER revoke_provider 0x60051f4ab2e402bcb2d140a92fff80d3cea5a6869537d4a93084f8ddb6b6965d
+[04:17:53] provider.revoke_b: ok
+[04:17:54] provider.revoked_assign: FOUNDER create_work_order 0x6703d07d997f6ac1074a4f2a02ef942477e718fc27dc8a6adb82e765fbe48d68
+[04:18:28] provider.revoked_assign: refused as expected
+[04:18:30] order.v1.revise: FOUNDER propose_version 0x1b58c18b06f2ebcc731ab92cf18cedf57a8a60c7b4f62b3148906c8842ba186e
+[04:19:08] order.v1.revise: ok
+[04:19:11] order.v1.accept_revision: PROVIDER accept_work_order 0x56e477b6e432a0559085191f013077db6822b8fc2c8ccc9554e724790e69e017
+[04:19:53] order.v1.accept_revision: ok
+[04:19:56] pause: STEWARD pause_organization 0xdab737dab55c14a9f6fc6e23a2eba5c23750cbf85e5f8949dd86f2b4aebe6cc7
+[04:20:34] pause: ok
+[04:20:36] pause.no_new_work: FOUNDER create_work_order 0x9921b36874d833f0444e9c33412a87bbc6cf309560828b1e1f7d5712dcb9b16e
+[04:21:15] pause.no_new_work: refused as expected
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[04:21:15] pause.work_continues: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[04:21:25] pause.work_continues: PROVIDER submit_declaration 0xffcbbadd61c8b37075dac6cfc92bf1679e671d4218eb76ba3a9d723e50c4cefb
+[04:22:03] pause.work_continues: ok
+[04:22:04] resume: FOUNDER resume_organization 0x33069b9fe058600b53ee6f27316fb673bcbde95c8230ee29d2663758eadc7807
+[04:22:42] resume: ok
+[04:22:43] order.cancel.create: FOUNDER create_work_order 0x349915a44655703a3a5a2282060bbcb7cc74601718a9a93a6c0f73ce7163b386
+[04:23:27] order.cancel.create: ok
+[04:23:28] order.cancel: STEWARD cancel_work_order 0x56992a4b909e7d1099a3b943d1d9fc9e033bfe35122e231850168a4d0e849a4b
+[04:24:06] order.cancel: ok
+GenLayer RPC error (eth_getTransactionCount): fetch failed
+[04:24:07] order.close.create: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[04:24:15] order.close.create: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[04:24:34] order.close.create: FOUNDER create_work_order 0x3883619f640ad729694df39773b51870e8fab7112245383f4c64ae1cef820aca
+[04:25:11] order.close.create: ok
+[04:25:13] order.close.accept: PROVIDER accept_work_order 0x378b7266eec2ede0213cb03c9a771765cef238b1d0c84d2b5dd435802fbc9f79
+[04:25:50] order.close.accept: ok
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[04:25:50] order.close.early: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[04:26:00] order.close.early: STRANGER close_work_order 0x13678da6bec160642540b157b80f63c59f2a471afbaac7037fa6bb00f52cfc67
+[04:26:35] order.close.early: refused as expected
+[04:26:35] waiting for the amendment window (9 s)
+[04:26:46] motion.enact_v3: STRANGER enact_motion 0x7e1952da3936252a4cc3fa871046170f73cbbed2bd92323092cfa99009dd1145
+[04:27:21] motion.enact_v3: ok
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[04:27:22] v3.refuses_old_kind: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[04:27:33] v3.refuses_old_kind: FOUNDER create_work_order 0xbf802145668faa947a00cb3243afaa81f97adcb7d88211267709d4cc73bc8943
+[04:28:13] v3.refuses_old_kind: refused as expected
+[04:28:13] waiting for the unassessed order's deadline (598 s)
+[04:29:13] waiting for the unassessed order's deadline (538 s)
+[04:30:13] waiting for the unassessed order's deadline (478 s)
+[04:31:13] waiting for the unassessed order's deadline (418 s)
+[04:32:13] waiting for the unassessed order's deadline (358 s)
+[04:33:13] waiting for the unassessed order's deadline (298 s)
+[04:34:13] waiting for the unassessed order's deadline (238 s)
+[04:35:13] waiting for the unassessed order's deadline (178 s)
+[04:36:13] waiting for the unassessed order's deadline (118 s)
+[04:37:13] waiting for the unassessed order's deadline (58 s)
+[04:38:14] order.close: STRANGER close_work_order 0xfb67f8cabd4b0583c2815f0be0e14c7a117589697dcf789a5a635387769a6f33
+[04:38:51] order.close: ok
+[04:38:52] order.close.v1: STRANGER close_work_order 0x64ebb40781b7005dd91c4e29d87290550a5be534a00b953de54e5d68de3c5b44
+[04:39:27] order.close.v1: refused as expected
+[04:39:29] dissolve.propose: FOUNDER propose_dissolution 0x374793eb04dd844fa62548b433d74e941feb007710011bb7e2235f54c39f8577
+[04:40:07] dissolve.propose: ok
+[04:40:07] waiting for the dissolution window (569 s)
+[04:41:07] waiting for the dissolution window (509 s)
+[04:42:07] waiting for the dissolution window (449 s)
+[04:43:07] waiting for the dissolution window (389 s)
+[04:44:07] waiting for the dissolution window (329 s)
+[04:45:07] waiting for the dissolution window (269 s)
+[04:46:07] waiting for the dissolution window (209 s)
+[04:47:07] waiting for the dissolution window (149 s)
+[04:48:07] waiting for the dissolution window (89 s)
+[04:49:08] waiting for the dissolution window (28 s)
+[04:49:39] dissolve.enact: STRANGER enact_motion 0xc382e724e64bdfff2eb4baded3b5f6487f9f966a9826f0bb2ad2be2bbe9e5ff6
+[04:50:20] dissolve.enact: ok
+[04:50:22] dissolve.no_new_funds: STRANGER fund_treasury 0xc128bb7c7c9b730bd5d228f0d722ea449ea18b476f4bcaf9f3fa5564a7264485
+[04:50:58] dissolve.no_new_funds: ok
+[04:51:02] dissolve.blocked: STRANGER complete_dissolution 0xabc1c7abc5efd128eabccf8a82a56056a77c61bcd49a7164ef4dad008b148feb
+[04:51:39] dissolve.blocked: refused as expected
+[04:51:40] waiting for the remaining order's deadline (413 s)
+[04:52:40] waiting for the remaining order's deadline (353 s)
+[04:53:40] waiting for the remaining order's deadline (293 s)
+[04:54:40] waiting for the remaining order's deadline (233 s)
+[04:55:40] waiting for the remaining order's deadline (173 s)
+[04:56:40] waiting for the remaining order's deadline (113 s)
+[04:57:40] waiting for the remaining order's deadline (53 s)
+[04:58:36] dissolve.close_last: STRANGER close_work_order 0x0222f5cdd8ee459da0917b49ac76d39692798c8b9707c4a52aea67e410940f1e
+[04:59:13] dissolve.close_last: ok
+[04:59:15] dissolve.complete: STRANGER complete_dissolution 0xf3fa318451cb27635dcb93e3e9002933b22fc056a4e509a0bd5dd7df41d06cfd
+[04:59:52] dissolve.complete: ok
+[04:59:58] dissolve.claim: BENEFICIARY claim_refund 0x0b9cca39bc64f0ad50a45dba3b0148ce0d012d1907cc2a2ac999e371ebc15228
+[05:00:33] dissolve.claim: ok
+[05:00:33] every path passed

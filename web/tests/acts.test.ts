@@ -5,8 +5,8 @@
  */
 import { describe, expect, it } from "vitest";
 
-import { assetActs, orderActs, orgActs, seatOn, situation } from "@/lib/acts";
-import type { Asset, Constitution, Decision, Organization, WorkOrder } from "@/lib/types";
+import { assetActs, orderActs, orgActs, preflightGap, seatOn, situation } from "@/lib/acts";
+import type { Asset, Constitution, Decision, Evidence, Organization, Terms, WorkOrder } from "@/lib/types";
 
 const STEWARD = "0xa040709b6A2AEF280703B116427e0f7aDcFf17Eb";
 const PROVIDER = "0xce087D0000000000000000000000000000000001";
@@ -26,7 +26,8 @@ const org: Organization = {
   organization_id: "org-00001", founder: STEWARD, state: "ACTIVE", constitution_version: 1, constitution_count: 1,
   motion: null, motions: [], created_at: iso(T0), escrow_wei: "0", funded_wei: "0", committed_wei: "0",
   releasable_wei: "0", paid_wei: "0", returned_wei: "0", dissolved_at: null, name: "Fund", mission: "m",
-  stewards: [STEWARD], available_wei: "0", spendable_wei: "0", open_work_orders: 1, asset_count: 1,
+  stewards: [STEWARD], accepted_stewards: [STEWARD], last_steward_act: iso(T0), abandoned_after_days: 365,
+  available_wei: "0", spendable_wei: "0", open_work_orders: 1, asset_count: 1,
   work_order_count: 1, provider_count: 1, pending_decisions: 0, open_appeals: 0, now: iso(T0),
 };
 const asset = { asset_id: "as-00001", inspector: INSPECTOR, inspector_accepted_at: iso(T0), retired_at: null,
@@ -167,5 +168,47 @@ describe("the organisation", () => {
     expect(assetActs(asset, org, STEWARD).retire).toBe(false);
     expect(assetActs({ ...asset, open_work_orders: 0 }, org, STEWARD).retire).toBe(true);
     expect(assetActs({ ...asset, inspector_accepted_at: null }, org, INSPECTOR).acceptInspector).toBe(true);
+  });
+});
+
+describe("stewards and an abandoned fund (S43, S26)", () => {
+  const NAMED = "0x7a1b2c3d4e5f60718293a4b5c6d7e8f901234567";
+  const named = { ...org, stewards: [STEWARD, NAMED], accepted_stewards: [STEWARD] };
+  it("a named steward acts only after accepting the role", () => {
+    expect(orgActs(named, constitution, NAMED, T0).pause).toBe(false);
+    expect(orgActs(named, constitution, NAMED, T0).acceptSteward).toBe(true);
+    expect(orgActs(named, constitution, STRANGER, T0).acceptSteward).toBe(false);
+    expect(orgActs(named, constitution, STEWARD, T0).acceptSteward).toBe(false);
+    const both = { ...named, accepted_stewards: [STEWARD, NAMED] };
+    expect(orgActs(both, constitution, NAMED, T0).pause).toBe(true);
+  });
+  it("anyone dissolves it after the abandonment period, not a moment before", () => {
+    const day = 86_400_000;
+    expect(orgActs(org, constitution, STRANGER, T0 + 365 * day).dissolveAbandoned).toBe(false);
+    expect(orgActs(org, constitution, STRANGER, T0 + 365 * day + 1).dissolveAbandoned).toBe(true);
+    expect(orgActs({ ...org, state: "DISSOLVING" }, constitution, STRANGER, T0 + 400 * day).dissolveAbandoned).toBe(false);
+  });
+});
+
+describe("assessment mirrors the contract's preflight (S40)", () => {
+  const c = { evidence_requirements: [{ maintenance_type: "ALL", type: "AFTER_PHOTO", min_count: 1 }],
+              eligibility_rules: { approved_maintenance_types: [], inspection_report_required_for: [] } } as unknown as Constitution;
+  const ev = (over: Partial<Evidence>) => ({ evidence_id: "ev-000001", role: "PROVIDER", kind: "IMAGE", ...over }) as Evidence;
+  it("names the missing evidence, then opens", () => {
+    const t = terms() as unknown as Terms;
+    expect(preflightGap(c, t, [])).toMatch(/1 after photo before assessment; 0 on file/);
+    expect(preflightGap(c, t, [ev({ view: "BEFORE" })])).toMatch(/after photo/);
+    expect(preflightGap(c, t, [ev({ view: "AFTER" })])).toBe("");
+  });
+  it("an inspection report counts only from the inspector", () => {
+    const need = { ...c, eligibility_rules: { approved_maintenance_types: [], inspection_report_required_for: ["COMPONENT_REPLACEMENT"] } } as Constitution;
+    const t = terms() as unknown as Terms;
+    const own = ev({ evidence_id: "ev-2", kind: "DOCUMENT", doc_type: "INSPECTION_REPORT" });
+    expect(preflightGap(need, t, [ev({ view: "AFTER" }), own])).toMatch(/inspection report/);
+    expect(preflightGap(need, t, [ev({ view: "AFTER" }), { ...own, role: "INSPECTOR" }])).toBe("");
+  });
+  it("the provider is not offered an assessment the contract would refuse", () => {
+    expect(acts(order(), null, PROVIDER).assess).toBe(true);
+    expect(orderActs(order(), org, null, "PROVIDER", PROVIDER, T0, "The rules require more.").assess).toBe(false);
   });
 });

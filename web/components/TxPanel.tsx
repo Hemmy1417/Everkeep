@@ -78,7 +78,7 @@ export function TxPanel({
   const hash = status?.genlayerTxId ?? null;
   const done = state.step === "done";
   const finalized = status?.phase === "finalized";
-  const succeeded = done && finalized && status?.successful !== false;
+  const succeeded = done && finalized && status?.successful === true;
 
   useEffect(() => {
     if (!done || fired.current) return;

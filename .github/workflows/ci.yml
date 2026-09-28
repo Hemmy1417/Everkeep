@@ -8,7 +8,7 @@
 # and take about an hour of real windows, so they run by hand and their logs
 # are committed:
 #
-#   node scripts/proofs.mjs <address>     the adjudication and the enforced half
+#   node --experimental-strip-types scripts/proofs.mjs <address>   the adjudication and the enforced half
 #   node scripts/paths.mjs  <address>     governance, terms, treasury and the exits
 name: ci
 

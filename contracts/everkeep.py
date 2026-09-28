@@ -59,7 +59,7 @@ from datetime import datetime, timedelta, timezone
 import genlayer as gl
 from genlayer.types import Address, u256
 
-RULESET_VERSION = "everkeep-rules-2"
+RULESET_VERSION = "everkeep-rules-3"
 
 
 class _PayableRefusal(Exception):
@@ -138,6 +138,11 @@ MAX_TEXT_CHARS = 6_000
 QUOTAS = {"PROVIDER": {"IMAGE": 6, "TEXT": 6}, "INSPECTOR": {"IMAGE": 3, "TEXT": 3},
           "STEWARD": {"IMAGE": 2, "TEXT": 2}}
 APPEAL_ADDITIONS = {"IMAGE": 2, "TEXT": 2}
+# With no steward acting for this long, anyone may dissolve the organisation.
+ABANDONED_AFTER_DAYS = 365
+# Records keep their recent history; the full history is in the events.
+LIST_KEPT = 50
+MOTIONS_KEPT = 20
 TITLE_MAX, LINE_MAX, LONG_MAX, SENTENCE_MAX = 120, 200, 2000, 300
 
 ERROR_EXPECTED = "[EXPECTED]"
@@ -466,20 +471,43 @@ def _preflight_gap(constitution: dict, terms: dict, items: list) -> str:
     return ""
 
 
-def _witnessed(basis: list, kinds: dict, roles: dict, docs: dict) -> bool:
-    """Whether a basis holds an observation of the site: a photograph, or the
+def _observations(basis: list, kinds: dict, roles: dict, docs: dict) -> list:
+    """The observations of the site a basis cites: photographs, and the
     independent inspector's report or checklist."""
+    out = []
     for e in basis:
         if e not in kinds:
             continue
-        if kinds[e] == "IMAGE":
-            return True
-        if kinds[e] == "DOCUMENT" and roles[e] == "INSPECTOR" and docs.get(e) in INSPECTOR_DOCUMENTS:
-            return True
-    return False
+        if kinds[e] == "IMAGE" or (kinds[e] == "DOCUMENT" and roles[e] == "INSPECTOR"
+                                   and docs.get(e) in INSPECTOR_DOCUMENTS):
+            out.append(e)
+    return out
 
 
-def _ground(ratings: dict, basis: dict, kinds: dict, roles: dict, docs: dict) -> dict:
+def _witnessed(basis: list, kinds: dict, roles: dict, docs: dict, status: str = "SATISFIED",
+               inspected: bool = False, favours: bool = True) -> bool:
+    """Whether a basis holds an observation that can carry this rating.
+
+    No finding rests only on the photographs of the party it favours when
+    anything else could carry it. A steward files photographs only on their
+    own appeal, against the payment, so their photographs can ground a
+    NOT SATISFIED only beside a provider photograph or the inspector's
+    observation. The mirror: on an asset with an accepted inspector, the
+    provider's photographs can ground a SATISFIED on a principle or a
+    criterion only beside the inspector's observation. Without an inspector
+    the provider's photographs are the whole site record, as the
+    constitution chose, and are judged as such."""
+    seen = _observations(basis, kinds, roles, docs)
+    if not seen:
+        return False
+    if status == "NOT_SATISFIED":
+        return any(roles[e] != "STEWARD" for e in seen)
+    if status == "SATISFIED" and inspected and favours:
+        return any(roles[e] in ("INSPECTOR", "STEWARD") for e in seen)
+    return True
+
+
+def _ground(ratings: dict, basis: dict, kinds: dict, roles: dict, docs: dict, inspected: bool = False) -> dict:
     """A requirement is SATISFIED or NOT SATISFIED only on an observation of
     the site. S3 compares documentation with what was seen, so it needs a
     provider document and an observation both. Anything else is not
@@ -489,7 +517,9 @@ def _ground(ratings: dict, basis: dict, kinds: dict, roles: dict, docs: dict) ->
     for rid, status in ratings.items():
         cited = basis.get(rid, [])
         if status in ("SATISFIED", "NOT_SATISFIED"):
-            seen = _witnessed(cited, kinds, roles, docs)
+            # Principles and criteria decide payment; the S checks are about
+            # the file's consistency and favour no one.
+            seen = _witnessed(cited, kinds, roles, docs, status, inspected, rid[:1] in ("P", "C"))
             if rid == "S3":
                 paper = any(kinds.get(e) == "DOCUMENT" and roles.get(e) == "PROVIDER" for e in cited)
                 seen = seen and paper
@@ -500,12 +530,14 @@ def _ground(ratings: dict, basis: dict, kinds: dict, roles: dict, docs: dict) ->
 
 
 def _outcome(ratings: dict, sufficient: bool, conflicts: bool) -> str:
-    if conflicts:
+    """Conflict and insufficiency come first: neither an acceptance nor a
+    rejection is recorded on evidence the panel found not enough to decide."""
+    if conflicts or not sufficient:
         return "UNDETERMINED"
     values = list(ratings.values())
     if any(v == "NOT_SATISFIED" for v in values):
         return "REJECTED"
-    if any(v == "NOT_ESTABLISHED" for v in values) or not sufficient:
+    if any(v == "NOT_ESTABLISHED" for v in values):
         return "UNDETERMINED"
     if not any(v == "SATISFIED" for v in values):
         return "UNDETERMINED"
@@ -537,6 +569,22 @@ def _dissent(theirs: dict, mine: dict, ids: list) -> str:
     if lo == "UNDETERMINED" and mo == "ACCEPTED":
         return "the leader withholds an acceptance this node would grant"
     return ""
+
+
+def _shape(ratings, ids: list, inapplicable: list) -> dict:
+    """The rules every recorded rating obeys, whoever wrote it: a known
+    status, and NOT APPLICABLE only for a principle or an S check the file
+    rules out. Anything else is recorded as not established."""
+    r = ratings if isinstance(ratings, dict) else {}
+    out = {}
+    for i in ids:
+        v = r.get(i)
+        if i in inapplicable:
+            v = "NOT_APPLICABLE"
+        elif v not in REQUIREMENT_STATUSES or (v == "NOT_APPLICABLE" and not i.startswith("P")):
+            v = "NOT_ESTABLISHED"
+        out[i] = v
+    return out
 
 
 def _clean_notes(notes, ids: list, n_images: int) -> dict:
@@ -658,12 +706,22 @@ class Everkeep(gl.contract.Contract):
         top = total - max(0, int(skip))
         return range(top, max(0, top - lim), -1)
 
-    def _stewards(self, o: dict) -> list:
+    def _named_stewards(self, o: dict) -> list:
+        """Everyone the constitution in force names, accepted or not. Used for
+        independence: a named steward is never an independent party."""
         return self._in_force(o)["governance"]["stewards"]
+
+    def _stewards(self, o: dict) -> list:
+        """The stewards who act: named by the constitution in force and
+        having accepted the role themselves, so no one is recorded as a
+        steward on someone else's say-so."""
+        oid = o["organization_id"]
+        return [s for s in self._named_stewards(o) if self.counters.get(f"steward|{oid}|{s}") == "1"]
 
     def _require_steward(self, o: dict) -> None:
         if self._sender() not in self._stewards(o):
-            _refuse("only a steward under the constitution in force may do this")
+            _refuse("only a steward under the constitution in force, who has accepted the role, may do this")
+        self.counters[f"stewarded|{o['organization_id']}"] = _iso(_now())
 
     def _require_state(self, o: dict, allowed: tuple, doing: str) -> None:
         if o["state"] not in allowed:
@@ -736,10 +794,11 @@ class Everkeep(gl.contract.Contract):
             "work_order_states": list(WORK_ORDER_STATES),
             "decision_lifecycle": list(DECISION_LIFECYCLE),
             "system_requirements": [{"id": i, "text": t} for i, t in SYSTEM_REQUIREMENTS],
-            "decision_rule": ["conflicting evidence -> UNDETERMINED",
+            "decision_rule": ["conflicting evidence, or evidence insufficient to decide -> UNDETERMINED",
                               "any requirement NOT_SATISFIED -> REJECTED",
-                              "any requirement NOT_ESTABLISHED, or evidence insufficient -> UNDETERMINED",
+                              "any requirement NOT_ESTABLISHED -> UNDETERMINED",
                               "otherwise -> ACCEPTED"],
+            "abandoned_after_days": ABANDONED_AFTER_DAYS,
             "limits": {"max_stewards": MAX_STEWARDS, "max_principles": MAX_PRINCIPLES,
                        "max_criteria": MAX_CRITERIA, "max_evidence_rules": MAX_EVIDENCE_RULES,
                        "max_versions": MAX_VERSIONS, "min_payment_wei": str(MIN_PAYMENT_WEI),
@@ -773,6 +832,9 @@ class Everkeep(gl.contract.Contract):
         out.update({
             "name": c["organization_name"], "mission": c["mission"],
             "stewards": c["governance"]["stewards"],
+            "accepted_stewards": self._stewards(o),
+            "last_steward_act": self.counters.get(f"stewarded|{o['organization_id']}") or o["created_at"],
+            "abandoned_after_days": ABANDONED_AFTER_DAYS,
             "available_wei": str(self._available(o)),
             "spendable_wei": str(max(0, self._spendable(o))),
             "open_work_orders": self._open_orders(oid),
@@ -943,6 +1005,8 @@ class Everkeep(gl.contract.Contract):
                 "created_at": now, "escrow_wei": str(wei), "funded_wei": str(wei),
                 "committed_wei": "0", "releasable_wei": "0", "paid_wei": "0", "returned_wei": "0",
                 "dissolved_at": None})
+            self.counters[f"steward|{oid}|{sender}"] = "1"
+            self.counters[f"stewarded|{oid}"] = now
             self._event(oid, "ORGANIZATION_FOUNDED", "", c["organization_name"])
             self._event(oid, "CONSTITUTION_IN_FORCE", "v1", "")
             if wei:
@@ -1037,7 +1101,7 @@ class Everkeep(gl.contract.Contract):
             _refuse("state the objection")
         m.update({"state": "WITHDRAWN", "objected_by": self._sender(), "objection": grounds,
                   "decided_at": _iso(_now())})
-        o["motions"] = (o.get("motions") or []) + [m]
+        o["motions"] = ((o.get("motions") or []) + [m])[-MOTIONS_KEPT:]
         self._put(self.organizations, o["organization_id"], o)
         self._event(o["organization_id"], "MOTION_WITHDRAWN", m["kind"].lower(), grounds[:LINE_MAX])
         return json.dumps({"state": "WITHDRAWN"})
@@ -1064,7 +1128,7 @@ class Everkeep(gl.contract.Contract):
                 _refuse("the organisation is already dissolving")
             o["state"] = "DISSOLVING"
             self._event(o["organization_id"], "DISSOLUTION_ENACTED", "", "")
-        o["motions"] = (o.get("motions") or []) + [m]
+        o["motions"] = ((o.get("motions") or []) + [m])[-MOTIONS_KEPT:]
         self._put(self.organizations, o["organization_id"], o)
         return json.dumps({"state": o["state"], "constitution_version": o["constitution_version"]})
 
@@ -1088,6 +1152,44 @@ class Everkeep(gl.contract.Contract):
         self._put(self.organizations, o["organization_id"], o)
         self._event(o["organization_id"], "DISSOLVED", "", str(remaining))
         return json.dumps({"state": "DISSOLVED", "returned_wei": str(remaining), "to": beneficiary})
+
+    @gl.public.write
+    def accept_steward_role(self, oid: str) -> str:
+        """A wallet the constitution in force names as a steward takes up the
+        role. Until then it holds no steward power."""
+        o = self._org(str(oid))
+        sender = self._sender()
+        if sender not in self._named_stewards(o):
+            _refuse("only a wallet the constitution in force names as a steward accepts the role")
+        key = f"steward|{o['organization_id']}|{sender}"
+        if self.counters.get(key) == "1":
+            _refuse("the role is already accepted")
+        self.counters[key] = "1"
+        self.counters[f"stewarded|{o['organization_id']}"] = _iso(_now())
+        self._event(o["organization_id"], "STEWARD_ACCEPTED", sender, "")
+        return json.dumps({"organization_id": o["organization_id"], "steward": sender})
+
+    @gl.public.write
+    def dissolve_abandoned(self, oid: str) -> str:
+        """Anyone, once no steward has acted for ABANDONED_AFTER_DAYS: an
+        organisation whose stewards are gone must not strand its treasury.
+        It dissolves exactly as a dissolution motion would, so open work
+        still runs to its end and the remainder goes to the beneficiary."""
+        o = self._org(str(oid))
+        if o["state"] not in ("ACTIVE", "PAUSED"):
+            _refuse("only an active or paused organisation can be dissolved as abandoned")
+        last = self.counters.get(f"stewarded|{o['organization_id']}") or o["created_at"]
+        if _now() <= _parse_iso(last) + timedelta(days=ABANDONED_AFTER_DAYS):
+            _refuse(f"a steward has acted within the last {ABANDONED_AFTER_DAYS} days")
+        pending = o.get("motion")
+        if pending and pending["state"] == "PENDING":
+            # A motion no steward is left to enact lapses with the organisation.
+            pending.update({"state": "LAPSED", "decided_at": _iso(_now())})
+            o["motions"] = ((o.get("motions") or []) + [pending])[-MOTIONS_KEPT:]
+        o["state"] = "DISSOLVING"
+        self._put(self.organizations, o["organization_id"], o)
+        self._event(o["organization_id"], "DISSOLUTION_ENACTED", "", "abandoned")
+        return json.dumps({"state": "DISSOLVING"})
 
     @gl.public.write
     def pause_organization(self, oid: str, reason: str) -> str:
@@ -1300,7 +1402,8 @@ class Everkeep(gl.contract.Contract):
         self._put(self.organizations, o["organization_id"], o)
         self._bump(f"open|{o['organization_id']}")
         a["open_work_orders"] = int(a.get("open_work_orders") or 0) + 1
-        a["work_orders"] = a["work_orders"] + [wid]
+        a["work_orders"] = (a["work_orders"] + [wid])[-LIST_KEPT:]
+        a["work_order_total"] = int(a.get("work_order_total") or len(a["work_orders"]) - 1) + 1
         self._put(self.assets, a["asset_id"], a)
         k = self._bump(f"orders|{o['organization_id']}")
         self.org_orders[f"{o['organization_id']}|{k:06d}"] = wid
@@ -1391,9 +1494,10 @@ class Everkeep(gl.contract.Contract):
         a = self._asset(w["asset_id"])
         now = _iso(_now())
         terms = self._terms(w, w["current_version"] or 1)
-        a["service_log"] = a["service_log"] + [{
+        a["service_total"] = int(a.get("service_total") or len(a["service_log"])) + 1
+        a["service_log"] = (a["service_log"] + [{
             "work_order_id": w["work_order_id"], "maintenance_type": terms["maintenance_type"],
-            "title": terms["title"], "outcome": outcome, "decision_id": did, "at": now}]
+            "title": terms["title"], "outcome": outcome, "decision_id": did, "at": now}])[-LIST_KEPT:]
         if outcome == "ACCEPTED":
             a["last_serviced_at"] = now
         self._put(self.assets, a["asset_id"], a)
@@ -1408,7 +1512,7 @@ class Everkeep(gl.contract.Contract):
         if sender == w["provider"]:
             role = "PROVIDER"
         elif a.get("inspector") and sender == a["inspector"] and a.get("inspector_accepted_at") \
-                and sender not in self._stewards(self._org(w["organization_id"])):
+                and sender not in self._named_stewards(self._org(w["organization_id"])):
             # An inspector an amendment has since made a steward is no longer
             # independent, and their report no longer counts as one.
             role = "INSPECTOR"
@@ -1451,6 +1555,12 @@ class Everkeep(gl.contract.Contract):
         return meta
 
     def _file(self, w: dict, role: str, kind: str, record: dict, digest: str, size: int) -> str:
+        if kind in ("IMAGE", "DOCUMENT"):
+            # The same bytes filed twice would count twice: as before and
+            # after, or toward a minimum. One piece of evidence counts once.
+            for e in self._items(w["work_order_id"], w["current_version"]):
+                if self._item(e)["content_hash"] == digest:
+                    _refuse(f"these exact bytes are already on file as {e}")
         n = self._bump("evidence")
         eid = f"ev-{n:06d}"
         base = {"evidence_id": eid, "work_order_id": w["work_order_id"],
@@ -1587,8 +1697,11 @@ class Everkeep(gl.contract.Contract):
             inapplicable.append("S2")
         if not any(it["role"] == "PROVIDER" for it, _ in texts):
             inapplicable.append("S3")
-        return {"o": o, "c": c, "a": a, "terms": terms, "version": version,
+        inspected = bool(a.get("inspector") and a.get("inspector_accepted_at")
+                         and a["inspector"] not in c["governance"]["stewards"])
+        return {"o": o, "c": c, "a": a, "terms": terms, "version": version, "inspected": inspected,
                 "images": images, "texts": texts, "kinds": kinds, "roles": roles, "docs": docs,
+                "claims": {it["evidence_id"]: it.get("description", "") for it, _ in images},
                 "requirements": requirements, "ids": [r["id"] for r in requirements],
                 "inapplicable": inapplicable, "new_ids": new_ids, "appeal": appeal}
 
@@ -1606,11 +1719,12 @@ class Everkeep(gl.contract.Contract):
     def _examine_prompt(self, case: dict, pair: list) -> str:
         """The examination: what each photograph shows, with the work in view
         but no conclusion asked for. A node describes; it does not decide."""
+        # The examination sees the photograph, not the claim about it: a node
+        # shown the submitter's description can repeat it instead of looking.
+        # Descriptions are weighed later, as claims, against what was seen.
         lines = []
         for n, (it, _) in enumerate(pair, start=1):
-            claim = f"; the submitter describes it as: {_fence(it['description'])}" if it.get("description") else ""
-            lines.append(f"Image {n} was filed as a {it['view'].lower().replace('_', ' ')} "
-                         f"photograph by the {it['role'].lower()}{claim}")
+            lines.append(f"Image {n} occupies the {it['view'].lower().replace('_', ' ')} slot")
         compare = ""
         if len(pair) == 2 and pair[0][0]["view"] == "BEFORE" and pair[1][0]["view"] == "AFTER":
             compare = ("Image 1 is offered as the state before the work and image 2 as the state "
@@ -1618,7 +1732,8 @@ class Everkeep(gl.contract.Contract):
                        "same equipment in the same place.\n")
         return (
             "You are examining site photographs filed as evidence for an infrastructure maintenance "
-            "work order. Report only what is visible. The submitter's descriptions are their claims.\n"
+            "work order. Report only what is visible in each image. Do not assume an image shows the "
+            "equipment the work order names; if it shows something else, say what it actually shows.\n"
             + self._setting(case) + "\n".join(lines) + "\n" + compare +
             "For each image answer:\n"
             "- seen: true only if an image actually reached you for that number and you could see it. "
@@ -1688,6 +1803,9 @@ class Everkeep(gl.contract.Contract):
                 extra += f"; change from the before photograph: {_fence(ob['change'])}"
             if ob["same_asset_doubts"]:
                 extra += f"; doubts it is this asset: {_fence(ob['same_asset_doubts'])}"
+            claim = case["claims"].get(ob["evidence_id"], "")
+            if claim:
+                extra += f"; the filer's own description, a claim: {_fence(claim)}"
             seen.append(f"- {ob['evidence_id']} ({ob['view'].lower().replace('_', ' ')} photograph, "
                         f"{ob['role'].lower()}): {_fence(ob['shows'])}{extra}")
         docs = []
@@ -1720,10 +1838,23 @@ class Everkeep(gl.contract.Contract):
             "equipment was installed, and a provider's report is their account of their own work. What "
             "stands on the site is established by the photographs and by the independent inspector's "
             "report or checklist. A description attached to a photograph is the submitter's claim.\n"
-            "evidence_sufficient is whether the evidence as a whole is enough for an organisation to "
-            "authorise payment. conflicts_detected is true when pieces of evidence contradict each other "
-            "in a way that matters, such as photographs of different equipment offered as the same, or a "
-            "report that contradicts what a photograph shows.\n"
+            "The labels on evidence (before, after, meter display, nameplate, and each document type) are "
+            "the filer's own. If a photograph does not show what its label says, that counts against the "
+            "filer's claim, never for it.\n"
+            "A steward's photographs are filed by the party appealing against the payment; a provider's "
+            "are filed by the party paid. Weigh each as an interested party's evidence."
+            + (" This asset has an independent inspector: where their report or checklist bears on a "
+               "requirement, cite it in basis." if case["inspected"] else "") + "\n"
+            "evidence_sufficient is whether the evidence as a whole is enough to decide this work order "
+            "either way, for or against the work. conflicts_detected is true only when you can name two "
+            "specific pieces of evidence, by id, that contradict each other in a way that matters, such as "
+            "photographs of different equipment offered as the same, or a report whose reading or claim "
+            "differs from what a photograph shows. Differences in detail, angle or completeness are not "
+            "conflicts, and neither is a reading that differs slightly but meets the same requirement. "
+            "When true, conflict_note names both ids and the contradiction.\n"
+            "S1 asks whether anything shows a different site, installation or piece of equipment: rate it "
+            "SATISFIED when the photographs are consistent with the enrolled asset and nothing suggests "
+            "otherwise, NOT_SATISFIED when something does. It does not ask for proof of identity.\n"
             "In basis, list the evidence ids you relied on for each requirement.\n"
             "Answer STRICT JSON, reasoning first: {\"reasoning\": \"<3-6 sentences>\", "
             "\"requirements\": [{\"id\": \"P1\", \"status\": \"SATISFIED|NOT_SATISFIED|NOT_ESTABLISHED|"
@@ -1755,7 +1886,7 @@ class Everkeep(gl.contract.Contract):
             raw[rid] = status
             basis[rid] = _strings(row.get("basis"), 12, 10)
             notes[rid] = _clean(row.get("note"), LINE_MAX)
-        ratings = _ground(raw, basis, case["kinds"], case["roles"], case["docs"])
+        ratings = _ground(raw, basis, case["kinds"], case["roles"], case["docs"], case["inspected"])
         sufficient = out.get("evidence_sufficient") is True
         conflicts = out.get("conflicts_detected") is True
         return {"seen": all_seen, "ratings": ratings, "sufficient": sufficient, "conflicts": conflicts,
@@ -1800,11 +1931,15 @@ class Everkeep(gl.contract.Contract):
             return True
 
         result = gl.vm.run_nondet(leader_fn, validator_fn)
-        ratings = {i: result["ratings"][i] for i in ids}
-        sufficient, conflicts = bool(result["sufficient"]), bool(result["conflicts"])
+        notes = _clean_notes(result.get("notes"), ids, len(case["images"]))
+        # Whatever the leader returned, the record obeys the rules: shape
+        # first, then grounding on the leader's own cited basis. Both only
+        # ever move a rating toward not established.
+        ratings = _ground(_shape(result.get("ratings"), ids, case["inapplicable"]), notes["basis"],
+                          case["kinds"], case["roles"], case["docs"], case["inspected"])
+        sufficient, conflicts = result.get("sufficient") is True, result.get("conflicts") is True
         return {"ratings": ratings, "sufficient": sufficient, "conflicts": conflicts,
-                "outcome": _outcome(ratings, sufficient, conflicts),
-                "notes": _clean_notes(result.get("notes"), ids, len(case["images"]))}
+                "outcome": _outcome(ratings, sufficient, conflicts), "notes": notes}
 
     def _record(self, w: dict, case: dict, eids: list, verdict: dict, kind: str, appeal) -> dict:
         """Persist a decision and its evidence snapshot, deterministically,
@@ -1839,6 +1974,15 @@ class Everkeep(gl.contract.Contract):
             "failed": [i for i, v in ratings.items() if v == "NOT_SATISFIED"],
             "not_established": [i for i, v in ratings.items() if v == "NOT_ESTABLISHED"],
             "evidence_sufficient": verdict["sufficient"], "conflicts_detected": verdict["conflicts"],
+            # What every validator reproduced on its own: the outcome always;
+            # for an acceptance, that no requirement is unmet; for a
+            # rejection, each requirement it fails. Every other rating is the
+            # leader's reading, recorded and labelled as such.
+            "bound": {"outcome": True,
+                      "requirements": ([r["id"] for r in case["requirements"]] if verdict["outcome"] == "ACCEPTED"
+                                       else [i for i, v in ratings.items() if v == "NOT_SATISFIED"]
+                                       if verdict["outcome"] == "REJECTED" else []),
+                      "ratings_by": "leader"},
             "needs_appeal": verdict["outcome"] != "ACCEPTED",
             "appeal_of": (appeal or {}).get("decision_id"),
             "appeal": ({"by": appeal["by"], "opened_by": appeal["opened_by"], "reason": appeal["reason"],

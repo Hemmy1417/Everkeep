@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Act } from "@/components/Act";
 import { Arrow, Band, Button, Card, Empty, Fact, Field, Loading, ReadFailure, Status, Tag } from "@/components/bits";
 import { Info, Stat, Tabs } from "@/components/tabs";
-import { isSteward, orgActs } from "@/lib/acts";
+import { acting, isSteward, orgActs } from "@/lib/acts";
 import {
   assetStatus, duration, eventKind, gen, infraType, maintenanceType, moment, motionKind, motionState, orgState,
   relative,
@@ -43,7 +43,8 @@ export default function OrganizationPage() {
             <div>
               <div className="flex flex-wrap items-center gap-4">
                 <Status dark>{orgState(o.state)}</Status>
-                {isSteward(o.stewards, w.address) ? <Tag dark>You are a steward</Tag> : null}
+                {isSteward(acting(o), w.address) ? <Tag dark>You are a steward</Tag>
+                  : isSteward(o.stewards, w.address) ? <Tag dark>Named a steward; not yet accepted</Tag> : null}
               </div>
               <h1 className="t-heading-lg mt-5 max-w-[24ch]">{o.name}</h1>
               <p className="t-body mt-3 line-clamp-2 max-w-[60ch] text-haze">{o.mission}</p>
@@ -214,6 +215,16 @@ function Governance({ o, c, acts, now, onChange }:
             : `Dissolved ${moment(o.dissolved_at)}. ${gen(o.returned_wei)} was refunded to the beneficiary.`}
         </p>
         <div className="mt-6 grid gap-5">
+          {acts.acceptSteward ? (
+            <Act label="Accept the steward role" method="accept_steward_role" args={[o.organization_id]} onAnswer={onChange} />
+          ) : null}
+          {acts.dissolveAbandoned ? (
+            <div className="flex flex-col gap-2">
+              <p className="t-small text-graphite">No steward has acted since {moment(o.last_steward_act)}.
+                <Info>After {o.abandoned_after_days} days without a steward acting, anyone may start the dissolution, so the treasury reaches the beneficiary instead of being stranded.</Info></p>
+              <Act label="Dissolve as abandoned" method="dissolve_abandoned" variant="secondary" args={[o.organization_id]} onAnswer={onChange} />
+            </div>
+          ) : null}
           {acts.pause ? (
             <Act label="Pause new commitments" method="pause_organization" variant="secondary"
                  prepare={() => [o.organization_id, pauseWhy.trim()]} onAnswer={onChange}>

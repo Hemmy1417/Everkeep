@@ -406,16 +406,25 @@ def exif_jpeg(size=4000):
 # ── the domain ───────────────────────────────────────────────────────────────
 
 from _fixtures import (  # noqa: E402
-    CRITERIA, DEADLINE, PRINCIPLES, all_ids, asset, constitution, judgment, provider_profile,
+    asset, constitution, judgment, provider_profile,
     ratings, seen, terms,
 )
 
 
-def create_org(module, c, escrow=10 * GEN, stewards=None, **over):
+def create_org(module, c, escrow=10 * GEN, stewards=None, accept=True, **over):
+    """Found an organisation. Every other named steward then takes up the
+    role, as they must before acting; accept=False leaves them named only."""
+    named = stewards or [FOUNDER, STEWARD2]
     as_(module, FOUNDER, escrow)
-    out = json.loads(c.create_organization(constitution(stewards or [FOUNDER, STEWARD2], BENEFICIARY, **over)))
+    out = json.loads(c.create_organization(constitution(named, BENEFICIARY, **over)))
     assert out["refused"] is False, out
-    return out["organization_id"]
+    oid = out["organization_id"]
+    if accept:
+        for s in named:
+            if s != FOUNDER:
+                as_(module, s)
+                c.accept_steward_role(oid)
+    return oid
 
 
 def authorize(module, c, oid, who=PROVIDER, **over):
@@ -448,12 +457,17 @@ def active_order(module, c, escrow=10 * GEN, inspector="", org_over=None, **term
     return oid, aid, wid
 
 
+# Each helper photograph is distinct bytes, as real photographs are; a test
+# that files the same bytes twice passes data= explicitly.
+_PHOTO_SEQ = __import__("itertools").count(1)
+
+
 def photo(module, c, wid, who=PROVIDER, view="AFTER", data=None, description="The new controller on the board"):
     as_(module, who)
     meta = {"view": view, "description": description, "capture_timestamp": "2026-09-24T10:00:00Z",
             "location_reference": "Lakeside workshop"}
     return json.loads(c.submit_image(wid, json.dumps(meta),
-                                     data if data is not None else jfif(f"{view}{description}".encode())))["evidence_id"]
+                                     data if data is not None else jfif(f"{view}{description}{next(_PHOTO_SEQ)}".encode())))["evidence_id"]
 
 
 def document(module, c, wid, who=PROVIDER, doc_type="TECHNICAL_REPORT", title="Technician report",

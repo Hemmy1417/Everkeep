@@ -19,6 +19,7 @@ const FILES = [
   { name: "bank-overview", widths: [1200, 1000, 800], title: "File:Kabus 000244 171294 516060 4578 (36775931686).jpg" },
   { name: "controller-display", widths: [1400, 1200, 1000], title: "File:Kabus 000245 171295 516064 4578 (36775931446).jpg" },
   { name: "battery-terminals", widths: [1200, 1000, 800], title: "File:Kabus 000246 171296 516068 4578 (36775938376).jpg" },
+  { name: "panel-backside", widths: [800, 640, 500], title: "File:Kabus 000242 171290 516047 4578 (36775932096).jpg" },
 ];
 
 function jfif(buf) {

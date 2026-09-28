@@ -184,4 +184,4 @@ def test_views_and_events(module, c):
     assert [e["kind"] for e in ev][::-1][:2] == ["ORGANIZATION_FOUNDED", "CONSTITUTION_IN_FORCE"]
     assert json.loads(c.list_organizations(0, 5))["total"] == 1
     cfg = json.loads(c.get_config())
-    assert cfg["ruleset"] == "everkeep-rules-2" and len(cfg["system_requirements"]) == 3
+    assert cfg["ruleset"] == "everkeep-rules-3" and len(cfg["system_requirements"]) == 3

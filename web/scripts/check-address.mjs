@@ -16,23 +16,35 @@ if (!config) {
   process.exit(1);
 }
 const same = (a) => String(a).toLowerCase() === config.toLowerCase();
+// The organisation paths ran on a second deployment of the same bytes.
+const paths = read("../lib/config.ts").match(/PATHS_ADDRESS = "(0x[0-9a-fA-F]{40})"/)?.[1] ?? config;
+const samePaths = (a) => String(a).toLowerCase() === paths.toLowerCase();
 const problems = [];
 
 for (const [file, value] of [
   ["lib/proof-log.json", JSON.parse(read("../lib/proof-log.json")).address],
   ["docs/proofs/proofs.json", JSON.parse(read("../../docs/proofs/proofs.json")).address],
-  ["docs/proofs/paths.json", JSON.parse(read("../../docs/proofs/paths.json")).address],
 ]) {
   if (!same(value ?? "")) problems.push(`${file} records ${value || "no address"}`);
 }
+{
+  const value = JSON.parse(read("../../docs/proofs/paths.json")).address;
+  if (!samePaths(value ?? "")) problems.push(`docs/proofs/paths.json records ${value || "no address"}, not the paths deployment ${paths}`);
+}
 
-for (const doc of ["../../README.md", "../../docs/proofs/ui-bench.md", "../../docs/proofs/proof-run.txt",
-                   "../../docs/proofs/paths-run.txt"]) {
+for (const doc of ["../../README.md", "../../docs/proofs/ui-bench.md", "../../docs/proofs/proof-run.txt"]) {
   const text = read(doc);
   const named = (text.match(ADDRESS) ?? []).filter((a) => /proofs? (run )?on|paths on|Contract|deployment of record/i
     .test(text.split("\n").find((l) => l.includes(a)) ?? ""));
   if (!named.length) problems.push(`${doc.replace(/^(\.\.\/)+/, "")} never names the deployment`);
   for (const a of named) if (!same(a)) problems.push(`${doc.replace(/^(\.\.\/)+/, "")} names ${a}`);
+}
+
+{
+  const text = read("../../docs/proofs/paths-run.txt");
+  const named = (text.match(ADDRESS) ?? []).filter((a) => /paths on/i.test(text.split(String.fromCharCode(10)).find((l) => l.includes(a)) ?? ""));
+  if (!named.length) problems.push("docs/proofs/paths-run.txt never names its deployment");
+  for (const a of named) if (!samePaths(a)) problems.push(`docs/proofs/paths-run.txt names ${a}, not the paths deployment`);
 }
 
 if (problems.length) {

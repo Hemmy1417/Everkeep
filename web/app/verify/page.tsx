@@ -45,7 +45,7 @@ export default function Verify() {
               version, the provider, the evidence snapshot with every hash, the appeal state and the settlement. Each is read from the
               contract, and the live proof runs with every transaction hash are committed in the repository.
             </p>
-            <p className="t-small mt-4"><a className="underline underline-offset-4" href={`${REPO_URL}/tree/main/docs/proofs`} target="_blank" rel="noreferrer">The proof runs</a></p>
+            <p className="t-small mt-4"><a className="underline underline-offset-4" href={`${REPO_URL}/tree/main/docs/proofs/`} target="_blank" rel="noreferrer">The proof runs</a></p>
             {stats.data ? (
               <dl className="mt-8 grid grid-cols-3 gap-6 border-t border-lichen pt-6">
                 <Fact label="Decisions">{stats.data.decision}</Fact>

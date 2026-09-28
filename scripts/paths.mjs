@@ -140,6 +140,12 @@ say(`paths on ${ADDRESS}`);
 const STEWARDS = [KEYS.FOUNDER.addr, KEYS.STEWARD.addr];
 const OID = jsonFrom((await step("org.found", "FOUNDER", "create_organization", [constitution(STEWARDS)],
                                 { value: 5n * GEN })).text).organization_id;
+await step("steward.unaccepted", "STEWARD", "pause_organization", [OID, "Too early"],
+           { refused: "who has accepted the role" });
+await step("steward.accept", "STEWARD", "accept_steward_role", [OID]);
+await step("steward.stranger_accepts", "STRANGER", "accept_steward_role", [OID],
+           { refused: "only a wallet the constitution in force names" });
+await step("abandoned.too_soon", "STRANGER", "dissolve_abandoned", [OID], { refused: "within the last 365 days" });
 await step("fund.stranger", "STRANGER", "fund_treasury", [OID], { value: GEN });
 let o = await view("get_organization", [OID]);
 assert(o.escrow_wei === (6n * GEN).toString(), `treasury: ${o.escrow_wei}`);

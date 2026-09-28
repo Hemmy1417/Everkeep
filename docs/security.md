@@ -67,6 +67,30 @@ contract. It found eight defects, all fixed and pinned in
 7. Required evidence given as a non-list crashed instead of refusing.
 8. The leader's notes were stored as sent.
 
+## A review against the judges' standards (everkeep-rules-3)
+
+A read-only audit of the v2 deployment against the judges' standards found one
+standard unmet and several partly met. Each is answered in the contract, the
+app or the wording, and pinned by a test in `tests/direct/test_standards.py`,
+a mutant in `tests/mutation/mutate.py`, or an assertion in the live proofs.
+
+| Finding | What changed |
+|---|---|
+| The payer's own photographs could fail a requirement | `_witnessed`: a steward's photographs ground NOT SATISFIED only beside a provider photograph or the inspector's observation |
+| The provider's own photographs alone could pass work past an inspector | the mirror: on an asset with an accepted inspector, SATISFIED on a principle or criterion needs the inspector's observation |
+| A rejection could be recorded on evidence found insufficient | `_outcome` checks sufficiency and conflict before anything conclusive; the published rule says so; sufficiency now means enough to decide either way |
+| The same bytes could count twice | `_file` refuses bytes already on file for the work order |
+| A leader's recorded ratings were not re-checked | `_shape` and grounding run again on the recorded result after consensus |
+| The record did not say what consensus bound | each decision records `bound`: the outcome, and the requirements every validator reproduced |
+| Labels and conflicts were loosely defined for the panel | the prompt says labels are the filer's claims and a conflict must name two pieces of evidence |
+| Stewards were recorded on someone else's say-so | `accept_steward_role`: a named steward acts only after accepting |
+| An organisation whose stewards vanish stranded its treasury | `dissolve_abandoned`: anyone, after 365 days without a steward acting |
+| Records grew without bound | an asset keeps its last 50 work orders and service entries, an organisation its last 20 motions, with totals |
+| The app offered an assessment the contract would refuse | `preflightGap` in `web/lib/acts.ts` mirrors `_preflight_gap` |
+| The live proofs never ran the app's own rules | `scripts/proofs.mjs` imports `web/lib/acts.ts` and asserts it against chain state at every stage |
+| No live test of the conflict and different-equipment flags | the proofs now include a mislabelled photograph and a report contradicting the photographed display, with the flagship as the negative control |
+| No test that a write is signed by the connected wallet | `web/tests/signed.test.ts` |
+
 ## Known limits
 
 - GenLayer does not establish physical truth. A skilled forgery of a site
@@ -74,7 +98,9 @@ contract. It found eight defects, all fixed and pinned in
   independent inspector role exists for work that matters enough to need one.
 - Professional inspection cannot be replaced by photographs for every kind of
   work; the constitution can require the inspector's report per kind of work.
-- A steward can still keep a payment in doubt by filing contradictory
-  photographs during their own appeal. The record shows exactly who filed
-  what, and an appeal nobody decides lets the appealed decision stand.
+- A steward can no longer fail a requirement on their own photographs (see
+  below), but a contradiction the panel names between a steward's photograph
+  and the provider's file still gives `UNDETERMINED`. The record shows exactly
+  who filed what, and an appeal nobody decides lets the appealed decision
+  stand.
 - Video is not interpreted and links are not fetched.

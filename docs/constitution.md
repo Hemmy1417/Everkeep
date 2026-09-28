@@ -25,10 +25,10 @@ The decision rule is the same for every organisation, so no constitution can
 make doubt pay:
 
 ```text
-conflicting evidence                              -> UNDETERMINED
+conflicting evidence, or the evidence judged
+  insufficient to decide either way               -> UNDETERMINED
 any requirement NOT SATISFIED                     -> REJECTED
-any requirement NOT ESTABLISHED, or the evidence
-  judged insufficient as a whole                  -> UNDETERMINED
+any requirement NOT ESTABLISHED                   -> UNDETERMINED
 otherwise                                         -> ACCEPTED
 ```
 

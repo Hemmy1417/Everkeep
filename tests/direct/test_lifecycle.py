@@ -5,8 +5,8 @@ import json
 
 import pytest
 
-from conftest import (FOUNDER, GEN, INSPECTOR, PROVIDER, STEWARD2, STRANGER, active_order, as_, assess,
-                      asset_view, commission, decision, document, err, judgment, llm, order, org, photo,
+from conftest import (FOUNDER, GEN, PROVIDER, STEWARD2, STRANGER, active_order, as_, assess,
+                      asset_view, commission, decision, err, judgment, llm, order, org, photo,
                       ratings, refund, seen, set_now, standard_file, transfers)
 
 

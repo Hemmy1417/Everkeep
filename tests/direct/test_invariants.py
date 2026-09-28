@@ -8,7 +8,7 @@ import random
 import pytest
 
 from conftest import (BENEFICIARY, FOUNDER, GEN, INSPECTOR, PROVIDER, PROVIDER2, STEWARD2, STRANGER, as_,
-                      asset, constitution, err, jfif, judgment, llm, provider_profile, ratings, seen, set_now,
+                      asset, constitution, jfif, judgment, llm, provider_profile, seen, set_now,
                       terms, transfers)
 
 ACTORS = (FOUNDER, STEWARD2, PROVIDER, PROVIDER2, INSPECTOR, STRANGER, BENEFICIARY)

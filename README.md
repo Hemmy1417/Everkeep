@@ -36,9 +36,14 @@ The judgment is made by GenLayer validators under consensus:
 1. Each validator examines the photographs itself, before and after together, and reads the documents.
 2. It rates every requirement in scope.
 3. Contract code grounds each rating: only a photograph or the independent inspector's observation can
-   establish or refute a finding.
-4. Code derives the outcome.
-5. A validator agrees only if it reached the same outcome on the same grounds.
+   establish or refute a finding, and no finding rests only on the photographs of the party it favours
+   when anything else could carry it (see below).
+4. Code derives the outcome. Evidence the validators find not enough to decide, or a contradiction they can name
+   between two pieces of evidence, gives `UNDETERMINED`, never a conclusive verdict.
+5. Each validator repeats the whole assessment and votes against the leader when it would not reach the
+   same outcome. An acceptance must be every validator's own acceptance. A rejection must be reproduced
+   on each requirement it fails. A doubtful result stands unless a validator would accept. The record
+   marks which ratings every validator reproduced; the rest are the leader's reading, labelled as such.
 
 Everything ordinary code can decide stays deterministic: who may act, whether the asset and the provider are
 enrolled for this work, whether the payment fits the budget, the constitution's limits and the treasury's
@@ -60,7 +65,7 @@ MISSION → CONSTITUTION → TREASURY → MAINTENANCE RULES → REAL-WORLD WORK 
 | **Service providers** | Authorised by stewards for named kinds of work. Revocation stops new assignments and never strands work already done. |
 | **Work orders** | Versioned terms with acceptance criteria, required evidence, budget, payment and deadline, bound to the constitution version in force at creation. |
 | **Multimodal evidence** | Photographs held and hashed on chain, examined by every validator. Documents are read. Declarations and video or external links are kept and never adjudicated. See [docs/evidence-model.md](docs/evidence-model.md). |
-| **Appeal and readjudication** | The party a decision went against appeals inside the window. Every party may add bounded evidence. A fresh panel records a new decision linked to the original, which is never overwritten. |
+| **Appeal and readjudication** | The party a decision went against appeals inside the window. Every party may add bounded evidence. The validators record a new decision linked to the original, which is never overwritten. |
 | **Finality and settlement** | When no appeal is possible, anyone finalizes. An acceptance makes the payment releasable and anyone settles it. Anything else closes unpaid and returns the commitment. The asset returns to monitoring and the next work order can follow. |
 | **Dissolution** | By motion. No new commitments. Once open work ends, the treasury is refunded in full to the beneficiary the constitution names. |
 
@@ -73,14 +78,15 @@ MISSION → CONSTITUTION → TREASURY → MAINTENANCE RULES → REAL-WORLD WORK 
  contracts/everkeep.py ── organisation, constitution versions, treasury, providers, assets, work orders,
                           evidence, decisions, snapshots, refunds, events
             │
-            ├─ deterministic preflight  (refuses in words; no panel)
+            ├─ deterministic preflight  (refuses in words; no validator asked)
             ├─ gl.vm.run_nondet(leader_fn, validator_fn)
             │     examine photographs → rate requirements → ground in code → derive outcome
             │     validators repeat independently; outcome and grounds must match
             └─ deterministic record: decision + evidence snapshot, lifecycle, treasury
 ```
 
-There is no backend, database or server signer. See [docs/architecture.md](docs/architecture.md),
+There is no backend, database or server signer. The reasoning behind this shape is in
+[docs/design.md](docs/design.md). See [docs/architecture.md](docs/architecture.md),
 [docs/consensus.md](docs/consensus.md), [docs/state-machine.md](docs/state-machine.md) and
 [docs/security.md](docs/security.md).
 
@@ -102,27 +108,48 @@ its readjudication and kept exactly as recorded. A work order runs:
 
 | | |
 |---|---|
-| Deployment of record | `0x4418253D7332661BfdF917DfE6B554cD0399F97c` on GenLayer Studio Next |
-| Explorer | https://explorer-studio-dev.genlayer.com/address/0x4418253D7332661BfdF917DfE6B554cD0399F97c |
+| Deployment of record | `0xF71522A090BFDd32f3C5B0d87E518563B19fec4f` on GenLayer Studio Next |
+| Explorer | https://explorer-studio-dev.genlayer.com/address/0xF71522A090BFDd32f3C5B0d87E518563B19fec4f |
 | Source | byte-for-byte identical to `contracts/everkeep.py` (`node scripts/deploy.mjs verify`) |
-| Contract tests | 94 direct tests, including a randomized walk that asserts the brief's invariants after every action and reaches every work order state |
-| Contract sweep | 84 mutants, 84 killed, control passes ([docs/proofs/sweep.txt](docs/proofs/sweep.txt)) |
-| App tests | 19, including every contract write reachable from a page and the action rules on shapes the contract writes |
-| App sweep | 31 mutants, 31 killed |
+| Contract tests | 120 direct tests, including a randomized walk that asserts the brief's invariants after every action and reaches every work order state, and one test per judges' standard in `tests/direct/test_standards.py` |
+| Contract sweep | 99 mutants, 99 killed, control passes ([docs/proofs/sweep.txt](docs/proofs/sweep.txt)) |
+| App tests | 25, including every contract write reachable from a page, the action rules on shapes the contract writes, and a write signed by the connected wallet |
+| App sweep | 37 mutants, 37 killed |
 | Adversarial review | eight defects found before deployment, all fixed and pinned ([docs/security.md](docs/security.md)) |
 
 **The flagship story, live** ([docs/proofs/proof-run.txt](docs/proofs/proof-run.txt), every hash in
-[proofs.json](docs/proofs/proofs.json)), with every round reaching a majority on its first asking:
+[proofs.json](docs/proofs/proofs.json)). Every row below is an assertion in `scripts/proofs.mjs`; a row
+the script only logs says so.
 
 | Case | Evidence | Outcome on chain |
 |---|---|---|
-| Enforced half | an unsupported asset type, unfunded work, a payment over the cap, an unauthorised provider, a stranger commissioning, an assessment with nothing on file, a provider's "inspection report" | seven refusals in words; no panel asked |
-| Charge controller replacement | after photograph, controller display, technician report, the inspector's checklist | **Accepted**: both principles in scope, both criteria and the documentation consistency check satisfied. Finalized after its window, then **settled**: the provider was paid exactly 2 GEN and the asset's service recorded, with the next service scheduled |
-| Battery connections service | a photograph showing temporary clip leads on the terminals | **Rejected** on the battery principle, the mounting principle and the criterion. Finalized: closed unpaid, commitment returned |
-| Return to charging | the overview photograph and a reading on paper | **Undetermined**: the reading could not be seen. The provider **appealed** with the display close-up. The **readjudication** established the reading and the criterion but not the mounting principle from photographs alone, so it stayed undetermined, was finalized and closed unpaid. The original decision is kept unchanged and linked |
+| Enforced half | an unsupported asset type, unfunded work, a payment over the cap, an unauthorised provider, a stranger commissioning, an assessment with nothing on file, a provider's "inspection report", the same photograph filed twice, a named steward acting before accepting | nine refusals in words; no panel asked |
+| Charge controller replacement | after photograph, controller display, technician report, the inspector's checklist | **Accepted**. Every principle and criterion met cites the inspector's checklist, as the inspector floor requires. No conflict raised and the photographs found to show the enrolled asset: the negative controls. Early finalize, settle and a provider's appeal of an acceptance were each refused. Finalized after its window, then **settled**: the treasury paid exactly 2 GEN and the asset's service was recorded, with the next service scheduled |
+| Battery connections service | a photograph showing temporary clip leads on the terminals | **Rejected**, on evidence found sufficient to decide, with the clip-lead principle among the failures (logged: the mounting principle and the criterion too). The record lists those failures as the ones every validator reproduced. Finalized: closed unpaid |
+| Mislabelled equipment | the back of a solar panel, filed as "the new charge controller fixed to the board" | not accepted, and the criterion not met (asserted). Logged: **rejected** on the check that the evidence shows this asset; the panel's own observation was of "a photovoltaic solar panel mounted outdoors on a black metal pole-and-brace stand ... no battery bank, charge controller, LCD display" |
+| Contradicted report | the controller close-up beside a reading on paper stating 14.6 V | **conflict flagged** (asserted) and not accepted. Logged: the panel's note names both pieces of evidence and the two voltages |
+| Return to charging | the overview photograph and a reading on paper | not accepted (asserted). Logged: **rejected** on the mounting principle |
+| A steward contests an acceptance | after photograph and the inspector's checklist; on appeal, the steward's own photograph of the battery terminals | **Accepted**, then the steward appealed with their own photograph. The **readjudication** kept the acceptance, and no requirement failed on the steward's photograph alone (asserted from the recorded basis). The readjudication is linked to the decision it reviewed, which is kept as superseded ([readjudication-link.json](docs/proofs/readjudication-link.json)). The first assessment took a second asking to reach a majority |
+| The app's own rules | `web/lib/acts.ts`, run against chain state at twelve moments | all twelve matched: seven acts the page offered just before the contract accepted them, and five it withheld where the contract refuses or has not yet opened the act |
 | The next cycle | | a new work order commissioned on the same asset |
 
-**The organisation, live** ([docs/proofs/paths-run.txt](docs/proofs/paths-run.txt)):
+One round reached no majority and was asked again, and every assessment needed at least one leader
+rotation, mostly past a node that could not see the photographs. The run records which in its last lines.
+
+**Found by these proofs, and fixed.** A first run on a disposable deployment showed the examining
+model the submitter's description with the photograph. One leader then described "a solar charge
+controller mounted on a wooden board" in the photograph of the panel's back: it repeated the claim
+instead of looking. Only the inspector floor kept that from being paid. The examination now sees the
+photograph alone; descriptions are weighed afterwards, as claims, against what was seen. A second run
+then showed panels splitting on the "this asset" check, read by some as proof of identity, and on a
+reading of 12.8 V beside a report of 12.5 V raised as a conflict. The judging prompt now says the check
+asks whether anything shows a different site, and that a slightly different reading meeting the same
+requirement is not a conflict. The deployments those runs used are superseded; the run above is on the
+deployment of record, with the contract as it stands.
+
+**The organisation, live** ([docs/proofs/paths-run.txt](docs/proofs/paths-run.txt)), on a second deployment of the
+same bytes, `0xb4665b7c7189B4800bbCD1bbA6b9ecB4FD485d8A`, so that a network stall in this long run could never
+block the contract the app writes to (one once did):
 - **Motions.** A steward's amendment was withdrawn by another steward's objection. A second amendment was
   enacted by a stranger after its window. A work order created under v1 kept v1.
 - **Providers.** A revoked provider could not be assigned new work.
@@ -132,9 +159,11 @@ its readjudication and kept exactly as recorded. A work order runs:
 - **Dissolution.** It was proposed and enacted, refused while work was open, then completed, and the
   beneficiary claimed the full treasury.
 
-**The app, in a browser** ([docs/proofs/ui-bench.md](docs/proofs/ui-bench.md)): a stranger finalized the
-restoration, and the provider accepted the next cycle's terms and filed a declaration. All three were composed
-by the pages, signed through the app's own wallet picker, and confirmed from the chain.
+**The app, in a browser** ([docs/proofs/ui-bench.md](docs/proofs/ui-bench.md)): on the previous
+deployment, a stranger finalized a decision, and the provider accepted the next cycle's terms and filed a
+declaration, each composed by the pages, signed through the app's own wallet picker and confirmed from
+the chain. The signing path is unchanged in this deployment; its action rules are proved against this
+deployment's chain in the run above.
 
 ## Deployment, environment and testing
 
@@ -170,7 +199,7 @@ cd scripts && pnpm install && cd ..
 node scripts/keys.mjs                   # creates and funds .data/keys.json (gitignored)
 node scripts/fixtures.mjs               # fetches the demonstration photographs
 node scripts/deploy.mjs v2.0.0          # then: node scripts/deploy.mjs verify 0x…
-node scripts/proofs.mjs 0x…             # the flagship story, live
+node --experimental-strip-types scripts/proofs.mjs 0x…   # the flagship story, live
 node scripts/paths.mjs 0x…              # the organisational paths, live
 ```
 
@@ -186,6 +215,24 @@ wallet steps are in [docs/e2e-verification.md](docs/e2e-verification.md).
   failed transaction, never `ACCEPTED`.
 - **Physical truth.** GenLayer does not establish it. A convincing forgery can deceive validators as it would
   a person; the independent inspector role exists for work that needs one.
+- **Interested parties.** A steward files photographs only on their own appeal, against the payment, so
+  their photographs can fail a requirement only beside a provider photograph or the inspector's
+  observation. The mirror: on an asset with an accepted inspector, the provider's photographs can pass a
+  principle or a criterion only beside the inspector's observation. On an asset with no inspector, the
+  provider's photographs are the whole site record, judged by validators as the constitution chose.
+- **Labels are claims.** Photograph views and document types are the filer's own labels. Validators are
+  told a label a photograph does not bear out counts against the filer. The same bytes cannot be filed
+  twice on one work order.
+- **Funding is a grant.** Anyone may fund a treasury. Nothing is tracked per funder and no funder can
+  withdraw; on dissolution the remainder goes to the constitution's beneficiary.
+- **Appeals are unbonded.** A steward can appeal an acceptance without a bond. The delay this can cause is
+  bounded: the evidence period is at most 30 days, the provider may then ask for the readjudication
+  themselves, and an appeal nobody decides closes three days later on the appealed decision.
+- **Stewards accept their role.** A wallet the constitution names holds no steward power until it accepts.
+  If no steward acts for 365 days, anyone may dissolve the organisation, so its treasury reaches the
+  beneficiary instead of being stranded.
+- **Bounded records.** An asset keeps its last 50 work orders and service entries and an organisation its
+  last 20 motions in the record, with running totals; the full history is in the event log.
 - **Evidence scope.** Video is kept as a reference and never interpreted, links are never fetched, and the
   runtime reads two images per prompt.
 - **Storage.** Photographs are stored on chain, capped at 400,000 bytes, so every validator judges identical

@@ -9,7 +9,7 @@ import { Arrow, Band, Button, Card, Empty, Field, Loading, ReadFailure, Status, 
 import { Info, Stat, Tabs } from "@/components/tabs";
 import { EvidenceFile, FilePanel, RequiredEvidence } from "@/components/evidence";
 import { OrderProgress } from "@/components/lifecycle";
-import { currentTerms, orderActs, seatOn, situation } from "@/lib/acts";
+import { currentTerms, orderActs, preflightGap, seatOn, situation } from "@/lib/acts";
 import { gen, lifecycle, maintenanceType, day, moment, orderState, outcome, parseGen, relative, role } from "@/lib/present";
 import {
   getAsset, getConfig, getConstitution, getDecision, getOrganization, getWorkOrder, invalidateReads,
@@ -41,8 +41,11 @@ export default function WorkOrderPage() {
   const t = currentTerms(o);
   const d = decision.data ?? null;
   const seat = org.data && asset.data ? seatOn(o, asset.data, org.data.stewards, w.address) : "";
-  const acts = org.data ? orderActs(o, org.data, d, seat, w.address, now) : null;
   const items = o.evidence[String(o.current_version || 1)] ?? [];
+  const gap = asset.data?.retired_at ? "The asset has been retired."
+    : bound.data ? preflightGap(bound.data, t, items.filter((it) => it.kind === "IMAGE" || it.kind === "DOCUMENT"))
+    : "Reading the constitution.";
+  const acts = org.data ? orderActs(o, org.data, d, seat, w.address, now, gap) : null;
   const reload = () => { invalidateReads(); order.reload(); org.reload(); asset.reload(); decision.reload(); };
 
   return (
@@ -106,7 +109,7 @@ export default function WorkOrderPage() {
             ]} />
           </div>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            {acts ? <Actions o={o} t={t} acts={acts} seat={seat} now={now}
+            {acts ? <Actions o={o} t={t} acts={acts} seat={seat} now={now} gap={gap}
                              decisionOutcome={d?.outcome} windowEnds={d?.appeal_window_ends} onChange={reload} /> : <Loading what="what you can do" />}
           </aside>
         </div>
@@ -131,8 +134,8 @@ function List({ title, rows, info }: { title: string; rows: [string, string][]; 
   );
 }
 
-function Actions({ o, t, acts, seat, now, decisionOutcome, windowEnds, onChange }: {
-  o: WorkOrder; t: Terms; acts: ReturnType<typeof orderActs>; seat: string; now: number;
+function Actions({ o, t, acts, seat, now, gap, decisionOutcome, windowEnds, onChange }: {
+  o: WorkOrder; t: Terms; acts: ReturnType<typeof orderActs>; seat: string; now: number; gap: string;
   decisionOutcome?: string; windowEnds?: string; onChange: () => void;
 }) {
   const w = useWallet();
@@ -156,6 +159,7 @@ function Actions({ o, t, acts, seat, now, decisionOutcome, windowEnds, onChange 
         {windowEnds && o.state === "DECIDED" ? <p className="t-small text-graphite">Appeal window closes {relative(windowEnds, now)}.</p> : null}
         {o.appeal ? <p className="t-small text-graphite">Appeal evidence closes {relative(o.appeal.evidence_ends, now)}.</p> : null}
         {acts.fileClosed && seat ? <p className="t-small text-graphite">{acts.fileClosed}</p> : null}
+        {seat === "PROVIDER" && o.state === "ACTIVE" && gap ? <p className="t-small text-graphite">Assessment opens once: {gap.charAt(0).toLowerCase() + gap.slice(1)}</p> : null}
       </>
     );
   }
@@ -265,6 +269,7 @@ function Actions({ o, t, acts, seat, now, decisionOutcome, windowEnds, onChange 
           </div>
         ) : null}
         {seat && acts.fileClosed && !acts.file ? <p className="t-small text-graphite">{acts.fileClosed}</p> : null}
+        {seat === "PROVIDER" && o.state === "ACTIVE" && gap ? <p className="t-small text-graphite">Assessment opens once: {gap.charAt(0).toLowerCase() + gap.slice(1)}</p> : null}
       </>
   );
 }

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Info, Stat } from "@/components/tabs";
 import { Act } from "@/components/Act";
 import { Arrow, Band, Card, Empty, Field, Loading, Status, Tag } from "@/components/bits";
-import { assetActs, isSteward } from "@/lib/acts";
+import { acting, assetActs, isSteward } from "@/lib/acts";
 import { assetStatus, infraType, maintenanceType, day, moment, orderState, outcome } from "@/lib/present";
 import { getAsset, getOrganization, invalidateReads, listWorkOrders } from "@/lib/read";
 import { useChain } from "@/lib/useChain";
@@ -29,7 +29,7 @@ export default function AssetPage() {
   const mine = (orders.data?.work_orders ?? []).filter((x) => x.asset_id === aid);
   const open = mine.filter((x) => !["SETTLED", "CLOSED_UNPAID", "CANCELLED"].includes(x.state));
   const acts = org.data ? assetActs(a, org.data, w.address) : null;
-  const steward = org.data ? isSteward(org.data.stewards, w.address) : false;
+  const steward = org.data ? isSteward(acting(org.data), w.address) : false;
   const reload = () => { invalidateReads(); asset.reload(); };
 
   return (

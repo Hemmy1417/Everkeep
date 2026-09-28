@@ -16,6 +16,18 @@
       "ret": "string",
       "payable": false
     },
+    "accept_steward_role": {
+      "params": [
+        [
+          "oid",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
     "accept_work_order": {
       "params": [
         [
@@ -123,6 +135,18 @@
         ],
         [
           "terms_json",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "string",
+      "payable": false
+    },
+    "dissolve_abandoned": {
+      "params": [
+        [
+          "oid",
           "string"
         ]
       ],

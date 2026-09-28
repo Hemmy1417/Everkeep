@@ -4,8 +4,12 @@ The proof scripts sign with the SDK, so they prove the contract and never the
 pages. This is the proof of the pages: real writes, composed by the app,
 signed through its own wallet picker, and confirmed from the chain.
 
-Deployment of record: `0x4418253D7332661BfdF917DfE6B554cD0399F97c` on GenLayer
-Studio Next, on 27 September 2026, against the local development build.
+Run on 27 September 2026 against the local development build, on the previous
+deployment, `0x4418253D7332661BfdF917DfE6B554cD0399F97c` (ruleset everkeep-rules-2).
+The deployment of record is now `0xF71522A090BFDd32f3C5B0d87E518563B19fec4f`
+(everkeep-rules-3). The pages' signing path is unchanged; the action rules the
+pages use are proved against the new deployment's chain by `scripts/proofs.mjs`,
+which imports `web/lib/acts.ts` and checks it at twelve moments.
 
 ## Method
 

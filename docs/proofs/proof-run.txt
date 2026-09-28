@@ -1,199 +1,552 @@
-# proofs on 0x4418253D7332661BfdF917DfE6B554cD0399F97c
-[00:47:08] proofs on 0x4418253D7332661BfdF917DfE6B554cD0399F97c
-[00:47:11] org.found: send failed (An unknown RPC error occurred.
+[23:25:54] proofs on 0xF71522A090BFDd32f3C5B0d87E518563B19fec4f
+[23:25:58] org.found: FOUNDER create_organization 0xd6f742686df85efba361afce8f23cc856d3fbd949f34a1cc5ed83100f62b61fa
+[23:26:39] org.found: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+GenLayer RPC error (eth_sendRawTransaction): fetch failed
+[23:26:42] walls.unaccepted_steward: send failed (An unknown RPC error occurred.
 
 Details: fetch failed
 Version: viem@2.56.9), retrying
-[00:47:20] org.found: send failed (An unknown RPC error occurred.
+[23:26:52] walls.unaccepted_steward: STEWARD pause_organization 0xc8b56a31cf5ec6762674b5f3dd804e18151d3dd551e6fc38c125a133f85954bc
+[23:27:32] walls.unaccepted_steward: FINALIZED MAJORITY_AGREE leader=ERROR in 40 s
+[23:27:35] steward.accept: STEWARD accept_steward_role 0x25c34521fe3c65ac29aeb3a799a146ed855918b31c8e76eb1e5a63497b09dcfe
+[23:28:15] steward.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[23:28:19] provider.authorize: FOUNDER authorize_provider 0x35a9a9c966f1569346a6ff865703f7f4e8b4831f9e464970109cd7c4b109d2e2
+[23:28:55] provider.authorize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 36 s
+[23:28:57] asset.enrol: FOUNDER register_asset 0x30b7a0df3a9a513c0fc90b7b7bf8aa122f8552a261f4b0d758b123f988749137
+[23:29:36] asset.enrol: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[23:29:38] inspector.accept: INSPECTOR accept_inspector_role 0x97a50f5c4396e8701a3d77feee672063e660c000ccf2ab8e11dd48045be8e6e2
+[23:30:13] inspector.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: SocketError: other side closed
+        at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6238:28)
+        at TLSSocket.emit (node:events:530:35)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+      code: 'UND_ERR_SOCKET',
+      socket: [Object]
+    }
+  }
+}
+[23:30:16] enforced.unsupported_asset: FOUNDER register_asset 0x6d2f9dcd6168d78e621d10ad5c5d398d41108283f3d769d009859a50055efeff
+[23:30:52] enforced.unsupported_asset: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[23:30:53] enforced.unfunded_work: FOUNDER create_work_order 0xf19eac040376e56221a9996f13d31b46b9e85dfe906ace0ec582b1da55c31db5
+[23:31:28] enforced.unfunded_work: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[23:31:30] enforced.over_cap: FOUNDER create_work_order 0x1562560e9805dc7e6d0c58b7efdfc5d795288747639fe4c19e2e195b438f8922
+[23:32:09] enforced.over_cap: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[23:32:11] enforced.unauthorised_provider: FOUNDER create_work_order 0x1799cc55680d3a457d81b52b6c5ac9eaf92db3cf4cee33ba60b511887196d27c
+[23:32:47] enforced.unauthorised_provider: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[23:32:49] enforced.stranger_commissions: STRANGER create_work_order 0x00c7bd82e1859ff902f48ebfd6390a928eba8fa175701a44725ee89f0c9e1f0c
+[23:33:29] enforced.stranger_commissions: FINALIZED MAJORITY_AGREE leader=ERROR in 40 s
+[23:33:32] flagship.create: FOUNDER create_work_order 0x4a3c2f0a92456771f0c8e967feccdfb6dfa750d8306f402a37091213370e07e2
+[23:34:13] flagship.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[23:34:15] flagship.accept: PROVIDER accept_work_order 0x9578ca2379491dcc299b6be2f70b510d651b5eb6000a6e5e6eed2732b05cb946
+[23:34:54] flagship.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[23:35:00] flagship.preflight_refused: PROVIDER request_assessment 0xf975e1ad38475ef4b04ee9902a27be435db50ded6d9c8b4babdc3ec1bf83c22e
+[23:35:36] flagship.preflight_refused: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
+[23:35:51] flagship.after: PROVIDER submit_image 0x2ee418cee1c3acc3e0e524c478e5f82f3f891c742bab3640f5fa7c92e60f2c85
+[23:36:32] flagship.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
+[23:36:46] flagship.display: PROVIDER submit_image 0x2969c1bd9078bf4f5b10fa31cbb70dfc79d920cd0d8562911a239d3a31aeb850
+[03:21:04] flagship.display: FINALIZED MAJORITY_AGREE leader=SUCCESS in 13458 s
+[03:21:06] flagship.report: PROVIDER submit_document 0x9e4c413b6dc8dad2b8ac0e4508693c48ee59c9d1ff588eb833bdeba902e08040
+[03:21:41] flagship.report: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: SocketError: other side closed
+        at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6238:28)
+        at TLSSocket.emit (node:events:530:35)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+      code: 'UND_ERR_SOCKET',
+      socket: [Object]
+    }
+  }
+}
+GenLayer RPC error (eth_sendRawTransaction): fetch failed
+[03:21:43] flagship.checklist: send failed (An unknown RPC error occurred.
 
 Details: fetch failed
 Version: viem@2.56.9), retrying
-[00:47:39] org.found: FOUNDER create_organization 0xc7eb46dbe04e4ef5494831420f332ec8966417f46dba663d985ae29a79b7f8a3
-[00:48:21] org.found: FINALIZED MAJORITY_AGREE leader=SUCCESS in 42 s
-[00:48:23] provider.authorize: FOUNDER authorize_provider 0xa233df1a83bf63efa67bec10bd76c1ffdd7d108c1f076e9d6ba422331078e0d4
-[00:49:02] provider.authorize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[00:49:04] asset.enrol: FOUNDER register_asset 0x78c8a59b263887ccffb1e2944be91ba99cd5680852669154f05018b874c38bea
-[00:49:43] asset.enrol: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[00:49:44] inspector.accept: send failed (An unknown RPC error occurred.
-
-Details: fetch failed
-Version: viem@2.56.9), retrying
-[00:49:53] inspector.accept: send failed (An unknown RPC error occurred.
-
-Details: fetch failed
-Version: viem@2.56.9), retrying
-[00:50:11] inspector.accept: INSPECTOR accept_inspector_role 0xc22575a0cedb036fb23d6826d970e308bdf54eafb5fd0b986fad8ab3720f31ee
-[00:50:50] inspector.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
-[00:51:00] enforced.unsupported_asset: FOUNDER register_asset 0x513fff087d7a7c39632d54354f6c160666e5ed03e812501f89c1c0c8bd22a736
-[00:51:34] enforced.unsupported_asset: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
-[00:51:36] enforced.unfunded_work: FOUNDER create_work_order 0xd238ce7abc22d97d1219c46c79b1a704bcb86ad7939ef2c75c59fb639831db21
-[07:30:53] enforced.unfunded_work: FINALIZED MAJORITY_AGREE leader=ERROR in 23957 s
-[07:30:55] enforced.over_cap: FOUNDER create_work_order 0xdae3ba56352cee8dd81e834b9a2ba95bf19fdf2133a5bd99111157bd74bc857e
-[07:31:31] enforced.over_cap: FINALIZED MAJORITY_AGREE leader=ERROR in 36 s
-[07:31:33] enforced.unauthorised_provider: FOUNDER create_work_order 0x39f8272d3525e7f9183255645961e474cee58507d0e83d2d7c0742724c736ac6
-[07:32:12] enforced.unauthorised_provider: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
-[07:32:13] enforced.stranger_commissions: send failed (Invalid parameters were provided to the RPC method.
-Double check you have provid), retrying
-[07:32:24] enforced.stranger_commissions: STRANGER create_work_order 0x752dfb0a7135fb144c547fcd170cc1509c531b8839c456a45b4c4e8c2ace3bd1
-[07:32:58] enforced.stranger_commissions: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
-[07:33:00] flagship.create: FOUNDER create_work_order 0x9f0f57e8280e98eae23aa96438536cb59926c4100ae31a5e4e19aefadf9a45f3
-[07:33:38] flagship.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[07:33:41] flagship.accept: PROVIDER accept_work_order 0x63c46f849163dba7a65e074bb33ad9dc75255a87171ae5d04a4f15d6e8993892
-[07:34:20] flagship.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[07:34:22] flagship.preflight_refused: PROVIDER request_assessment 0xe909781806c895cad65510f43ed057c23edbb53c51b4c4405b4b521741323aa5
-[07:34:56] flagship.preflight_refused: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
-[07:35:03] flagship.after: PROVIDER submit_image 0x6fa6a26c905bfe20e498aa3066e64581be85c9de5b246ff3be3923cbdaf8253c
-[07:35:42] flagship.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[07:35:46] flagship.display: PROVIDER submit_image 0x711bcf63154f50a9506513d3a0fc82cdf526f0c6e0641dfdb876fbe5d215b43f
-[07:36:26] flagship.display: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[07:36:29] flagship.report: PROVIDER submit_document 0x374649da2009649646bb854dd9c61d8c9bcd887234d615caf7dcc44e8a3ab392
-[07:37:12] flagship.report: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
-[07:37:14] flagship.checklist: INSPECTOR submit_document 0x609387499f881205d2a9397a7f575661fbbb222434357570b0738b1c6748fa5f
-[07:37:53] flagship.checklist: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[07:37:55] walls.provider_inspection_report: PROVIDER submit_document 0xdb77d0a64d107cd762fa9ae9cd148c220db94dfbbbc77f91d37ae3884772690b
-[07:38:29] walls.provider_inspection_report: FINALIZED MAJORITY_AGREE leader=ERROR in 34 s
-[07:38:31] flagship.assess: PROVIDER request_assessment 0x9bc6528e22c0189eaeb5d431bac8489271749377639072524483cd082714bcf1
+[03:21:54] flagship.checklist: INSPECTOR submit_document 0xc61128cf537effa9aa98ddefa174bd59532db7d52b3f72434b8b5d6ccad04c1f
+[03:22:32] flagship.checklist: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[03:22:34] walls.provider_inspection_report: PROVIDER submit_document 0x53b0795dd82ec41572be754eb02ecf9fe4ae7f0d3a604ef6e0ca0144a50e2c0d
+[03:23:12] walls.provider_inspection_report: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[03:23:19] flagship.assess: PROVIDER request_assessment 0xb15844b9557824a6695bbd23aa45a4feb91e6d269fa41cda1ea520a664395988
   … flagship.assess PROPOSING
-  … flagship.assess ACCEPTED
-[07:40:38] flagship.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 127 s
-receipt 0x9bc6528e22c0189eaeb5d431bac8489271749377639072524483cd082714bcf1 status=FINALIZED result=MAJORITY_AGREE rotations=2
+  … flagship.assess COMMITTING
+  … flagship.assess COMMITTING
+[03:26:49] flagship.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 211 s
+receipt 0xb15844b9557824a6695bbd23aa45a4feb91e6d269fa41cda1ea520a664395988 status=FINALIZED result=MAJORITY_AGREE rotations=4
  rotation 1: Leader Rotation
   leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_ESTABLISHED"}}
   leader/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
      [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
-  validator/validator vote=idle model=policy:dev-gemini exec=ERROR
-  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
-  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
      [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
-  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
-     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
- rotation 2: Accepted
+  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
+  validator/validator vote=idle model=policy:dev-sonnet exec=ERROR
+ rotation 2: Leader Rotation
   leader/leader vote=? model=policy:dev-sonnet exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
-  leader/validator vote=agree model=policy:dev-sonnet exec=SUCCESS
-  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
-  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
-     [DISSENT] the leader accepts; this node finds it undetermined mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "NOT_ESTABLISHED"}
-  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
-  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
-[07:40:39] flagship.assess: ACCEPTED {"P1":"SATISFIED","P3":"SATISFIED","C1":"SATISFIED","C2":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=true
-[07:40:42] walls.finalize_early: STRANGER finalize 0x2de64b6cedff335f37a5587721c7a5cfdd5615608ca6556888e88e538a0d2453
-[07:41:21] walls.finalize_early: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
-[07:41:23] walls.provider_appeals_acceptance: PROVIDER open_appeal 0xaecdda2453df72933f781c81e30ec9a0b0c3819b68b1a9885fc6f66663c18f48
-[07:41:59] walls.provider_appeals_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
-[07:42:00] walls.settle_early: STRANGER settle 0xb2284add4a7fd3b985528af3203cc2768e3c0ae02626629ff85e9616919bce11
-[07:42:39] walls.settle_early: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
-[07:42:41] clipleads.create: FOUNDER create_work_order 0x4c8872f8ea02b66a0a476276bf5a6fc6ab5c4f2df0e51cce8c1cacf5b49698fb
-[07:43:22] clipleads.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[07:43:24] clipleads.accept: PROVIDER accept_work_order 0xfb03f67404c6b4fd23054ff39ee277beeda3a0cf9b0dacf5e72d14d791104651
-[07:44:00] clipleads.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
-[07:44:09] clipleads.after: PROVIDER submit_image 0x4a1b681eb1e9a7c3e1caad062379cd4a13e89f6a91ab9205f8964ef666ebf15d
-[07:44:49] clipleads.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[07:44:51] clipleads.assess: PROVIDER request_assessment 0xf1f20e7484843360be9ada7459f3f9b48397d64555532cb70e4a21c627bf5b1a
-  … clipleads.assess COMMITTING
-[07:46:14] clipleads.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 83 s
-receipt 0xf1f20e7484843360be9ada7459f3f9b48397d64555532cb70e4a21c627bf5b1a status=FINALIZED result=MAJORITY_AGREE rotations=1
- rotation 1: Accepted
-  leader/leader vote=? model=anthropic/claude-sonnet-4.6 exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
-  leader/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
-  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
-     [DISSENT] P1: the leader finds it not satisfied, this node finds it not_established mine={"P1": "NOT_ESTABLISHED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
-  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
-  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
-  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
-[07:46:16] clipleads.assess: REJECTED {"P1":"NOT_SATISFIED","P2":"NOT_SATISFIED","C1":"NOT_SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_APPLICABLE"} sufficient=false
-[07:46:16] clipleads: REJECTED, failed ["P1","P2","C1"]
-[07:46:18] restore.create: FOUNDER create_work_order 0x2fdb96b561185fa3774fe16f0adbc0dc20aa81ff01dc8a33c5449e7aa6e080c8
-[07:46:57] restore.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[07:46:59] restore.accept: PROVIDER accept_work_order 0x8d974007d26f2d73fa588fbfe0054267d98946cc32f78be3d936a853b770af77
-[07:47:33] restore.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 34 s
-[07:47:43] restore.after: PROVIDER submit_image 0x65a1a00b51934e3304cc9abea23c7e0591c928b6b0121362d120792dc88afe8d
-[07:48:24] restore.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[07:48:27] restore.reading: PROVIDER submit_document 0x88d10791ddb9cea8c1764109d997ed88494efbd4ca327011e44c14921f27d39d
-[07:49:07] restore.reading: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
-[07:49:09] restore.assess: PROVIDER request_assessment 0xd1f0c997ba87b97f4c4adec8bdacc83edf982b85aa328927e6a56f543d7d1377
-  … restore.assess COMMITTING
-[07:50:43] restore.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 94 s
-receipt 0xd1f0c997ba87b97f4c4adec8bdacc83edf982b85aa328927e6a56f543d7d1377 status=FINALIZED result=MAJORITY_AGREE rotations=2
- rotation 1: Leader Rotation
-  leader/leader vote=? model=policy:dev-sonnet exec=SUCCESS
-     [ASSESS] leader {"seen": false, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "NOT_ESTABLISHED"}}
+     [ASSESS] leader {"seen": false, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
   leader/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
      [DISSENT] the leader did not see every photograph
-  validator/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
-     [DISSENT] the leader did not see every photograph
-  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
   validator/validator vote=idle model=policy:dev-gemini exec=ERROR
-  validator/validator vote=disagree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
      [DISSENT] the leader did not see every photograph
- rotation 2: Accepted
-  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
-  leader/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+ rotation 3: Leader Rotation
+  leader/leader vote=? model=openai/gpt-5.4 exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] S1: the leader finds it not satisfied, this node finds it satisfied mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
+     [DISSENT] S1: the leader finds it not satisfied, this node finds it satisfied mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
+     [DISSENT] S1: the leader finds it not satisfied, this node finds it satisfied mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+  validator/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
+ rotation 4: Accepted
+  leader/leader vote=? model=policy:dev-gemini exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
   validator/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader accepts; this node finds it rejected mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "C2": "SATISFIED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+[03:26:51] flagship.assess: ACCEPTED {"P1":"SATISFIED","P3":"SATISFIED","C1":"SATISFIED","C2":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=true
+[03:27:08] walls.finalize_early: STRANGER finalize 0x5ac7b87a9194bc3ca7c17c8a2d28d76dff4325dcb71bcec3ca0256a84c7af509
+[03:27:43] walls.finalize_early: FINALIZED MAJORITY_AGREE leader=ERROR in 35 s
+[03:27:45] walls.provider_appeals_acceptance: PROVIDER open_appeal 0x3d951e1763f852028d30bb807b46168029899184cb11e327077920f9ec7fef1a
+[03:28:23] walls.provider_appeals_acceptance: FINALIZED MAJORITY_AGREE leader=ERROR in 39 s
+[03:28:25] walls.settle_early: STRANGER settle 0x6c0ff673f6566abc50315c3e698b3dfb312e21adce282cbf3a9cf1f3d0337f22
+[03:29:03] walls.settle_early: FINALIZED MAJORITY_AGREE leader=ERROR in 38 s
+[03:29:05] clipleads.create: FOUNDER create_work_order 0x95b85948e094c61dc312bf1cc1334eda22e9a0ab57256bece5e912a73149ad58
+[03:29:47] clipleads.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
+[03:29:49] clipleads.accept: PROVIDER accept_work_order 0x74597addd65925ed634be0c81d83c6e8552c10f5b99aaa66be6b696749cf9935
+[03:30:23] clipleads.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: SocketError: other side closed
+        at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6238:28)
+        at TLSSocket.emit (node:events:530:35)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+      code: 'UND_ERR_SOCKET',
+      socket: [Object]
+    }
+  }
+}
+[03:30:30] clipleads.after: PROVIDER submit_image 0x748b696fa65c2851c094f874eac43751d08f78fb51bf5ead5de4eb142538822e
+[03:31:15] clipleads.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 45 s
+[03:31:17] clipleads.assess: PROVIDER request_assessment 0xfa4b491e56d1f373384063f0fc24eaf5a279a195634aef76c19ea745ce1f0b06
+  … clipleads.assess COMMITTING
+  … clipleads.assess PROPOSING
+  … clipleads.assess ACCEPTED
+[03:34:18] clipleads.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 181 s
+receipt 0xfa4b491e56d1f373384063f0fc24eaf5a279a195634aef76c19ea745ce1f0b06 status=FINALIZED result=MAJORITY_AGREE rotations=3
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "NOT_ESTABLISHED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] S1: the leader finds it not satisfied, this node finds it satisfied mine={"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
+     [DISSENT] S1: the leader finds it not satisfied, this node finds it satisfied mine={"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
   validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=disagree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+     [DISSENT] S1: the leader finds it not satisfied, this node finds it satisfied mine={"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+ rotation 2: Leader Rotation
+  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P2": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=disagree model=policy:dev-gemini exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+  validator/validator vote=idle model=anthropic/claude-sonnet-4.6 exec=ERROR
+  validator/validator vote=disagree model=google/gemini-3-flash-preview exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+ rotation 3: Accepted
+  leader/leader vote=? model=google/gemini-3-flash-preview exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "NOT_SATISFIED", "P2": "NOT_SATISFIED", "C1": "NOT_SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=agree model=google/gemini-3-flash-preview exec=SUCCESS
+  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
   validator/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
      [DISSENT] this validator did not see every photograph
+  validator/validator vote=agree model=anthropic/claude-sonnet-4.6 exec=SUCCESS
+[03:34:19] clipleads.assess: REJECTED {"P1":"NOT_SATISFIED","P2":"NOT_SATISFIED","C1":"NOT_SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_APPLICABLE"} sufficient=true
+[03:34:19] clipleads: REJECTED, failed ["P1","P2","C1"]
+[03:34:21] mislabel.create: FOUNDER create_work_order 0x5e0c473dd372cbd8c3ba1c3b7f2a68db4f4a13f97aec6ec0603af21ffe09ca92
+[03:34:59] mislabel.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[03:35:02] mislabel.accept: PROVIDER accept_work_order 0x09ec1880862bd6b0d55562467ce3a8c6eedc629822ee2a048ed5413676d990b1
+[03:35:36] mislabel.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 34 s
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: Error: read ECONNRESET
+        at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+      errno: -4077,
+      code: 'ECONNRESET',
+      syscall: 'read'
+    }
+  }
+}
+[03:35:40] mislabel.after: PROVIDER submit_image 0x8405e0f3c26e0b1e3427548f41e7467d499b64ca5f90290051ff5ff0ac928155
+[03:36:20] mislabel.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[03:36:29] walls.same_bytes_twice: PROVIDER submit_image 0x11e8a0903042c1fcce85182c89df0399cea87b20c35031b6647350c6f231b9d9
+[03:37:09] walls.same_bytes_twice: FINALIZED MAJORITY_AGREE leader=ERROR in 40 s
+[03:37:11] mislabel.assess: PROVIDER request_assessment 0x6f1d1f65f35c65086e47879955d775fee8d7dbc8eefd72af857c36b0479f2d43
+  … mislabel.assess ACCEPTED
+[03:38:22] mislabel.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 72 s
+receipt 0x6f1d1f65f35c65086e47879955d775fee8d7dbc8eefd72af857c36b0479f2d43 status=FINALIZED result=MAJORITY_AGREE rotations=1
+ rotation 1: Accepted
+  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+  validator/validator vote=disagree model=policy:dev-gpt-oss exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
   validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
-[07:50:48] restore.assess: UNDETERMINED {"P1":"NOT_ESTABLISHED","P3":"NOT_ESTABLISHED","C1":"NOT_ESTABLISHED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=false
-[07:50:48] restore.appeal: send failed (An unknown RPC error occurred.
+[03:38:24] mislabel.assess: REJECTED {"P1":"NOT_ESTABLISHED","P3":"NOT_ESTABLISHED","C1":"NOT_ESTABLISHED","S1":"NOT_SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_APPLICABLE"} sufficient=true
+[03:38:24] mislabel: REJECTED, S1 NOT_SATISFIED, C1 NOT_ESTABLISHED (the panel's own rating NOT_ESTABLISHED), conflicts false
+[03:38:24] mislabel: the panel saw ["The image shows the underside and side of a photovoltaic solar panel mounted outdoors on a black metal pole-and-brace stand set in grass. Several black cables hang loosely beneath the panel and run along the frame; no battery bank, charge controller, LCD display, or equipment board is visible, and no replacement work on a controller can be seen."]
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: SocketError: other side closed
+        at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6238:28)
+        at TLSSocket.emit (node:events:530:35)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+      code: 'UND_ERR_SOCKET',
+      socket: [Object]
+    }
+  }
+}
+[03:38:26] conflict.create: FOUNDER create_work_order 0x539d9745cd024970269ba6e194da758b0de5cd0918e4a82484721ab17e2a4e1e
+[03:39:06] conflict.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[03:39:08] conflict.accept: PROVIDER accept_work_order 0xee7aa92eab114157be96f2e31b9924a8543e5ca2c3b66eb5dd322862b2c313ab
+[03:39:46] conflict.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
+[03:39:54] conflict.display: PROVIDER submit_image 0x8f26ca151dff7c774363fe5b2edd7739bfa8631200c6de2d50e694e065d4b4e5
+[03:40:33] conflict.display: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[03:40:35] conflict.report: PROVIDER submit_document 0x7f11c49259e9f28e88c52cb3d25b6343e9a0cee4af521a9c498440f31af0202d
+[03:41:14] conflict.report: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[03:41:17] conflict.assess: PROVIDER request_assessment 0x9476828b1fba71c842454f2c1af12eabe04ac3361d6d7a64cd23cbd91dda7328
+  … conflict.assess COMMITTING
+  … conflict.assess ACCEPTED
+[03:43:00] conflict.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 104 s
+receipt 0x9476828b1fba71c842454f2c1af12eabe04ac3361d6d7a64cd23cbd91dda7328 status=FINALIZED result=MAJORITY_AGREE rotations=2
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-mistral exec=SUCCESS
+     [ASSESS] leader {"seen": false, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "NOT_ESTABLISHED"}}
+  leader/validator vote=idle model=policy:dev-mistral exec=ERROR
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=google/gemini-3-flash-preview exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=idle model=policy:dev-grok exec=ERROR
+ rotation 2: Accepted
+  leader/leader vote=? model=policy:dev-grok exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}}
+  leader/validator vote=agree model=policy:dev-grok exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+  validator/validator vote=idle model=google/gemini-3-flash-preview exec=ERROR
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+[03:43:02] conflict.assess: UNDETERMINED {"P1":"NOT_ESTABLISHED","P3":"NOT_ESTABLISHED","C1":"NOT_ESTABLISHED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_SATISFIED"} sufficient=false
+[03:43:02] conflict: UNDETERMINED, note "ev-000007 shows 12.5 V while ev-000008 claims 14.6 V"
+[03:43:03] restore.create: FOUNDER create_work_order 0xd37d79d4389ae21d3701f73e1e6ba62217ec377ee42275b9b91bf8c2bf7ffc3d
+[03:43:42] restore.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[03:43:44] restore.accept: PROVIDER accept_work_order 0x4ecd1816a47da5fc15e5a34a6ba5ffe1c0d5af8e44e6adbe3a2bca1a9f1d2053
+[03:44:18] restore.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 34 s
+[03:44:22] restore.after: PROVIDER submit_image 0xba544d6fc466ba0d8e80c5899c5e0044e24f4ba80cf87b24267656a10f5272f4
+[03:45:01] restore.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[03:45:03] restore.reading: PROVIDER submit_document 0x415be6113882fd4fcaec7038fd442a8f9e6aa2b831d9950c4ea9a48dcfe7f765
+[03:45:42] restore.reading: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[03:45:43] restore.assess: PROVIDER request_assessment 0x8358732fe0cdaed2dcc197c6c19dcd5fe6b09e3eebae76b229e318ed0aa2fb7f
+  … restore.assess ACCEPTED
+[03:46:51] restore.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 67 s
+receipt 0x8358732fe0cdaed2dcc197c6c19dcd5fe6b09e3eebae76b229e318ed0aa2fb7f status=FINALIZED result=MAJORITY_AGREE rotations=1
+ rotation 1: Accepted
+  leader/leader vote=? model=policy:dev-gemini exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "REJECTED", "ratings": {"P1": "NOT_SATISFIED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+  leader/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
+  validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
+[03:46:52] restore.assess: REJECTED {"P1":"NOT_SATISFIED","P3":"NOT_ESTABLISHED","C1":"NOT_ESTABLISHED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=true
+[03:46:59] stewardappeal.create: FOUNDER create_work_order 0x8bb14c74b00a60b28acbca80b6e80d5e12435d9cb0955545987aa6e9dda0628f
+[03:47:37] stewardappeal.create: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[03:47:39] stewardappeal.accept: PROVIDER accept_work_order 0xa7d79e14b03e7c7e1784e8992984dab7ca0103a6d42026ed554d33e5c274961f
+[03:48:18] stewardappeal.accept: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+[03:48:26] stewardappeal.after: PROVIDER submit_image 0x927a566ea9bff379dc7de94356350b6cc5e530cf97c54beccc24692d0e92b0bb
+[03:49:06] stewardappeal.after: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: SocketError: other side closed
+        at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6238:28)
+        at TLSSocket.emit (node:events:530:35)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+      code: 'UND_ERR_SOCKET',
+      socket: [Object]
+    }
+  }
+}
+[03:49:08] stewardappeal.checklist: INSPECTOR submit_document 0xaa6d9233c00ca2178753079a14422032453a70ce2960ed0dd37fa05622ca3239
+[03:49:47] stewardappeal.checklist: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[03:49:48] stewardappeal.assess: PROVIDER request_assessment 0xa6434763344ecc0cd78a2cb1190fee923a7f0168a3e4ad641dafb0b90e9b0f5e
+  … stewardappeal.assess PROPOSING
+  … stewardappeal.assess PROPOSING
+[03:52:04] stewardappeal.assess: no majority, so nothing was recorded; asking again (2 of 4)
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[03:52:19] stewardappeal.assess: send failed (An unknown RPC error occurred.
 
 Details: fetch failed
 Version: viem@2.56.9), retrying
-[07:50:59] restore.appeal: PROVIDER open_appeal 0x31f5a9bde9f1f84441166c18f156d0a3ae75d0990df8ded42a9e122c5d932e74
-[07:51:38] restore.appeal: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[07:51:44] restore.display: PROVIDER submit_image 0xebb1e9cc6dbc4ad1f8a69cd5d0126d98a692f35cde21fd0e561290810b80cfdf
-[07:52:23] restore.display: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
-[07:52:25] restore.readjudicate: PROVIDER readjudicate 0x35d2b661a6363f5db61a92ff2f1c78134f38a3dcbc5c2861c9b9e574bcb1bfd0
-  … restore.readjudicate PROPOSING
-  … restore.readjudicate COMMITTING
-  … restore.readjudicate ACCEPTED
-[07:55:03] restore.readjudicate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 158 s
-receipt 0x35d2b661a6363f5db61a92ff2f1c78134f38a3dcbc5c2861c9b9e574bcb1bfd0 status=FINALIZED result=MAJORITY_AGREE rotations=3
+[03:52:30] stewardappeal.assess: PROVIDER request_assessment 0x1cc4b22bca534da7b6ef9f028c1b77577d5f56925e748f4025e48322c4936583
+  … stewardappeal.assess COMMITTING
+  … stewardappeal.assess ACCEPTED
+[03:54:45] stewardappeal.assess: FINALIZED MAJORITY_AGREE leader=SUCCESS in 134 s
+receipt 0x1cc4b22bca534da7b6ef9f028c1b77577d5f56925e748f4025e48322c4936583 status=FINALIZED result=MAJORITY_AGREE rotations=4
  rotation 1: Leader Rotation
-  leader/leader vote=? model=policy:dev-gemini exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
-  leader/validator vote=agree model=policy:dev-gemini exec=SUCCESS
-  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISSENT] the leader accepts; this node finds it undetermined mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}
-  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
-     [DISSENT] the leader accepts; this node finds it rejected mine={"P1": "NOT_SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
-  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISSENT] the leader accepts; this node finds it undetermined mine={"P1": "NOT_ESTABLISHED", "P3": "NOT_ESTABLISHED", "C1": "NOT_ESTABLISHED", "S1": "NOT_SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}
-  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
- rotation 2: Leader Rotation
-  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_SATISFIED"}}
-  leader/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
-  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
-     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_ESTABLISHED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
-  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
-  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  leader/leader vote=? model=policy:dev-sonnet exec=SUCCESS
+     [ASSESS] leader {"seen": false, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=idle model=policy:dev-sonnet exec=ERROR
+  validator/validator vote=disagree model=policy:dev-gpt-oss exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
   validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
-     [DISSENT] the leader reports a conflict this node does not see mine={"P1": "NOT_ESTABLISHED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+ rotation 2: Leader Rotation
+  leader/leader vote=? model=policy:dev-mistral exec=SUCCESS
+     [ASSESS] leader {"seen": false, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=disagree model=policy:dev-mistral exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=idle model=policy:dev-gpt-oss exec=ERROR
+ rotation 3: Leader Rotation
+  leader/leader vote=? model=policy:dev-deepseek exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "NOT_ESTABLISHED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+  validator/validator vote=idle model=policy:dev-gpt-oss exec=ERROR
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+ rotation 4: Accepted
+  leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=idle model=policy:dev-deepseek exec=ERROR
+  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=agree model=policy:dev-gemini exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-gpt-oss exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+[03:54:47] stewardappeal.assess: ACCEPTED {"P1":"SATISFIED","P3":"SATISFIED","C1":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_APPLICABLE"} sufficient=true
+[03:54:47] stewardappeal: first ACCEPTED
+[03:54:54] stewardappeal.appeal: STEWARD open_appeal 0xfe4fa31786d83842a1fdbb6b5d1faf4223050f6353b4d006a65b1207be492aba
+[03:55:37] stewardappeal.appeal: FINALIZED MAJORITY_AGREE leader=SUCCESS in 43 s
+GenLayer RPC error (eth_estimateGas): fetch failed
+Gas estimation failed, using default 200_000: UnknownRpcError: An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9
+    at withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:127:31)
+    at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+  details: 'fetch failed',
+  docsPath: undefined,
+  metaMessages: undefined,
+  shortMessage: 'An unknown RPC error occurred.',
+  version: '2.56.9',
+  code: -1,
+  [cause]: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13392:13
+      at async Object.request (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/genlayer-js@2.0.0-rc.1_eslint@9.39.5/node_modules/genlayer-js/dist/index.js:5724:26)
+      at async withRetry.delay.count.count (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/buildRequest.js:30:24)
+      at async attemptRetry (file:///C:/Users/Pc/Desktop/Everkeep/scripts/node_modules/.pnpm/viem@2.56.9/node_modules/viem/_esm/utils/promise/withRetry.js:24:30) {
+    [cause]: SocketError: other side closed
+        at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6238:28)
+        at TLSSocket.emit (node:events:530:35)
+        at endReadableNT (node:internal/streams/readable:1698:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+      code: 'UND_ERR_SOCKET',
+      socket: [Object]
+    }
+  }
+}
+[03:55:41] stewardappeal.steward_photo: STEWARD submit_image 0x2634337a5f401366fc3c1b11736bf2393e6445033ad8a31419c83e9b16c08a90
+[03:56:20] stewardappeal.steward_photo: FINALIZED MAJORITY_AGREE leader=SUCCESS in 39 s
+GenLayer RPC error (sim_getFeeConfig): fetch failed
+[03:56:20] stewardappeal.readjudicate: send failed (An unknown RPC error occurred.
+
+Details: fetch failed
+Version: viem@2.56.9), retrying
+[03:56:32] stewardappeal.readjudicate: STEWARD readjudicate 0x3e1ded0cc43d2952b9dd63d7ce221966a9ca45a7c801e3fac863b268ba7044bc
+  … stewardappeal.readjudicate COMMITTING
+  … stewardappeal.readjudicate COMMITTING
+[03:59:04] stewardappeal.readjudicate: FINALIZED MAJORITY_AGREE leader=SUCCESS in 152 s
+receipt 0x3e1ded0cc43d2952b9dd63d7ce221966a9ca45a7c801e3fac863b268ba7044bc status=FINALIZED result=MAJORITY_AGREE rotations=3
+ rotation 1: Leader Rotation
+  leader/leader vote=? model=policy:dev-sonnet exec=SUCCESS
+     [ASSESS] leader {"seen": false, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "NOT_ESTABLISHED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=idle model=policy:dev-sonnet exec=ERROR
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=disagree model=policy:dev-grok exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+  validator/validator vote=idle model=openai/gpt-5.4 exec=ERROR
+  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
+     [DISSENT] the leader did not see every photograph
+ rotation 2: Leader Rotation
+  leader/leader vote=? model=policy:dev-grok exec=SUCCESS
+     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "SATISFIED", "P3": "NOT_ESTABLISHED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
+  leader/validator vote=agree model=policy:dev-grok exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
+  validator/validator vote=disagree model=openai/gpt-5.4 exec=SUCCESS
+     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
+  validator/validator vote=disagree model=policy:dev-gpt-5-4 exec=SUCCESS
+     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}
  rotation 3: Accepted
   leader/leader vote=? model=policy:dev-gpt-5-4 exec=SUCCESS
-     [ASSESS] leader {"seen": true, "outcome": "UNDETERMINED", "ratings": {"P1": "NOT_ESTABLISHED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}}
+     [ASSESS] leader {"seen": true, "outcome": "ACCEPTED", "ratings": {"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "NOT_APPLICABLE"}}
   leader/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
+  validator/validator vote=disagree model=policy:dev-sonnet exec=SUCCESS
+     [DISSENT] this validator did not see every photograph
+  validator/validator vote=idle model=policy:dev-gpt-5-4 exec=ERROR
+  validator/validator vote=agree model=policy:dev-deepseek exec=SUCCESS
   validator/validator vote=agree model=openai/gpt-5.4 exec=SUCCESS
-  validator/validator vote=disagree model=policy:dev-deepseek exec=SUCCESS
-     [DISSENT] the leader withholds an acceptance this node would grant mine={"P1": "SATISFIED", "P3": "SATISFIED", "C1": "SATISFIED", "S1": "SATISFIED", "S2": "NOT_APPLICABLE", "S3": "SATISFIED"}
-  validator/validator vote=agree model=policy:dev-gpt-5-4 exec=SUCCESS
-  validator/validator vote=idle model=policy:dev-sonnet exec=ERROR
-[07:55:05] restore.readjudicate: UNDETERMINED {"P1":"NOT_ESTABLISHED","P3":"SATISFIED","C1":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"SATISFIED"} sufficient=true
-[07:55:06] restore: UNDETERMINED -> UNDETERMINED on appeal
-[07:55:08] flagship.finalize: STRANGER finalize 0x3224557ee4188f3b3eb40df74ccac85dbd3ad04b6d2d1748dd054a6892461e63
-[07:55:42] flagship.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 35 s
-[07:55:49] flagship.settle: STRANGER settle 0x7969ab02ceb88723801a625ef4c86915bc229591f1c19a495478b1eb1a79fadb
-[07:56:26] flagship.settle: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
-[07:56:31] clipleads.finalize: STRANGER finalize 0xb466cfc4280f69a3e63948d232e5897da2912c7b14977cc6456caaad71ba8b68
-[07:57:08] clipleads.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 37 s
-[07:57:10] asset: UNDER_MAINTENANCE, last serviced 2026-09-27T07:55:08Z, next due 2027-03-26T07:55:08Z
-[07:57:13] cycle.next: FOUNDER create_work_order 0x80425e00e7763227a17c4e753fd9b7120d34580633ebe1df5786c61c083b87e7
-[07:57:54] cycle.next: FINALIZED MAJORITY_AGREE leader=SUCCESS in 41 s
-[07:57:55] stats {"organization":2,"asset":2,"work_order":7,"evidence":9,"decision":4,"settled":1,"settled_wei":"2000000000000000000"}
-[07:57:55] every round reached a majority first time
-[07:57:55] every proof passed
+[03:59:05] stewardappeal.readjudicate: ACCEPTED {"P1":"SATISFIED","P3":"SATISFIED","C1":"SATISFIED","S1":"SATISFIED","S2":"NOT_APPLICABLE","S3":"NOT_APPLICABLE"} sufficient=true
+[03:59:06] stewardappeal: ACCEPTED -> ACCEPTED on the steward's appeal; failed []
+[03:59:13] flagship.finalize: STRANGER finalize 0xdfbb8dd1fde6801a66185010ce48ab7c466c1a1ce5fb2d5864dc32e994bf0a1f
+[03:59:51] flagship.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[04:00:03] flagship.settle: STRANGER settle 0x7114620102bc1b3b41110fb5f40e8abe2a6471977189591ffcae89ab7dc01a42
+[04:00:41] flagship.settle: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+GenLayer RPC error (gen_call): fetch failed
+[04:00:52] clipleads.finalize: STRANGER finalize 0x8ccf0528233f00919a52f02b1bb3a018dde07801eeb31beef63b87fc09ca0219
+[04:01:32] clipleads.finalize: FINALIZED MAJORITY_AGREE leader=SUCCESS in 40 s
+[04:01:34] asset: UNDER_MAINTENANCE, last serviced 2026-09-28T03:59:15Z, next due 2027-03-27T03:59:15Z
+[04:01:36] cycle.next: FOUNDER create_work_order 0x79d826e458a9d765f36affec80b1a698e368cbbb5e9bda9a5acffc84e7912ea3
+[04:02:14] cycle.next: FINALIZED MAJORITY_AGREE leader=SUCCESS in 38 s
+[04:02:15] stats {"organization":1,"asset":1,"work_order":7,"evidence":13,"decision":7,"settled":1,"settled_wei":"2000000000000000000"}
+[04:02:15] 1 round(s) reached no majority and were asked again
+[04:02:15] rounds that needed a leader rotation: flagship.assess, clipleads.assess, mislabel.assess, conflict.assess, restore.assess, stewardappeal.assess, stewardappeal.readjudicate
+[04:02:15] the app's own rules agreed with the chain at 12 checks
+[04:02:15] every proof passed

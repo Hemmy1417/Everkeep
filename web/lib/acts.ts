@@ -5,7 +5,7 @@
  * would accept. tests/acts.test.ts runs these rules on shapes the contract
  * produces.
  */
-import type { Asset, Constitution, Decision, Organization, WorkOrder } from "./types";
+import type { Asset, Constitution, Decision, Evidence, Organization, Terms, WorkOrder } from "./types";
 
 export const MAX_VERSIONS = 6;
 export const STALE_APPEAL_MS = 3 * 86_400_000;
@@ -14,6 +14,43 @@ const same = (a?: string | null, b?: string | null) => !!a && !!b && a.toLowerCa
 
 export function isSteward(stewards: string[], addr: string | null | undefined): boolean {
   return stewards.some((s) => same(s, addr));
+}
+
+/** The stewards who act: named, and having accepted the role (contract `_stewards`). */
+export function acting(o: Organization): string[] {
+  return o.accepted_stewards ?? o.stewards;
+}
+
+const DAY_MS = 86_400_000;
+const INSPECTOR_DOCUMENTS = ["INSPECTION_REPORT", "INSPECTION_CHECKLIST"];
+
+/** Whether one evidence item meets one evidence rule (contract `_meets`). */
+export function meets(item: Evidence, rtype: string): boolean {
+  const { kind, view = "", doc_type: doc = "" } = item;
+  if (rtype === "BEFORE_PHOTO") return kind === "IMAGE" && view === "BEFORE";
+  if (rtype === "AFTER_PHOTO") return kind === "IMAGE" && view === "AFTER";
+  if (rtype === "NAMEPLATE_PHOTO") return kind === "IMAGE" && view === "NAMEPLATE";
+  if (rtype === "OPERATIONAL_READING") return (kind === "IMAGE" && view === "METER_DISPLAY") || (kind === "DOCUMENT" && doc === "METER_READING");
+  if (INSPECTOR_DOCUMENTS.includes(rtype)) return kind === "DOCUMENT" && doc === rtype && item.role === "INSPECTOR";
+  return kind === "DOCUMENT" && doc === rtype;
+}
+
+/** The first evidence rule the file does not meet, in words, or "" (contract `_preflight_gap`). */
+export function preflightGap(c: Constitution, terms: Terms, items: Evidence[]): string {
+  const mtype = terms.maintenance_type;
+  const rules = c.evidence_requirements.filter((r) => r.maintenance_type === "ALL" || r.maintenance_type === mtype)
+    .map((r) => ({ type: r.type, min_count: r.min_count }));
+  rules.push(...terms.required_evidence);
+  if (c.eligibility_rules.inspection_report_required_for.includes(mtype)) rules.push({ type: "INSPECTION_REPORT", min_count: 1 });
+  for (const r of rules) {
+    const have = items.filter((it) => meets(it, r.type)).length;
+    if (have < r.min_count) {
+      const what = r.type.toLowerCase().replace(/_/g, " ");
+      return `The rules require ${r.min_count} ${what}${r.min_count === 1 ? "" : "s"} before assessment; ${have} on file.`;
+    }
+  }
+  if (!items.some((it) => it.kind === "IMAGE")) return "At least one photograph must be on file before assessment.";
+  return "";
 }
 
 export type Seat = "PROVIDER" | "INSPECTOR" | "STEWARD" | "";
@@ -45,6 +82,8 @@ export interface OrgActs {
   completeDissolution: boolean;
   pause: boolean;
   resume: boolean;
+  acceptSteward: boolean;
+  dissolveAbandoned: boolean;
   authorizeProvider: boolean;
   revokeProvider: boolean;
   registerAsset: boolean;
@@ -52,7 +91,7 @@ export interface OrgActs {
 }
 
 export function orgActs(o: Organization, c: Constitution, addr: string | null | undefined, now: number): OrgActs {
-  const steward = isSteward(o.stewards, addr);
+  const steward = isSteward(acting(o), addr);
   const m = o.motion && o.motion.state === "PENDING" ? o.motion : null;
   const active = o.state === "ACTIVE";
   return {
@@ -65,6 +104,9 @@ export function orgActs(o: Organization, c: Constitution, addr: string | null | 
     completeDissolution: !!addr && o.state === "DISSOLVING" && o.open_work_orders === 0,
     pause: steward && active,
     resume: steward && o.state === "PAUSED",
+    acceptSteward: !!addr && isSteward(o.stewards, addr) && !steward,
+    dissolveAbandoned: !!addr && (active || o.state === "PAUSED")
+      && now > t(o.last_steward_act ?? o.created_at) + (o.abandoned_after_days ?? 365) * DAY_MS,
     authorizeProvider: steward && active,
     revokeProvider: steward,
     registerAsset: steward && active,
@@ -75,7 +117,7 @@ export function orgActs(o: Organization, c: Constitution, addr: string | null | 
 export function assetActs(a: Asset, o: Organization, addr: string | null | undefined) {
   return {
     acceptInspector: !!a.inspector && same(addr, a.inspector) && !a.inspector_accepted_at,
-    retire: isSteward(o.stewards, addr) && !a.retired_at && a.open_work_orders === 0,
+    retire: isSteward(acting(o), addr) && !a.retired_at && a.open_work_orders === 0,
   };
 }
 
@@ -107,8 +149,8 @@ export function fileClosed(w: WorkOrder, now: number): string {
 }
 
 export function orderActs(w: WorkOrder, o: Organization, d: Decision | null, seat: Seat,
-                          addr: string | null | undefined, now: number): OrderActs {
-  const steward = isSteward(o.stewards, addr);
+                          addr: string | null | undefined, now: number, gap = ""): OrderActs {
+  const steward = isSteward(acting(o), addr);
   const pending = w.pending_version ? w.versions[w.pending_version - 1] : null;
   const current = w.current_version ? w.versions[w.current_version - 1] : null;
   const open = w.state === "PROPOSED" || w.state === "ACTIVE";
@@ -127,7 +169,7 @@ export function orderActs(w: WorkOrder, o: Organization, d: Decision | null, sea
       && w.versions.length < MAX_VERSIONS,
     cancel: steward && w.state === "PROPOSED",
     file: seat !== "" && closedWhy === "",
-    assess: same(addr, w.provider) && w.state === "ACTIVE" && !!current && now <= t(current.deadline),
+    assess: same(addr, w.provider) && w.state === "ACTIVE" && !!current && now <= t(current.deadline) && gap === "",
     appeal: w.state === "DECIDED" && !!d && d.appeals_left > 0 && now <= t(d.appeal_window_ends)
       && (d.outcome === "ACCEPTED" ? steward : same(addr, w.provider)),
     readjudicate: w.state === "UNDER_APPEAL" && !!w.appeal && !!addr

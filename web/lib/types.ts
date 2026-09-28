@@ -68,6 +68,10 @@ export interface Organization {
   name: string;
   mission: string;
   stewards: string[];
+  /** Named stewards who have accepted the role; only they act. */
+  accepted_stewards: string[];
+  last_steward_act: string;
+  abandoned_after_days: number;
   available_wei: string;
   spendable_wei: string;
   open_work_orders: number;
@@ -120,6 +124,8 @@ export interface Asset {
   open_work_orders: number;
   work_orders: string[];
   service_log: ServiceEntry[];
+  work_order_total?: number;
+  service_total?: number;
   status: "MONITORING" | "SERVICE_DUE" | "UNDER_MAINTENANCE" | "RETIRED";
   next_service_due: string | null;
 }
@@ -249,6 +255,8 @@ export interface Decision {
   evidence_sufficient: boolean;
   conflicts_detected: boolean;
   needs_appeal: boolean;
+  /** What every validator reproduced; every other rating is the leader's reading. */
+  bound?: { outcome: boolean; requirements: string[]; ratings_by: string };
   appeal_of: string | null;
   appeal: { by: string; opened_by: string; reason: string; opened_at: string } | null;
   lifecycle: Lifecycle;
@@ -291,6 +299,7 @@ export interface Config {
   requirement_types: string[];
   system_requirements: Criterion[];
   decision_rule: string[];
+  abandoned_after_days?: number;
   limits: {
     max_stewards: number; max_principles: number; max_criteria: number; max_evidence_rules: number;
     max_versions: number; min_payment_wei: string; window_seconds: [number, number];
