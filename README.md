@@ -98,11 +98,52 @@ There is no backend, database or server signer. The reasoning behind this shape 
 | `REJECTED` | at least one requirement shown not satisfied |
 | `UNDETERMINED` | anything not established, the evidence insufficient, or a material contradiction. Never pays. |
 
-A decision's lifecycle runs appealable, then appealed or finalized; an appealed decision is superseded by
-its readjudication and kept exactly as recorded. A work order runs:
-- proposed, active, decided;
-- optionally under appeal;
-- then payment releasable and settled, or closed unpaid, or cancelled.
+## Lifecycle
+
+A work order, from commission to payment. Every arrow is a guard in `contracts/everkeep.py` with a direct
+test, and the randomized walk in `tests/direct/test_invariants.py` reaches every state.
+
+```text
+create_work_order ─► PROPOSED ── cancel_work_order (a steward) ──────────────────────► CANCELLED
+                        │  accept_work_order (the provider)
+                        ▼
+                     ACTIVE ── evidence filed ── request_assessment (preflight, then GenLayer)
+                        │                                     │
+                        │ deadline passed                     ▼
+                        │                                  DECIDED ◄──────────────────┐
+                        │                                     │ open_appeal            │ readjudicate
+                        │                                     ▼ (the party it went     │ (a new decision,
+                        │                                  UNDER_APPEAL   against)     │  linked; the old
+                        │                                     │ ──────────────────────┘  one is kept)
+                        │                                     │ undecided 3 days after the evidence
+                        │                                     │ period: the appealed decision stands
+                        │                                     ▼
+                        │                         finalize (window passed, or no appeal left)
+                        │                                     │
+                        │            ACCEPTED ─► PAYMENT_RELEASABLE ── settle ──► SETTLED
+                        ▼                                     │
+                  CLOSED_UNPAID ◄─────────── REJECTED or UNDETERMINED
+```
+
+| State | Who moves it next | If nobody acts |
+|---|---|---|
+| `PROPOSED` | the provider accepts the terms; a steward may cancel | anyone closes it unpaid once the proposed terms expire |
+| `ACTIVE` | the provider files evidence and asks for the assessment | anyone closes it unpaid after the deadline; the commitment returns to the treasury |
+| `DECIDED` | the party the decision went against appeals inside the window | anyone finalizes once the window has passed |
+| `UNDER_APPEAL` | the provider, the inspector and the appealing steward may add bounded evidence; the appellant asks for readjudication, anyone once the evidence period ends | anyone closes it three days after the evidence period: the appealed decision stands and becomes final |
+| `PAYMENT_RELEASABLE` | anyone settles it to the provider | the payment stays committed to that provider; nothing else can spend it |
+| `SETTLED`, `CLOSED_UNPAID`, `CANCELLED` | none: terminal | nothing remains committed |
+
+A decision has its own lifecycle, and its outcome, requirements, snapshot and versions never change once
+recorded:
+
+```text
+recorded ─► APPEALABLE ── open_appeal ─► APPEALED ── readjudicate ─► SUPERSEDED (kept as recorded)
+               │                              └──── stale close ───► FINALIZED (the appealed decision stands)
+               └──────── finalize ──────────────────────────────────► FINALIZED
+```
+
+The organisation's, asset's and motion's state machines are in [docs/state-machine.md](docs/state-machine.md).
 
 ## Verified end to end
 
